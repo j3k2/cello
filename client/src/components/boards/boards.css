@@ -1,0 +1,15 @@
+.board-modal {
+	background: grey;
+	width: 300px;
+	height: 75px;
+	margin: 100px auto;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.board-modal input {
+	margin-bottom: 5px;
+	width: 240px;
+}
+
+.board-item {}
