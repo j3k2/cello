@@ -1,7 +1,9 @@
 import React from 'react';
 import board from '../../services/boards';
 import BoardCreator from './BoardCreator';
-import './boards.css';
+import {useHistory} from 'react-router-dom';
+
+import './boards.scss';
 
 
 const BoardsList = () => {
@@ -18,16 +20,28 @@ const BoardsList = () => {
 		fetchBoards();
 	}, [])
 
+	function BoardItem(props) {
+		const history = useHistory();
+		return (<div className="board-item" onClick={()=>{
+			history.push(`/board/${props.id}`)
+		}}>
+		{props.title}
+	</div>)
+	}
+
 	return (
 		<React.Fragment>
+		<div className="board-list-title">
+		Your boards
+		</div>
+		<div className="board-list">
 			{boards.map(board => {
-				return (<div key={board.id} className="board-item">
-					{board.title}
-				</div>)
+				return <BoardItem key={board.id} id={board.id} title={board.title}/>
 			})}
 			<BoardCreator updateList={(createdBoard) => {
 				setBoards([...boards, createdBoard])
 			}} />
+		</div>
 		</React.Fragment>
 	)
 }

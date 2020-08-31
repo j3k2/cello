@@ -1,0 +1,53 @@
+.board-modal {
+	background: grey;
+	width: 300px;
+	height: 75px;
+	margin: 100px auto;
+	border-radius: 3px;
+	padding: 5px;
+}
+
+.board-modal input {
+	margin-bottom: 5px;
+	width: 240px;
+}
+
+.board-item {
+	border-radius: 3px;
+	padding: 5px;
+	height: 80px;
+	margin: 10px;
+	width: 15%;
+	cursor: pointer;
+	background: rgb(0, 121, 191);
+	color: #fff;
+	&:hover {
+		filter: brightness(90%);
+	}
+}
+
+.board-item--create {
+	background: rgba(9, 30, 66, 0.04);
+	color: #172b4d;
+	top: 25%;
+	display: flex;
+	text-align: center;
+	&:hover {
+		background: rgba(9, 30, 66, 0.08);
+	}
+	span {
+		align-self: center;
+		margin: 0 auto;
+	}
+}
+
+.board-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.board-list-title {
+	align-self: flex-start;
+	margin-left: 5px;
+	color: #172b4d;
+}

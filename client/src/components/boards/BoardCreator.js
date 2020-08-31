@@ -2,7 +2,7 @@ import React from 'react';
 import boards from '../../services/boards';
 import ReactModal from 'react-modal';
 import { useHistory } from 'react-router-dom';
-import './boards.css';
+import './boards.scss';
 
 
 const BoardCreator = (props) => {
@@ -48,11 +48,11 @@ const BoardCreator = (props) => {
 			>
 				<BoardForm />
 			</ReactModal>
-			<button onClick={() => {
+			<div className="board-item board-item--create" onClick={() => {
 				setShowModal(true);
 			}}>
-				Create board
-	  </button>
+				<span>Create new board</span>
+	  </div>
 		</React.Fragment>
 	)
 }
