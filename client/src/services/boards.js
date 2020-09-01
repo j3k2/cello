@@ -16,7 +16,15 @@ async function getBoards() {
 	return res.body;
 }
 
+async function getBoard(id) {
+	const res = await request
+		.get(`/api/boards/${id}`)
+		.set(getAuthHeader());
+	return res.body;
+}
+
 export default {
 	createBoard,
-	getBoards
+	getBoards,
+	getBoard
 }
