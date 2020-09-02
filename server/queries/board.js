@@ -10,18 +10,20 @@ async function getBoards(params) {
 }
 
 async function getBoard(params) {
-	return knex('boards')
-	.innerJoin('lanes', function(){
-		this.on('boards.id', 'lanes.boardId');
-		this.andOnVal('boards.id', '=', params.boardId)
-	})
-	.select([
-		'boards.id as boardId',
-		'boards.title as boardTitle',
-		knex.raw(`ARRAY_AGG(json_build_object('id', lanes.id, 'title', lanes.title)) as lanes`)
-	])
-	.groupBy('boards.id')
-	.first();
+	// TO DO: replace naive multiple queries:
+	const board = await knex('boards').where({id: params.board_id}).first();
+	
+	board.lanes = await knex('lanes').where({board_id: params.board_id});
+
+	const cardsPerLane = await Promise.all(board.lanes.map(async (lane)=>{
+		return knex('cards').where({lane_id: lane.id});
+	}));
+
+	board.lanes.forEach((lane,idx)=>{
+		lane.cards = cardsPerLane[idx];
+	});
+
+	return board;
 }
 
 module.exports = {

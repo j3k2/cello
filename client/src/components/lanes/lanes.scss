@@ -1,0 +1,37 @@
+.board-view-wrapper{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-view{
+  display: flex;
+  overflow-x: scroll;
+  flex-grow: 1;
+}
+
+.board-lane{
+  margin: 5px;
+  cursor: pointer;
+  min-width: 272px;
+  overflow-wrap: break-word;
+  display: flex;
+  flex-direction: column;
+}
+
+.lane-content{
+  border: solid 1px black;
+  border-radius: 3px;
+}
+
+.lane-creator .lane-content{
+  background: rgba(9, 30, 66, 0.04);
+	&:hover {
+		background: rgba(9, 30, 66, 0.08);
+	}
+}
+
+.lane-creator-form {
+  display:flex;
+  flex-direction: column;
+}

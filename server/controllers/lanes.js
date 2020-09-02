@@ -1,8 +1,8 @@
-const board = require('../queries/lane');
+const lane = require('../queries/lane');
 
 async function createLane(req, res) {
-	const created = await board.createLane({
-		boardId: req.body.boardId,
+	const created = await lane.createLane({
+		board_id: req.body.boardId,
 		title: req.body.title
 	});
 	res.json(created);

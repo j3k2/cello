@@ -9,20 +9,27 @@ exports.up = function(knex) {
   })
   .createTable('boards', function (table) {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
-    table.uuid('creatorId').notNullable();
-    table.foreign('creatorId').references('id').inTable('users');
+    table.uuid('creator_id').notNullable();
+    table.foreign('creator_id').references('id').inTable('users');
     table.string('title').notNullable();
   })  
   .createTable('lanes', function (table) {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
-    table.uuid('boardId').notNullable();
-    table.foreign('boardId').references('id').inTable('boards');
+    table.uuid('board_id').notNullable();
+    table.foreign('board_id').references('id').inTable('boards');
     table.string('title').notNullable();
   })
+  .createTable('cards', function (table) {
+    table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+    table.uuid('lane_id').notNullable();
+    table.foreign('lane_id').references('id').inTable('lanes');
+    table.string('text').notNullable();
+  });
 };
 
 exports.down = function(knex) {
   return knex.schema
+    .dropTableIfExists('cards')
     .dropTableIfExists('lanes')
     .dropTableIfExists('boards')
     .dropTableIfExists('users');

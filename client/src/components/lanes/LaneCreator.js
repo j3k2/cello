@@ -1,5 +1,5 @@
 import React from 'react';
-import lane from '../../services/lanes';
+import laneService from '../../services/lanes';
 
 const LaneCreator = (props) => {
   const [showForm, setShowForm] = React.useState(false);
@@ -7,12 +7,12 @@ const LaneCreator = (props) => {
   const CreateLaneForm = () => {
     const [laneTitle, setLaneTitle] = React.useState('');
 
-    async function createLane (e) {
+    async function createLane(e) {
       e.preventDefault();
-      const res = await lane.createLane({ boardId: props.id, title: laneTitle });
-      console.log(res);
+      const lane = await laneService.createLane({ boardId: props.id, title: laneTitle });
+      props.addLane(lane);
     }
-    return (<form onSubmit={createLane}>
+    return (<form className="lane-creator-form" onSubmit={createLane}>
       <input
         value={laneTitle}
         autoFocus={true}
@@ -29,16 +29,17 @@ const LaneCreator = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <div className="board-lane lane-creator">
+      <div className="lane-content">
+        {showForm && <CreateLaneForm />}
 
-      {showForm && <CreateLaneForm />}
-
-      {!showForm && <div onClick={() => {
-        setShowForm(true)
-      }}>
-        Add another list
+        {!showForm && <div onClick={() => {
+          setShowForm(true)
+        }}>
+          Add another list
       </div>}
-    </React.Fragment>
+      </div>
+    </div>
   )
 }
 
