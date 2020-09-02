@@ -16,10 +16,13 @@ const CardCreator = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <div className="card-creator-section">
       {showForm &&
       <form className="card-creator-form" onSubmit={createCard}>
-          <input value={cardText} onChange={(e)=>{
+          <input 
+          placeholder="Enter a title for this card..."
+          value={cardText} 
+          onChange={(e)=>{
             setCardText(e.target.value)
           }}/>
           <button>
@@ -33,13 +36,15 @@ const CardCreator = (props) => {
       </form>}
 
       {!showForm &&
-        <div onClick={() => {
+        <div 
+        className="card-creator-toggle"
+        onClick={() => {
           setShowForm(true);
         }}>
           Add a card
       </div>
       }
-    </React.Fragment>
+    </div>
   )
 }
 

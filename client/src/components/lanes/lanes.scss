@@ -2,9 +2,20 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  background: rgb(0, 121, 191);
 }
 
-.board-view{
+.board-view-header{
+  color: #fff;
+  height: 48px;
+  padding-left: 10px;
+  h1{
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+.board-view-content{
   display: flex;
   overflow-x: scroll;
   flex-grow: 1;
@@ -20,8 +31,16 @@
 }
 
 .lane-content{
-  border: solid 1px black;
   border-radius: 3px;
+  background: #ebecf0;
+  color: rgb(23, 43, 77);
+  overflow-y: auto;
+}
+
+.lane-header{
+  height: 40px;
+  font-weight: bold;
+  padding: 14px 12px;
 }
 
 .lane-creator .lane-content{
@@ -34,4 +53,15 @@
 .lane-creator-form {
   display:flex;
   flex-direction: column;
+}
+
+.lane-creator-toggle{
+  height: 40px;
+  border-radius: 3px;
+  color: #fff;
+  padding: 10px 8px;
+  background: hsla(0,0%,100%,.24);
+  &:hover{
+    filter: brightness(90%);
+  }
 }

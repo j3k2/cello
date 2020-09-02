@@ -5,12 +5,13 @@ import LanesList from '../lanes/LanesList';
 import LaneCreator from '../lanes/LaneCreator.js';
 import board from '../../services/boards';
 
-const Board = (props) => {
+const Board = () => {
 	const params = useParams();
 
 	const [lanes, setLanes] = React.useState([]);
 
-	const [title, setTitle] = React.useState('');
+  const [title, setTitle] = React.useState('');
+  
 	const fetchBoard = async () => {
 		board.getBoard(params.id).then((res) => {
 			console.log(res);
@@ -41,8 +42,11 @@ const Board = (props) => {
 
 	return (
 	<div className="board-view-wrapper">
-		<h3>{title}</h3>
-		<div className="board-view">
+    <div className="board-view-header">
+      <h1>{title}
+        </h1>
+    </div>
+		<div className="board-view-content">
 			<LanesList lanes={lanes} addCard={addCard}/>
 			<LaneCreator id={params.id} addLane={addLane}/>
 		</div>

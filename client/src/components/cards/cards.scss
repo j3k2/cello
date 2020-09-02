@@ -1,3 +1,8 @@
+
+.card-creator-section{
+  padding: 5px;
+}
+
 .card-creator-form{
   display: flex;
   flex-direction: column;
@@ -8,6 +13,24 @@
   flex-direction: column;
 }
 
+.card-creator-toggle{
+  height: 28px;
+  background: #ebecf0;
+  padding: 4px 8px;
+  border-radius: 3px;
+  &:hover{
+    filter: brightness(90%);
+  }
+}
+
 .card-item{
-  
+  background: #fff;
+  margin: 5px;
+  height: 32px;
+  border-radius: 3px;
+  padding: 6px 8px 2px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  &:hover{
+    filter: brightness(90%);
+  }
 }

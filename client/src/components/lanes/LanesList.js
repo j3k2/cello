@@ -8,7 +8,7 @@ const LanesList = (props) => {
   const Lane = (props) => {
     return <div className="board-lane">
       <div className="lane-content">
-        <div>
+        <div className="lane-header">
           {props.title}
         </div>
         <CardsList cards={props.cards}/>

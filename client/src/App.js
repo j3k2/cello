@@ -17,7 +17,7 @@ import Signup from './components/pages/Signup';
 import Landing from './components/pages/Landing';
 import Header from './components/common/Header';
 
-import Board from './components/boards/Board';
+import BoardView from './components/pages/BoardView';
 
 import loadingSpinner from './assets/loading.gif';
 import auth from './services/auth';
@@ -38,7 +38,7 @@ function AuthenticatedApp() {
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/board/:id">
-          <Board />
+          <BoardView />
         </Route>
         <Route path="*">
           <Redirect to="/dashboard" />

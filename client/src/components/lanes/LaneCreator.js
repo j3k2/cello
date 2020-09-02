@@ -33,10 +33,12 @@ const LaneCreator = (props) => {
       <div className="lane-content">
         {showForm && <CreateLaneForm />}
 
-        {!showForm && <div onClick={() => {
-          setShowForm(true)
-        }}>
-          Add another list
+        {!showForm && <div
+          className="lane-creator-toggle"
+          onClick={() => {
+            setShowForm(true)
+          }}>
+          Add a list
       </div>}
       </div>
     </div>
