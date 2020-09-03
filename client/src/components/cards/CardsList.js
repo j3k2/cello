@@ -1,19 +1,48 @@
 import React from 'react';
 import './cards.scss';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 
 const CardsList = (props) => {
 
   const Card = (props) => {
-    return <div className="card-item">
-      {props.text}
-    </div>
+    return <Draggable
+      key={props.id}
+      draggableId={`draggable.${props.id}`}
+      index={props.idx}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <div className="card-item">
+            {props.text}</div>
+        </div>
+      )}
+    </Draggable>
   }
 
-  return (<div className="cards-list">
-    {props.cards.map(lane => {
-      return <Card text={lane.text} />
-    })}
-  </div>)
+  const List = (props) => {
+    return props.cards.map((card, idx) => {
+      return <Card text={card.text}
+        idx={idx}
+        id={card.id}
+        key={card.id}
+      />
+    });
+  }
+
+  return (
+    <Droppable droppableId={`droppable.${props.laneId}`}>
+      {(provided, snapshot) => (
+        <div ref={provided.innerRef} {...provided.droppableProps}>
+          <div className="cards-list">
+          <List cards={props.cards} />
+          </div>
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>)
 }
 
 export default CardsList;
