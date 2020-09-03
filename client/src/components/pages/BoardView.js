@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import LanesList from '../lanes/LanesList';
 import LaneCreator from '../lanes/LaneCreator.js';
 import board from '../../services/boards';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 const Board = () => {
   const params = useParams();
 
@@ -41,7 +41,7 @@ const Board = () => {
     const lanesCopy = [...lanes];
     const lane = lanesCopy.find(lane => lane.id === laneId);
     const cards = [...lane.cards]; // needed to prevent mutation
-    const card = cards.find(card=> card.id === cardId);
+    const card = cards.find(card => card.id === cardId);
     cards.splice(prevIdx, 1);
     cards.splice(nextIdx, 0, card);
     lane.cards = cards;
@@ -58,7 +58,7 @@ const Board = () => {
     const nextLane = lanesCopy.find(lane => lane.id === nextLaneId);
     const nextCards = [...nextLane.cards];
 
-    const card = prevCards.find(card=> card.id === cardId);
+    const card = prevCards.find(card => card.id === cardId);
     prevCards.splice(prevIdx, 1);
     nextCards.splice(nextIdx, 0, card);
     prevLane.cards = prevCards;
@@ -69,35 +69,58 @@ const Board = () => {
     //TO DO: update card rank and laneId on server
   }
 
+  const moveLane = (laneId, prevIdx, nextIdx) => {
+    const lanesCopy = [...lanes];
+    const lane = lanesCopy.find(lane=>lane.id===laneId);
+    lanesCopy.splice(prevIdx, 1);
+    lanesCopy.splice(nextIdx, 0, lane);
+
+    setLanes(lanesCopy);
+    //TO DO: update lane rank on server
+  }
+
+  const onDragEnd = (result, provided) => {
+    const { destination, source, draggableId, type } = result;
+    if (!destination) {
+      return;
+    }
+    if (type === 'CARD') {
+      const cardId = draggableId.split('.')[1];
+      const prevIdx = source.index;
+      const nextIdx = destination.index;
+      if (destination.droppableId === source.droppableId && destination.index !== source.index) {
+        const laneId = destination.droppableId.split('.')[1];
+        reorderLaneCards(laneId, cardId, prevIdx, nextIdx);
+      }
+      if (destination.droppableId !== source.droppableId) {
+        const prevLaneId = source.droppableId.split('.')[1];
+        const nextLaneId = destination.droppableId.split('.')[1];
+        moveCardToLane(cardId, prevLaneId, nextLaneId, prevIdx, nextIdx);
+      }
+    }
+    if (type === 'LANE') {
+      moveLane(draggableId.split('.')[1], source.index, destination.index)
+    }
+  }
+
   return (
     <div className="board-view-wrapper">
       <div className="board-view-header">
         <h1>{title}
         </h1>
       </div>
-      <div className="board-view-content">
-        <DragDropContext onDragEnd={(result, provided)=>{
-          const {destination, source, draggableId} = result;
-          if(!destination) {
-            return;
-          }
-          const cardId = draggableId.split('.')[1];
-          const prevIdx = source.index;
-          const nextIdx = destination.index;
-          if(destination.droppableId === source.droppableId && destination.index !== source.index) {
-            const laneId = destination.droppableId.split('.')[1];
-            reorderLaneCards(laneId, cardId, prevIdx, nextIdx);
-          }
-          if(destination.droppableId !== source.droppableId) {
-            const prevLaneId = source.droppableId.split('.')[1];
-            const nextLaneId = destination.droppableId.split('.')[1];
-            moveCardToLane(cardId, prevLaneId, nextLaneId, prevIdx, nextIdx);
-          }
-        }}>
-          <LanesList lanes={lanes} addCard={addCard} />
-          <LaneCreator id={params.id} addLane={addLane} />
-        </DragDropContext>
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable className="lane-droppable"
+          type="LANE" droppableId="droppable.board" direction="horizontal">
+          {(provided, snapshot) => (
+            <div className="board-view-content"ref={provided.innerRef} {...provided.droppableProps}>
+                <LanesList lanes={lanes} addCard={addCard} />
+                {provided.placeholder}
+                <LaneCreator id={params.id} addLane={addLane} />
+              </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>)
 }
 

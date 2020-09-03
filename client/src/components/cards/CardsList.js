@@ -33,7 +33,7 @@ const CardsList = (props) => {
   }
 
   return (
-    <Droppable droppableId={`droppable.${props.laneId}`}>
+    <Droppable type="CARD" droppableId={`droppable.${props.laneId}`}>
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.droppableProps}>
           <div className="cards-list">
