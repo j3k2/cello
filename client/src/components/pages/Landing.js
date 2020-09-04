@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../common/Header';
+import Header from '../common/Header/Header';
 
 export default function Landing() {
   return (<React.Fragment>

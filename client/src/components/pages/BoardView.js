@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import LanesList from '../lanes/LanesList';
-import LaneCreator from '../lanes/LaneCreator.js';
+import Creator from '../common/Creator/Creator'
 import boardsService from '../../services/boards';
 import cardsService from '../../services/cards';
 import lanesService from '../../services/lanes';
@@ -15,17 +15,16 @@ const Board = () => {
 
   const [title, setTitle] = React.useState('');
 
-  const fetchBoard = async () => {
-    boardsService.getBoard(params.id).then((res) => {
-      console.log(res);
-      setTitle(res.title);
-      setLanes(res.lanes);
-    });
-  }
-
   React.useEffect(() => {
+    const fetchBoard = async () => {
+      boardsService.getBoard(params.id).then((res) => {
+        console.log(res);
+        setTitle(res.title);
+        setLanes(res.lanes);
+      });
+    }
     fetchBoard();
-  }, [])
+  }, [params.id]);
 
   const addLane = (lane) => {
     lane.cards = [];
@@ -83,7 +82,7 @@ const Board = () => {
 
   const moveLane = (laneId, prevIdx, nextIdx) => {
     const lanesCopy = [...lanes];
-    const lane = lanesCopy.find(lane=>lane.id===laneId);
+    const lane = lanesCopy.find(lane => lane.id === laneId);
     lanesCopy.splice(prevIdx, 1);
     lanesCopy.splice(nextIdx, 0, lane);
 
@@ -130,11 +129,21 @@ const Board = () => {
         <Droppable className="lane-droppable"
           type="LANE" droppableId="droppable.board" direction="horizontal">
           {(provided, snapshot) => (
-            <div className="board-view-content"ref={provided.innerRef} {...provided.droppableProps}>
-                <LanesList lanes={lanes} addCard={addCard} />
-                {provided.placeholder}
-                <LaneCreator id={params.id} addLane={addLane} />
+            <div className="board-view-content" ref={provided.innerRef} {...provided.droppableProps}>
+              <LanesList lanes={lanes} addCard={addCard} />
+              {provided.placeholder}
+              <div className="board-lane lane-creator">
+                <Creator
+                  create={async (laneTitle) => {
+                    const lane = await lanesService.createLane({ boardId: params.id, title: laneTitle });
+                    console.log(lane);
+                    addLane(lane);
+                  }}
+                  placeholder={'Enter list title'}
+                  buttonText={'Add list'}
+                  toggleText={'Add a list'} />
               </div>
+            </div>
           )}
         </Droppable>
       </DragDropContext>

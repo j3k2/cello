@@ -27,13 +27,13 @@
 }
 
 .board-item--create {
-	background: rgba(9, 30, 66, 0.04);
+	background: #f0f2f4;
 	color: #172b4d;
 	top: 25%;
 	display: flex;
 	text-align: center;
 	&:hover {
-		background: rgba(9, 30, 66, 0.08);
+		filter: brightness(90%);
 	}
 	span {
 		align-self: center;

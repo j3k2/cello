@@ -1,27 +1,27 @@
-.board-view-wrapper{
+.board-view-wrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
   background: rgb(0, 121, 191);
 }
 
-.board-view-header{
+.board-view-header {
   color: #fff;
   height: 48px;
   padding-left: 10px;
-  h1{
+  h1 {
     font-size: 18px;
     font-weight: 700;
   }
 }
 
-.board-view-content{
+.board-view-content {
   display: flex;
   overflow-x: scroll;
   flex-grow: 1;
 }
 
-.board-lane{
+.board-lane {
   margin: 5px;
   cursor: pointer;
   width: 272px;
@@ -30,38 +30,41 @@
   flex-direction: column;
 }
 
-.lane-content{
+.lane-content {
   border-radius: 3px;
   background: #ebecf0;
   color: rgb(23, 43, 77);
   overflow-y: auto;
 }
 
-.lane-header{
+.lane-header {
   min-height: 40px;
   font-weight: bold;
   padding: 14px 12px;
 }
 
-.lane-creator .lane-content{
-  background: rgba(9, 30, 66, 0.04);
-	&:hover {
-		background: rgba(9, 30, 66, 0.08);
-	}
+.lane-creator {
+  margin: 0px;
 }
 
-.lane-creator-form {
-  display:flex;
-  flex-direction: column;
-}
-
-.lane-creator-toggle{
+.lane-creator .creator-toggle {
   height: 40px;
-  border-radius: 3px;
   color: #fff;
+  background: #3d99ce;
+  // background: hsla(0,0%,100%,.24);
   padding: 10px 8px;
-  background: hsla(0,0%,100%,.24);
-  &:hover{
+  &:hover {
+    // filter: brightness(90%);
+    background: #52a4d4;
+  }
+}
+
+.lane-content .creator-toggle {
+  height: 28px;
+  background: #ebecf0;
+  color: rgb(23, 43, 77);
+  padding: 4px 8px;
+  &:hover {
     filter: brightness(90%);
   }
 }

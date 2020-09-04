@@ -1,27 +1,7 @@
-
-.card-creator-section{
-  padding: 5px;
-}
-
-.card-creator-form{
-  display: flex;
-  flex-direction: column;
-}
-
 .cards-list{
   display:flex;
   flex-direction: column;
   min-height: 1px;
-}
-
-.card-creator-toggle{
-  height: 28px;
-  background: #ebecf0;
-  padding: 4px 8px;
-  border-radius: 3px;
-  &:hover{
-    filter: brightness(90%);
-  }
 }
 
 .card-item{
@@ -33,6 +13,16 @@
   box-shadow: 0 1px 0 rgba(9,30,66,.25);
   width: 260px;
   &:hover{
+    filter: brightness(90%);
+  }
+}
+
+.card-creator .creator-toggle {
+  height: 28px;
+  background: #ebecf0;
+  color: rgb(23, 43, 77);
+  padding: 4px 8px;
+  &:hover {
     filter: brightness(90%);
   }
 }
