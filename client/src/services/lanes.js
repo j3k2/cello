@@ -2,7 +2,6 @@ import request from 'superagent';
 import { getAuthHeader } from './auth';
 
 async function createLane(params) {
-  console.log('here', params)
   const res = await request
     .post('/api/lanes')
     .send(params)
@@ -11,6 +10,16 @@ async function createLane(params) {
   return res.body;
 }
 
+async function moveLane(laneId, params) {
+  const res = await request
+    .post(`/api/lanes/${laneId}/move`)
+    .send(params)
+    .set(getAuthHeader());
+
+  return res.body;
+}
+
 export default {
-  createLane
+  createLane,
+  moveLane
 }

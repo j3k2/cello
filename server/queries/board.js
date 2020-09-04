@@ -10,19 +10,31 @@ async function getBoards(params) {
 }
 
 async function getBoard(params) {
-	// TO DO: replace naive multiple queries:
-	const board = await knex('boards').where({id: params.board_id}).first();
-	
-	board.lanes = await knex('lanes').where({board_id: params.board_id});
+	const board = await knex('boards').where({ id: params.board_id }).first();
+	board.lanes = await knex('lanes').where({ board_id: params.board_id });
+	// const board = await knex('boards')
+	// 	.innerJoin('lanes', function () {
+	// 		this.on('boards.id', 'lanes.board_id');
+	// 		this.andOnVal('boards.id', '=', params.board_id)
+	// 	})
+	// 	.select([
+	// 		'boards.id as id',
+	// 		'boards.title as title',
+	// 		knex.raw(`ARRAY_AGG(json_build_object('id', lanes.id, 'title', lanes.title, 'order', lanes.order)) as lanes`)
+	// 	])
+	// 	.groupBy('boards.id')
+	// 	.first();
 
-	const cardsPerLane = await Promise.all(board.lanes.map(async (lane)=>{
-		return knex('cards').where({lane_id: lane.id});
+	board.lanes = board.lanes.sort((a, b) => a.order - b.order);
+
+	const cardsPerLane = await Promise.all(board.lanes.map(async (lane) => {
+		return knex('cards').where({ lane_id: lane.id });
 	}));
 
-	board.lanes.forEach((lane,idx)=>{
-		lane.cards = cardsPerLane[idx];
+	board.lanes.forEach((lane, idx) => {
+		lane.cards = cardsPerLane[idx].sort((a, b) => a.order - b.order);
 	});
-
+	// console.log(board);
 	return board;
 }
 

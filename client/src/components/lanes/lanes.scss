@@ -24,7 +24,7 @@
 .board-lane{
   margin: 5px;
   cursor: pointer;
-  min-width: 272px;
+  width: 272px;
   overflow-wrap: break-word;
   display: flex;
   flex-direction: column;
@@ -38,7 +38,7 @@
 }
 
 .lane-header{
-  height: 40px;
+  min-height: 40px;
   font-weight: bold;
   padding: 14px 12px;
 }

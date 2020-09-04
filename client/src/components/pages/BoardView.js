@@ -3,7 +3,10 @@ import { useParams } from 'react-router-dom';
 
 import LanesList from '../lanes/LanesList';
 import LaneCreator from '../lanes/LaneCreator.js';
-import board from '../../services/boards';
+import boardsService from '../../services/boards';
+import cardsService from '../../services/cards';
+import lanesService from '../../services/lanes';
+
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 const Board = () => {
   const params = useParams();
@@ -13,7 +16,7 @@ const Board = () => {
   const [title, setTitle] = React.useState('');
 
   const fetchBoard = async () => {
-    board.getBoard(params.id).then((res) => {
+    boardsService.getBoard(params.id).then((res) => {
       console.log(res);
       setTitle(res.title);
       setLanes(res.lanes);
@@ -47,7 +50,11 @@ const Board = () => {
     lane.cards = cards;
 
     setLanes(lanesCopy);
-
+    cardsService.moveCard(cardId, {
+      next: nextIdx,
+      prev: prevIdx,
+      laneId
+    });
     //TO DO: update card rank on server
   }
 
@@ -65,7 +72,12 @@ const Board = () => {
     nextLane.cards = nextCards;
 
     setLanes(lanesCopy);
-
+    cardsService.moveCard(cardId, {
+      next: nextIdx,
+      prev: prevIdx,
+      prevLaneId,
+      nextLaneId
+    });
     //TO DO: update card rank and laneId on server
   }
 
@@ -76,6 +88,11 @@ const Board = () => {
     lanesCopy.splice(nextIdx, 0, lane);
 
     setLanes(lanesCopy);
+    lanesService.moveLane(laneId, {
+      next: nextIdx,
+      prev: prevIdx,
+      boardId: params.id
+    });
     //TO DO: update lane rank on server
   }
 
