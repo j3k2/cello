@@ -1,4 +1,4 @@
-const { create, find } = require('./common');
+const { create, find, update } = require('./common');
 const knex = require('../knex');
 
 async function createBoard(params) {
@@ -34,12 +34,16 @@ async function getBoard(params) {
 	board.lanes.forEach((lane, idx) => {
 		lane.cards = cardsPerLane[idx].sort((a, b) => a.order - b.order);
 	});
-	// console.log(board);
 	return board;
+}
+
+const editBoard = (id, params) => {
+	return update('boards', { id }, params, Object.keys(params));
 }
 
 module.exports = {
 	createBoard,
 	getBoards,
-	getBoard
+	getBoard,
+	editBoard
 }

@@ -11,6 +11,7 @@ const LanesList = (props) => {
         key={lane.id}
         id={lane.id}
         cards={lane.cards}
+        editLane={props.editLane}
         addCard={props.addCard} />
     })}
   </React.Fragment>)

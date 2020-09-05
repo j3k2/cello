@@ -1,4 +1,4 @@
-const { create } = require('./common');
+const { create, update } = require('./common');
 const knex = require('../knex');
 
 async function createLane(params) {
@@ -26,7 +26,12 @@ async function moveLane(id, params) {
 	return knex('lanes').where({ id }).update({ order: next });
 }
 
+const editLane = (id, params) => {
+	return update('lanes', { id }, params, Object.keys(params));
+}
+
 module.exports = {
 	createLane,
-	moveLane
+	moveLane,
+	editLane
 }

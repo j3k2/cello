@@ -18,8 +18,14 @@ async function getBoard(req, res) {
 	res.json(board);
 }
 
+async function editBoard(req, res) {
+	const board = await boardQuery.editBoard(req.params.id, req.body)
+	res.json(board);
+}
+
 module.exports = {
 	createBoard,
 	getBoards,
-	getBoard
+	getBoard,
+	editBoard
 }

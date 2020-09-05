@@ -3,11 +3,14 @@ import { useParams } from 'react-router-dom';
 
 import LanesList from '../lanes/LanesList';
 import Creator from '../common/Creator/Creator'
+import Editor from '../common/Editor/Editor';
+
 import boardsService from '../../services/boards';
 import cardsService from '../../services/cards';
 import lanesService from '../../services/lanes';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+
 const Board = () => {
   const params = useParams();
 
@@ -18,7 +21,6 @@ const Board = () => {
   React.useEffect(() => {
     const fetchBoard = async () => {
       boardsService.getBoard(params.id).then((res) => {
-        console.log(res);
         setTitle(res.title);
         setLanes(res.lanes);
       });
@@ -95,6 +97,13 @@ const Board = () => {
     //TO DO: update lane rank on server
   }
 
+  const editLane = (id, edits) =>{
+    const lanesCopy = [...lanes];
+    let lane = lanesCopy.find(lane => lane.id === id);
+    lane = Object.assign(lane, edits);
+    setLanes(lanesCopy);
+  }
+
   const onDragEnd = (result, provided) => {
     const { destination, source, draggableId, type } = result;
     if (!destination) {
@@ -122,21 +131,24 @@ const Board = () => {
   return (
     <div className="board-view-wrapper">
       <div className="board-view-header">
-        <h1>{title}
-        </h1>
+        {/* <h1>{title}</h1> */}
+        <Editor content={title} updateContent={async (updatedTitle)=>{
+          setTitle(updatedTitle);
+          const updatedFields = await boardsService.editBoard(params.id, {title: updatedTitle});
+          setTitle(updatedFields.title);
+        }}/>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable className="lane-droppable"
           type="LANE" droppableId="droppable.board" direction="horizontal">
           {(provided, snapshot) => (
             <div className="board-view-content" ref={provided.innerRef} {...provided.droppableProps}>
-              <LanesList lanes={lanes} addCard={addCard} />
+              <LanesList lanes={lanes} addCard={addCard} editLane={editLane} />
               {provided.placeholder}
               <div className="board-lane lane-creator">
                 <Creator
                   create={async (laneTitle) => {
                     const lane = await lanesService.createLane({ boardId: params.id, title: laneTitle });
-                    console.log(lane);
                     addLane(lane);
                   }}
                   placeholder={'Enter list title'}

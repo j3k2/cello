@@ -33,8 +33,21 @@ async function create(db, params, outputColumns = 'id') {
 
   if (!res.length) {
     return null;
-  }  
-  
+  }
+
+  return res[0];
+}
+
+async function update(db, where, params, outputColumns = '*') {
+  const res = await knex(db)
+    .update(params)
+    .where(where)
+    .returning(outputColumns);
+
+  if (!res.length) {
+    return null;
+  }
+
   return res[0];
 }
 
@@ -42,5 +55,6 @@ module.exports = {
   findOne,
   find,
   create,
-  count
+  count,
+  update
 }

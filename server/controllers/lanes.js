@@ -21,7 +21,13 @@ async function moveLane(req, res) {
 	}
 }
 
+async function editLane(req, res) {
+	const board = await lane.editLane(req.params.id, req.body);
+	res.json(board);
+}
+
 module.exports = {
 	createLane,
-	moveLane
+	moveLane,
+	editLane
 }

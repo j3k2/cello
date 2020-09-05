@@ -2,6 +2,8 @@ import React from 'react';
 import Creator from '../common/Creator/Creator';
 import cards from '../../services/cards';
 import CardsList from '../cards/CardsList';
+import Editor from '../common/Editor/Editor';
+import lanesService from '../../services/lanes';
 import { Draggable } from 'react-beautiful-dnd';
 import './lanes.scss';
 
@@ -18,7 +20,11 @@ const Lane = (props) => {
       >
         <div className="lane-content">
           <div className="lane-header">
-            {props.title}
+            <Editor content={props.title} updateContent={async (updatedTitle) => {
+              props.editLane(props.id, { title: updatedTitle });
+              const updatedFields = await lanesService.editLane(props.id, { title: updatedTitle });
+              props.editLane(props.id, updatedFields);
+            }} />
           </div>
           <CardsList cards={props.cards} laneId={props.id} />
           <Creator

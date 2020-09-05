@@ -19,7 +19,16 @@ async function moveLane(laneId, params) {
   return res.body;
 }
 
+async function editLane(id, params) {
+	const res = await request
+		.patch(`/api/lanes/${id}`)
+		.send(params)
+		.set(getAuthHeader());
+	return res.body;
+}
+
 export default {
   createLane,
-  moveLane
+  moveLane,
+  editLane
 }
