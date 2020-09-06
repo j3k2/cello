@@ -16,9 +16,9 @@ const Lane = (props) => {
       <div className="board-lane"
         ref={provided.innerRef}
         {...provided.draggableProps}
-        {...provided.dragHandleProps}
       >
-        <div className="lane-content">
+        <div className="lane-content"
+          {...provided.dragHandleProps}>
           <div className="lane-header">
             <Editor content={props.title} updateContent={async (updatedTitle) => {
               props.editLane(props.id, { title: updatedTitle });
