@@ -97,7 +97,7 @@ const Board = () => {
     //TO DO: update lane rank on server
   }
 
-  const editLane = (id, edits) =>{
+  const editLane = (id, edits) => {
     const lanesCopy = [...lanes];
     let lane = lanesCopy.find(lane => lane.id === id);
     lane = Object.assign(lane, edits);
@@ -131,12 +131,13 @@ const Board = () => {
   return (
     <div className="board-view-wrapper">
       <div className="board-view-header">
-        {/* <h1>{title}</h1> */}
-        <Editor content={title} updateContent={async (updatedTitle)=>{
-          setTitle(updatedTitle);
-          const updatedFields = await boardsService.editBoard(params.id, {title: updatedTitle});
-          setTitle(updatedFields.title);
-        }}/>
+        <div className="board-title">
+          <Editor content={title} updateContent={async (updatedTitle) => {
+            setTitle(updatedTitle);
+            const updatedFields = await boardsService.editBoard(params.id, { title: updatedTitle });
+            setTitle(updatedFields.title);
+          }} />
+        </div>
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable className="lane-droppable"

@@ -5,24 +5,44 @@ const Editor = (props) => {
 
   const [content, setContent] = React.useState('');
 
-  React.useEffect(() => {
-    setContent(props.content);
-  }, [props.content]);
+  const ref = React.useRef(null);
 
-  const updateContent = (e) => {
-    e.preventDefault();
+  const updateContent = () => {
     if (content.length && content !== props.content) {
       props.updateContent(content);
     }
     setEditing(false);
   }
 
-  return (<div>
+  React.useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        updateContent();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, content, updateContent]);
+
+  React.useEffect(() => {
+    setContent(props.content);
+  }, [props.content]);
+
+  return (<div ref={ref}>
     {editing && <div>
-      <form onSubmit={updateContent}>
-        <input value={content} onChange={(e) => {
-          setContent(e.target.value);
-        }} />
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        updateContent()
+      }}>
+        <input
+          autoFocus
+          value={content}
+          onChange={(e) => {
+            setContent(e.target.value);
+          }} />
       </form>
     </div>}
 
