@@ -154,7 +154,7 @@ const Board = () => {
                   }}
                   placeholder={'Enter list title'}
                   buttonText={'Add list'}
-                  toggleText={'Add a list'} />
+                  toggleText={lanes.length ? 'Add another list' : 'Add a list'} />
               </div>
             </div>
           )}

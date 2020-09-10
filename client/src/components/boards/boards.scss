@@ -1,10 +1,14 @@
 .board-modal {
-	background: grey;
-	width: 300px;
+	// background: grey;
+	// width: 300px;
+	width: 296px;
 	height: 75px;
 	margin: 100px auto;
 	border-radius: 3px;
-	padding: 5px;
+}
+
+.board-modal .creator-form {
+	padding: 10px;
 }
 
 .board-modal input {
@@ -53,7 +57,13 @@
 }
 
 .board-title {
+	font-size: 18px;
+	font-weight: 700;
+	padding-top: 12px;
 	*{
 		display: inline;
 	}
-}
+	input {
+	  max-width: min-content;
+	}
+  }

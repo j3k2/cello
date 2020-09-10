@@ -9,11 +9,8 @@
   color: #fff;
   height: 48px;
   padding-left: 10px;
-  h1 {
-    font-size: 18px;
-    font-weight: 700;
-  }
 }
+
 
 .board-view-content {
   display: flex;
@@ -67,4 +64,8 @@
   &:hover {
     filter: brightness(90%);
   }
+}
+
+.lane-creator .creator-form {
+  padding: 4px;
 }

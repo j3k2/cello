@@ -1,4 +1,5 @@
 import React from 'react';
+import './editor.css';
 
 const Editor = (props) => {
   const [editing, setEditing] = React.useState(false);
@@ -31,7 +32,7 @@ const Editor = (props) => {
     setContent(props.content);
   }, [props.content]);
 
-  return (<div ref={ref}>
+  return (<div className="editor" ref={ref}>
     {editing && <div>
       <form onSubmit={(e) => {
         e.preventDefault();
@@ -46,7 +47,7 @@ const Editor = (props) => {
       </form>
     </div>}
 
-    {!editing && <div onClick={() => {
+    {!editing && <div className="editor-content" onClick={() => {
       setEditing(true);
     }}>
       {props.content}

@@ -19,7 +19,7 @@ const CardsList = (props) => {
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.droppableProps}>
           <div className="cards-list">
-            <List cards={props.cards} />
+            {props.cards && <List cards={props.cards} />}
           </div>
           {provided.placeholder}
         </div>

@@ -1,16 +1,20 @@
 import React from 'react';
-import './creator.css';
+import { MdClose, MdAdd } from 'react-icons/md'
 
-const Creator = ({ create, placeholder, buttonText, toggleText }) => {
+import './creator.scss';
+
+const Creator = ({ create, placeholder, buttonText, toggleText, closeAction }) => {
   const [showForm, setShowForm] = React.useState(false);
 
   const [content, setContent] = React.useState('');
 
-  const ref = React.useRef(null);
+  const wrapperRef = React.useRef(null);
+
+  const inputRef = React.useRef(null);
 
   React.useEffect(() => {
     function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setShowForm(false);
       }
     }
@@ -19,46 +23,55 @@ const Creator = ({ create, placeholder, buttonText, toggleText }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref, content]);
+  }, [wrapperRef, content]);
 
   const createEntity = async () => {
     if (content.length) {
       create(content);
       setContent('');
+      inputRef.current.focus();
     }
   }
 
   return (
-    <div className="creator-section" ref={ref}>
-      {showForm &&
+    <div className="creator-section" ref={wrapperRef}>
+      {(showForm || !toggleText) &&
         <form className="creator-form" onSubmit={(e) => {
           e.preventDefault();
           createEntity()
         }}>
           <input
+            ref={inputRef}
             autoFocus
             placeholder={placeholder}
             value={content}
             onChange={(e) => {
               setContent(e.target.value)
             }} />
-          <button>
-            {buttonText}
-          </button>
-          <button onClick={() => {
-            setShowForm(false);
-          }}>
-            X
-          </button>
+          <div className="creator-form-actions">
+            <button>
+              {buttonText}
+            </button>
+            <a onClick={() => {
+              closeAction ? closeAction() : setShowForm(false);
+            }}>
+              <MdClose size={24} />
+            </a>
+          </div>
         </form>}
 
-      {!showForm &&
+      {!showForm && toggleText &&
         <div
           className="creator-toggle"
           onClick={() => {
             setShowForm(true);
           }}>
-          {toggleText}
+          <div className="toggle-icon">
+            <MdAdd size={16} />
+          </div>
+          <div className="toggle-text">
+            {toggleText}
+          </div>
         </div>
       }
     </div>

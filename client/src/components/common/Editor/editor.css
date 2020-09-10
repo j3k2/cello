@@ -1,0 +1,10 @@
+.editor input {
+    font: inherit;
+    border: none;
+    border-radius: 3px;
+    padding: 0;
+}
+
+.editor-content {
+    cursor: pointer;
+}
