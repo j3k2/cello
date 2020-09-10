@@ -20,10 +20,11 @@ const Board = () => {
 
   React.useEffect(() => {
     const fetchBoard = async () => {
-      boardsService.getBoard(params.id).then((res) => {
-        setTitle(res.title);
-        setLanes(res.lanes);
-      });
+      const board = await boardsService.getBoard(params.id);
+      if (board) {
+        setTitle(board.title);
+        setLanes(board.lanes);
+      }
     }
     fetchBoard();
   }, [params.id]);
@@ -56,7 +57,6 @@ const Board = () => {
       prev: prevIdx,
       laneId
     });
-    //TO DO: update card rank on server
   }
 
   const moveCardToLane = (cardId, prevLaneId, nextLaneId, prevIdx, nextIdx) => {
@@ -79,7 +79,6 @@ const Board = () => {
       prevLaneId,
       nextLaneId
     });
-    //TO DO: update card rank and laneId on server
   }
 
   const moveLane = (laneId, prevIdx, nextIdx) => {
@@ -94,7 +93,6 @@ const Board = () => {
       prev: prevIdx,
       boardId: params.id
     });
-    //TO DO: update lane rank on server
   }
 
   const editLane = (id, edits) => {
@@ -135,7 +133,9 @@ const Board = () => {
           <Editor content={title} updateContent={async (updatedTitle) => {
             setTitle(updatedTitle);
             const updatedFields = await boardsService.editBoard(params.id, { title: updatedTitle });
-            setTitle(updatedFields.title);
+            if (updatedFields) {
+              setTitle(updatedFields.title);
+            }
           }} />
         </div>
       </div>
@@ -150,7 +150,9 @@ const Board = () => {
                 <Creator
                   create={async (laneTitle) => {
                     const lane = await lanesService.createLane({ boardId: params.id, title: laneTitle });
-                    addLane(lane);
+                    if(lane){
+                      addLane(lane);
+                    }
                   }}
                   placeholder={'Enter list title'}
                   buttonText={'Add list'}

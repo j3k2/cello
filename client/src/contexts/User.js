@@ -1,5 +1,5 @@
 import React from 'react';
-import auth from '../services/auth';
+import authService from '../services/auth';
 
 const UserContext = React.createContext();
 
@@ -12,7 +12,7 @@ function UserProvider(props) {
     if (token) {
       async function fetchUser() {
         try {
-          const user = await auth.getAuthUser();
+          const user = await authService.getAuthUser();
           setUser(user);
           setUserPending(false);
         } catch {

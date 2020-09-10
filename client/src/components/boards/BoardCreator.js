@@ -1,5 +1,5 @@
 import React from 'react';
-import boards from '../../services/boards';
+import boardsService from '../../services/boards';
 import ReactModal from 'react-modal';
 import { useHistory } from 'react-router-dom';
 import './boards.scss';
@@ -24,8 +24,10 @@ const BoardCreator = (props) => {
 			>
 				<Creator
 					create={async (boardTitle) => {
-						const createdBoard = await boards.createBoard({ title: boardTitle });
-						history.push(`/board/${createdBoard.id}`);
+						const createdBoard = await boardsService.createBoard({ title: boardTitle });
+						if (createdBoard) {
+							history.push(`/board/${createdBoard.id}`);
+						}
 					}}
 					closeAction={() => {
 						setShowModal(false);

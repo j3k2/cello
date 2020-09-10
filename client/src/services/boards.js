@@ -1,34 +1,19 @@
-import request from 'superagent';
-import { getAuthHeader } from './auth';
+import { post, get, patch } from './api';
 
 async function createBoard(params) {
-	const res = await request
-		.post('/api/boards')
-		.send(params)
-		.set(getAuthHeader());
-	return res.body;
+	return post('/api/boards', params);
 }
 
 async function getBoards() {
-	const res = await request
-		.get('/api/boards')
-		.set(getAuthHeader());
-	return res.body;
+	return get('/api/boards');
 }
 
 async function getBoard(id) {
-	const res = await request
-		.get(`/api/boards/${id}`)
-		.set(getAuthHeader());
-	return res.body;
+	return get(`/api/boards/${id}`);
 }
 
 async function editBoard(id, params) {
-	const res = await request
-		.patch(`/api/boards/${id}`)
-		.send(params)
-		.set(getAuthHeader());
-	return res.body;
+	return patch(`/api/boards/${id}`, params);
 }
 
 export default {

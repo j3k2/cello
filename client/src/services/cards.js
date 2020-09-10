@@ -1,22 +1,11 @@
-import request from 'superagent';
-import { getAuthHeader } from './auth';
+import { post } from './api';
 
 async function createCard(params) {
-  const res = await request
-    .post('/api/cards')
-    .send(params)
-    .set(getAuthHeader());
-
-  return res.body;
+  return post('/api/cards', params);
 }
 
 async function moveCard(cardId, params) {
-  const res = await request
-    .post(`/api/cards/${cardId}/move`)
-    .send(params)
-    .set(getAuthHeader());
-
-  return res.body;
+  return post(`/api/cards/${cardId}/move`, params);
 }
 
 export default {

@@ -1,5 +1,5 @@
 import React from 'react';
-import board from '../../services/boards';
+import boardsService from '../../services/boards';
 import BoardCreator from './BoardCreator';
 import { useHistory } from 'react-router-dom';
 
@@ -9,10 +9,10 @@ const BoardsList = () => {
 	const [boards, setBoards] = React.useState([]);
 
 	const fetchBoards = async () => {
-		board.getBoards().then((res) => {
-			console.log(res);
-			setBoards(res)
-		})
+		const boards = await boardsService.getBoards();
+			if(boards) {
+				setBoards(boards);
+			}
 	}
 
 	React.useEffect(() => {

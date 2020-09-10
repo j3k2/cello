@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useUserContext } from '../../contexts/User';
-import auth from '../../services/auth';
+import authService from '../../services/auth';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 
@@ -19,9 +19,9 @@ const Login = () => {
       return;
     }
     try {
-      await auth.login({ username, password });
+      await authService.login({ username, password });
 
-      const user = await auth.getAuthUser();
+      const user = await authService.getAuthUser();
 
       if (user) {
         userContext.setUser(user);

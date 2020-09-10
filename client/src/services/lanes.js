@@ -1,30 +1,15 @@
-import request from 'superagent';
-import { getAuthHeader } from './auth';
+import { post, patch } from './api';
 
 async function createLane(params) {
-  const res = await request
-    .post('/api/lanes')
-    .send(params)
-    .set(getAuthHeader());
-
-  return res.body;
+  return post('/api/lanes', params);
 }
 
 async function moveLane(laneId, params) {
-  const res = await request
-    .post(`/api/lanes/${laneId}/move`)
-    .send(params)
-    .set(getAuthHeader());
-
-  return res.body;
+  return post(`/api/lanes/${laneId}/move`, params);
 }
 
 async function editLane(id, params) {
-	const res = await request
-		.patch(`/api/lanes/${id}`)
-		.send(params)
-		.set(getAuthHeader());
-	return res.body;
+	return patch(`/api/lanes/${id}`, params);
 }
 
 export default {

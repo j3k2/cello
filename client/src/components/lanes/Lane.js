@@ -1,6 +1,6 @@
 import React from 'react';
 import Creator from '../common/Creator/Creator';
-import cards from '../../services/cards';
+import cardsService from '../../services/cards';
 import CardsList from '../cards/CardsList';
 import Editor from '../common/Editor/Editor';
 import lanesService from '../../services/lanes';
@@ -23,14 +23,18 @@ const Lane = (props) => {
             <Editor content={props.title} updateContent={async (updatedTitle) => {
               props.editLane(props.id, { title: updatedTitle });
               const updatedFields = await lanesService.editLane(props.id, { title: updatedTitle });
-              props.editLane(props.id, updatedFields);
+              if (updatedFields) {
+                props.editLane(props.id, updatedFields);
+              }
             }} />
           </div>
           <CardsList cards={props.cards} laneId={props.id} />
           <Creator
             create={async (cardText) => {
-              const card = await cards.createCard({ laneId: props.id, text: cardText });
-              props.addCard(props.id, card);
+              const card = await cardsService.createCard({ laneId: props.id, text: cardText });
+              if (card) {
+                props.addCard(props.id, card);
+              }
             }}
             placeholder={'Enter a title for this card...'}
             buttonText={'Add card'}

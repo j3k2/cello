@@ -20,7 +20,7 @@ import Header from './components/common/Header/Header';
 import BoardView from './components/pages/BoardView';
 
 import loadingSpinner from './assets/loading.gif';
-import auth from './services/auth';
+import authService from './services/auth';
 
 function AuthenticatedApp() {
   const userContext = useUserContext();
@@ -31,7 +31,7 @@ function AuthenticatedApp() {
         <span>{`Logged in as: ${userContext.user.username}`}
         </span>
         <button onClick={() => {
-          auth.logout();
+          authService.logout();
           userContext.setUser(null);
         }}>Logout</button>
       </Header>
