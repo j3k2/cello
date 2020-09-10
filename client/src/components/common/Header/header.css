@@ -1,5 +1,6 @@
-.header{
+.header {
   height: 40px;
   background: #026aa7;
   color: white;
+  flex: 0 0 auto;
 }
