@@ -20,11 +20,13 @@ const Board = () => {
   const [title, setTitle] = React.useState('');
 
   React.useEffect(() => {
+
     const fetchBoard = async () => {
       const board = await boardsService.getBoard(params.id);
       if (board) {
         setTitle(board.title);
         setLanes(board.lanes);
+        document.title = `${board.title} | Cello`;
       } else {
         history.push('/');
       }
@@ -138,6 +140,7 @@ const Board = () => {
             const updatedFields = await boardsService.editBoard(params.id, { title: updatedTitle });
             if (updatedFields) {
               setTitle(updatedFields.title);
+              document.title = `${updatedFields.title} | Cello`;
             }
           }} />
         </div>

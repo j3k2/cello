@@ -16,6 +16,7 @@ const BoardsList = () => {
 	}
 
 	React.useEffect(() => {
+		document.title = "Boards | Cello";
 		fetchBoards();
 	}, [])
 

@@ -13,6 +13,10 @@ const Signup = () => {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
 
+  React.useEffect(()=>{
+    document.title = 'Create a Cello account';
+  });
+
   async function signup() {
     if(!username.length || !password.length) {
       toast.error('Username and password are required');
