@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import LanesList from '../lanes/LanesList';
 import Creator from '../common/Creator/Creator'
@@ -13,6 +13,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 const Board = () => {
   const params = useParams();
+  const history = useHistory();
 
   const [lanes, setLanes] = React.useState([]);
 
@@ -24,6 +25,8 @@ const Board = () => {
       if (board) {
         setTitle(board.title);
         setLanes(board.lanes);
+      } else {
+        history.push('/');
       }
     }
     fetchBoard();

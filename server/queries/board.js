@@ -11,18 +11,23 @@ async function getBoards(params) {
 }
 
 async function getBoard(params) {
-	const board = await knex('boards').where({ id: params.board_id }).first();
+	try {
+		const board = await knex('boards').where({ id: params.id }).first();
 
-	board.lanes = await knex('lanes').where({ board_id: params.board_id }).orderBy('order');
+		board.lanes = await knex('lanes').where({ board_id: params.id }).orderBy('order');
 
-	const laneIds = _.map(board.lanes, 'id');
-	const cards = await knex('cards').whereIn('lane_id', laneIds).orderBy('order');
-	const cardsByLane = _.groupBy(cards, 'lane_id');
-	board.lanes.forEach(lane => {
-		lane.cards = cardsByLane[lane.id] ? cardsByLane[lane.id] : [];
-	});
-	
-	return board;
+		const laneIds = _.map(board.lanes, 'id');
+		const cards = await knex('cards').whereIn('lane_id', laneIds).orderBy('order');
+		const cardsByLane = _.groupBy(cards, 'lane_id');
+		board.lanes.forEach(lane => {
+			lane.cards = cardsByLane[lane.id] ? cardsByLane[lane.id] : [];
+		});
+
+		return board;
+	} catch (err) {
+		console.error('Error in getBoard query: ', err.message);
+		return null;
+	}
 }
 
 const editBoard = (id, params) => {

@@ -14,7 +14,11 @@ async function post(url, params = {}) {
     if (err.status === 401) {
       window.location.href = '/login';
     } else {
-      toast.error(err.response.body);
+      if (err.response) {
+        toast.error(err.response.body);
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   }
 }
@@ -31,7 +35,11 @@ async function get(url, params) {
     if (err.status === 401) {
       window.location.href = '/login';
     } else {
-      toast.error(err.response.body);
+      if (err.response) {
+        toast.error(err.response.body);
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   }
 }
@@ -48,7 +56,11 @@ async function patch(url, params) {
     if (err.status === 401) {
       window.location.href = '/login';
     } else {
-      toast.error(err.response.body);
+      if (err.response) {
+        toast.error(err.response.body);
+      } else {
+        toast.error(JSON.stringify(err));
+      }
     }
   }
 }

@@ -1,29 +1,45 @@
 const lane = require('../queries/lane');
 
 async function createLane(req, res) {
-	const created = await lane.createLane({
-		board_id: req.body.boardId,
-		title: req.body.title
-	});
-	res.json(created);
+	try {
+		const created = await lane.createLane({
+			board_id: req.body.boardId,
+			title: req.body.title
+		});
+		res.json(created);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server Error: ' + err.message);
+	}
 }
 
 async function moveLane(req, res) {
-	const success = await lane.moveLane(req.params.id, {
-		prev: req.body.prev, 
-		next: req.body.next, 
-		board_id: req.body.boardId});
+	try {
+		const success = await lane.moveLane(req.params.id, {
+			prev: req.body.prev,
+			next: req.body.next,
+			board_id: req.body.boardId
+		});
 
-	if(success) {
-		res.status(200).json('OK')
-	} else {
-		res.status(500).json('ERROR');
+		if (success) {
+			res.status(200).json('OK')
+		} else {
+			res.status(500).json('Could not update list position');
+		}
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server Error: ' + err.message);
 	}
 }
 
 async function editLane(req, res) {
-	const board = await lane.editLane(req.params.id, req.body);
-	res.json(board);
+	try {
+		const board = await lane.editLane(req.params.id, req.body);
+		res.json(board);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server Error: ' + err.message);
+	}
 }
 
 module.exports = {
