@@ -18,10 +18,10 @@
 
 .board-item {
 	border-radius: 3px;
-	padding: 5px;
+	padding: 8px;
 	height: 80px;
 	margin: 10px;
-	width: 15%;
+	width: 12%;
 	cursor: pointer;
 	background: rgb(0, 121, 191);
 	color: #fff;
@@ -54,6 +54,9 @@
 	align-self: flex-start;
 	margin-left: 5px;
 	color: #172b4d;
+	font-size: 16px;
+	font-weight: 700;
+	padding: 10px;
 }
 
 .board-title {
