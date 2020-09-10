@@ -19,9 +19,9 @@ async function getBoard(params) {
 	const cards = await knex('cards').whereIn('lane_id', laneIds).orderBy('order');
 	const cardsByLane = _.groupBy(cards, 'lane_id');
 	board.lanes.forEach(lane => {
-		lane.cards = cardsByLane[lane.id];
+		lane.cards = cardsByLane[lane.id] ? cardsByLane[lane.id] : [];
 	});
-
+	
 	return board;
 }
 
