@@ -145,29 +145,31 @@ const Board = () => {
           }} />
         </div>
       </div>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable className="lane-droppable"
-          type="LANE" droppableId="droppable.board" direction="horizontal">
-          {(provided, snapshot) => (
-            <div className="board-view-content" ref={provided.innerRef} {...provided.droppableProps}>
-              <LanesList lanes={lanes} addCard={addCard} editLane={editLane} />
-              {provided.placeholder}
-              <div className="board-lane lane-creator">
-                <Creator
-                  create={async (laneTitle) => {
-                    const lane = await lanesService.createLane({ boardId: params.id, title: laneTitle });
-                    if(lane){
-                      addLane(lane);
-                    }
-                  }}
-                  placeholder={'Enter list title'}
-                  buttonText={'Add list'}
-                  toggleText={lanes.length ? 'Add another list' : 'Add a list'} />
+      <div className="board-view-container">
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable className="lane-droppable"
+            type="LANE" droppableId="droppable.board" direction="horizontal">
+            {(provided, snapshot) => (
+              <div className="board-view-content" ref={provided.innerRef} {...provided.droppableProps}>
+                <LanesList lanes={lanes} addCard={addCard} editLane={editLane} />
+                {provided.placeholder}
+                <div className="board-lane lane-creator">
+                  <Creator
+                    create={async (laneTitle) => {
+                      const lane = await lanesService.createLane({ boardId: params.id, title: laneTitle });
+                      if (lane) {
+                        addLane(lane);
+                      }
+                    }}
+                    placeholder={'Enter list title'}
+                    buttonText={'Add list'}
+                    toggleText={lanes.length ? 'Add another list' : 'Add a list'} />
+                </div>
               </div>
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
     </div>)
 }
 

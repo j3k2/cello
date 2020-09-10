@@ -17,10 +17,8 @@ const CardsList = (props) => {
   return (
     <Droppable type="CARD" droppableId={`droppable.${props.laneId}`}>
       {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.droppableProps}>
-          <div className="cards-list">
-            {props.cards && <List cards={props.cards} />}
-          </div>
+        <div className="cards-list" ref={provided.innerRef} {...provided.droppableProps}>
+          {props.cards && <List cards={props.cards} />}
           {provided.placeholder}
         </div>
       )}

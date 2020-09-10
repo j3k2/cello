@@ -11,16 +11,24 @@
   padding-left: 10px;
 }
 
+.board-view-container {
+  position: relative;
+  flex-grow: 1;
+}
 
 .board-view-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
-  overflow-x: scroll;
-  flex-grow: 1;
+  overflow-y: hidden;
 }
 
 .board-lane {
   margin: 5px;
-  width: 272px;
+  min-width: 272px;
   overflow-wrap: break-word;
   display: flex;
   flex-direction: column;
@@ -30,7 +38,9 @@
   border-radius: 3px;
   background: #ebecf0;
   color: rgb(23, 43, 77);
-  overflow-y: auto;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .lane-header {
