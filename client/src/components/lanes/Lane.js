@@ -37,7 +37,7 @@ const Lane = (props) => {
               }
             }}
             placeholder={'Enter a title for this card...'}
-            buttonText={'Add card'}
+            buttonText={'Add Card'}
             toggleText={props.cards && props.cards.length ? 'Add another card' : 'Add a card'} />
         </div>
       </div>

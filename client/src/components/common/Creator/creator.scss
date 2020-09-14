@@ -1,16 +1,15 @@
 .creator-section {
-  padding: 5px;
+  // padding: 5px;
 }
 
 .creator-toggle {
   cursor: pointer;
   border-radius: 3px;
   display: flex;
+  font-size: 14px;
+  line-height: 20px;
   .toggle-icon {
-    width: 20px;
-    height: 20px;
-    // text-align: center;
-    padding: 2px;
+    margin: 0 2px;
   }
 }
 

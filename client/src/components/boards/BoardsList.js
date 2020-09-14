@@ -25,7 +25,7 @@ const BoardsList = () => {
 		return (<div className="board-item" onClick={() => {
 			history.push(`/board/${props.id}`)
 		}}>
-			{props.title}
+			<span>{props.title}</span>
 		</div>)
 	}
 

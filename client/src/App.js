@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect, Link
 } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
@@ -19,8 +19,9 @@ import Header from './components/common/Header/Header';
 
 import BoardView from './components/pages/BoardView';
 
-import loadingSpinner from './assets/loading.gif';
+import Spinner from 'react-spinkit';
 import authService from './services/auth';
+import "typeface-pacifico";
 
 function AuthenticatedApp() {
   const userContext = useUserContext();
@@ -28,12 +29,22 @@ function AuthenticatedApp() {
   return (
     <Router>
       <Header>
-        <span>{`Logged in as: ${userContext.user.username}`}
+        <span>
+          <Link to="/">
+            Home
+          </Link>
         </span>
-        <button onClick={() => {
-          authService.logout();
-          userContext.setUser(null);
-        }}>Logout</button>
+        <span style={{fontFamily: 'Pacifico'}}>
+          Cello
+        </span>
+        <div>
+          <span>{`Logged in as: ${userContext.user.username}`}
+          </span>
+          <Link onClick={() => {
+            authService.logout();
+            userContext.setUser(null);
+          }}>Logout</Link>
+        </div>
       </Header>
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
@@ -69,11 +80,9 @@ function App() {
   const userPending = userContext.userPending;
 
   return (<React.Fragment>
-    {userPending && <img
+    {userPending && <Spinner
       className="page-loading-spinner"
-      width={24}
-      alt="loading"
-      src={loadingSpinner} />}
+      name="circle" />}
     {!userPending && user && <AuthenticatedApp />}
     {!userPending && !user && <UnauthenticatedApp />}
     <ToastContainer />

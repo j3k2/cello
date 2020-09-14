@@ -67,7 +67,7 @@ const Creator = ({ create, placeholder, buttonText, toggleText, closeAction }) =
             setShowForm(true);
           }}>
           <div className="toggle-icon">
-            <MdAdd size={16} />
+            <MdAdd size={20} />
           </div>
           <div className="toggle-text">
             {toggleText}

@@ -8,12 +8,18 @@
 .board-view-header {
   color: #fff;
   height: 48px;
-  padding-left: 10px;
+  padding-left: 16px;
 }
 
 .board-view-container {
   position: relative;
   flex-grow: 1;
+}
+
+.page-message {
+  justify-content: center;
+  display: flex;
+  font-size: 26px;
 }
 
 .board-view-content {
@@ -27,11 +33,18 @@
 }
 
 .board-lane {
-  margin: 5px;
-  width: 272px;
+  margin: 0px 4px;
+  min-width: 272px;
+  max-width: 272px;
   overflow-wrap: break-word;
   display: flex;
   flex-direction: column;
+  &:first-child {
+    margin-left: 8px;
+  }
+  &:last-child {
+    margin-right: 8px;
+  }
 }
 
 .lane-content {
@@ -46,12 +59,9 @@
 .lane-header {
   min-height: 40px;
   font-weight: bold;
-  padding: 14px 12px;
+  font-size: 14px;
+  padding: 12px 14px;
   cursor: pointer;
-}
-
-.lane-creator {
-  margin: 0px;
 }
 
 .lane-creator .creator-toggle {
@@ -66,13 +76,18 @@
   }
 }
 
-.lane-content .creator-toggle {
-  height: 28px;
-  background: #ebecf0;
-  color: rgb(23, 43, 77);
-  padding: 4px 8px;
-  &:hover {
-    filter: brightness(90%);
+.lane-content {
+  .creator-section {
+    padding: 5px;
+  }
+  .creator-toggle {
+    height: 28px;
+    background: #ebecf0;
+    color: #5e6c84;
+    padding: 4px 8px;
+    &:hover {
+      filter: brightness(90%);
+    }
   }
 }
 

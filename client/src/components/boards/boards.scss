@@ -25,6 +25,12 @@
 	cursor: pointer;
 	background: rgb(0, 121, 191);
 	color: #fff;
+	font-weight: bold;
+	span{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: block;
+	}
 	&:hover {
 		filter: brightness(90%);
 	}
@@ -36,6 +42,7 @@
 	top: 25%;
 	display: flex;
 	text-align: center;
+	font-weight: normal;
 	&:hover {
 		filter: brightness(90%);
 	}

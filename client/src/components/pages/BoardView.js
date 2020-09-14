@@ -10,11 +10,14 @@ import cardsService from '../../services/cards';
 import lanesService from '../../services/lanes';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import Spinner from 'react-spinkit';
 
 const Board = () => {
   const params = useParams();
 
   const [board, setBoard] = React.useState(null);
+
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     const fetchBoard = async () => {
@@ -23,6 +26,7 @@ const Board = () => {
         setBoard(board);
         document.title = `${board.title} | Cello`;
       }
+      setLoading(false);
     }
     fetchBoard();
   }, [params.id]);
@@ -132,7 +136,7 @@ const Board = () => {
   return (
     <div className="board-view-wrapper">
       <div className="board-view-header">
-        {board && <div className="board-title">
+        {board && !loading && <div className="board-title">
           <Editor content={board.title} updateContent={async (updatedTitle) => {
             editBoard({ title: updatedTitle });
             const updatedFields = await boardsService.editBoard(params.id, { title: updatedTitle });
@@ -143,7 +147,7 @@ const Board = () => {
         </div>}
       </div>
       <div className="board-view-container">
-        {board && <DragDropContext onDragEnd={onDragEnd}>
+        {board && !loading && <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
             type="LANE" droppableId="droppable.board" direction="horizontal">
             {(provided, snapshot) => (
@@ -159,14 +163,17 @@ const Board = () => {
                       }
                     }}
                     placeholder={'Enter list title'}
-                    buttonText={'Add list'}
+                    buttonText={'Add List'}
                     toggleText={board.lanes.length ? 'Add another list' : 'Add a list'} />
                 </div>
               </div>
             )}
           </Droppable>
         </DragDropContext>}
-        {!board && <div>Board not found</div>}
+        {!board && !loading && <div className="page-message">Board not found</div>}
+        {loading && <Spinner
+          className="page-loading-spinner"
+          name="circle" />}
       </div>
     </div>)
 }
