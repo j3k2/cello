@@ -1,5 +1,4 @@
 import React from 'react';
-import './lanes.scss';
 import Lane from './Lane';
 
 const LanesList = (props) => {

@@ -15,7 +15,7 @@ import Dashboard from './components/pages/Dashboard';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
 import Landing from './components/pages/Landing';
-import Header from './components/common/Header/Header';
+import Header from './components/common/Header';
 
 import BoardView from './components/pages/BoardView';
 

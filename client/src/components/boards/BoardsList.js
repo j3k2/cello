@@ -1,49 +1,66 @@
-import React from 'react';
-import boardsService from '../../services/boards';
-import BoardCreator from './BoardCreator';
-import { useHistory } from 'react-router-dom';
-
-import './boards.scss';
+import React from "react";
+import boardsService from "../../services/boards";
+import BoardCreator from "./BoardCreator";
+import BoardItem from "./BoardItem";
+import { useHistory } from "react-router-dom";
 
 const BoardsList = () => {
-	const [boards, setBoards] = React.useState([]);
+  const history = useHistory();
 
-	const fetchBoards = async () => {
-		const boards = await boardsService.getBoards();
-			if(boards) {
-				setBoards(boards);
-			}
-	}
+  const [boards, setBoards] = React.useState([]);
 
-	React.useEffect(() => {
-		document.title = "Boards | Cello";
-		fetchBoards();
-	}, [])
+  const fetchBoards = async () => {
+    const boards = await boardsService.getBoards();
+    if (boards) {
+      setBoards(boards);
+    }
+  };
 
-	function BoardItem(props) {
-		const history = useHistory();
-		return (<div className="board-item" onClick={() => {
-			history.push(`/board/${props.id}`)
-		}}>
-			<span>{props.title}</span>
-		</div>)
-	}
+  React.useEffect(() => {
+    document.title = "Boards | Cello";
+    fetchBoards();
+  }, []);
 
-	return (
-		<React.Fragment>
-			<div className="board-list-title">
-				Your boards
-		</div>
-			<div className="board-list">
-				{boards.map(board => {
-					return <BoardItem key={board.id} id={board.id} title={board.title} />
-				})}
-				<BoardCreator updateList={(createdBoard) => {
-					setBoards([...boards, createdBoard])
-				}} />
-			</div>
-		</React.Fragment>
-	)
-}
+  return (
+    <React.Fragment>
+      <div className="board-list-title">Your boards</div>
+      <div className="board-list">
+        {boards.map((board) => {
+          return (
+            <BoardItem
+              key={board.id}
+              handleClick={() => {
+                history.push(`/board/${board.id}`);
+							}}
+							text={board.title}
+            />
+          );
+        })}
+        <BoardCreator
+          updateList={(createdBoard) => {
+            setBoards([...boards, createdBoard]);
+          }}
+        />
+      </div>
+      <style jsx>
+        {`
+          .board-list {
+            display: flex;
+            flex-wrap: wrap;
+          }
 
-export default BoardsList; 
+          .board-list-title {
+            align-self: flex-start;
+            margin-left: 5px;
+            color: #172b4d;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 10px;
+          }
+        `}
+      </style>
+    </React.Fragment>
+  );
+};
+
+export default BoardsList;
