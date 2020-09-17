@@ -59,6 +59,8 @@ const Lane = (props) => {
                 font-size: 14px;
                 padding: 12px 14px;
                 cursor: pointer;
+                min-width: 272px;
+                max-width: 272px;
               }
             `}
           </style>
