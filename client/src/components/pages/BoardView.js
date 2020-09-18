@@ -143,7 +143,6 @@ const Board = () => {
           <div className="board-title">
             <Editor
               content={board.title}
-              type="board"
               updateContent={async (updatedTitle) => {
                 editBoard({ title: updatedTitle });
                 const updatedFields = await boardsService.editBoard(params.id, {
@@ -211,7 +210,7 @@ const Board = () => {
           .board-view-header {
             color: #fff;
             height: 48px;
-            padding-left: 16px;
+            padding: 0px 16px;
           }
 
           .board-view-container {
@@ -239,7 +238,8 @@ const Board = () => {
             font-size: 18px;
             font-weight: 700;
             padding-top: 12px;
-            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
           }
         `}
       </style>

@@ -15,7 +15,7 @@ const Lane = (props) => {
           <div className="lane-content" {...provided.dragHandleProps}>
             <div className="lane-header">
               <Editor
-                type="lane"
+                multiline
                 content={props.title}
                 updateContent={async (updatedTitle) => {
                   props.editLane(props.id, { title: updatedTitle });
@@ -57,7 +57,7 @@ const Lane = (props) => {
                 min-height: 40px;
                 font-weight: bold;
                 font-size: 14px;
-                padding: 12px 14px;
+                padding: 8px 10px;
                 cursor: pointer;
                 min-width: 272px;
                 max-width: 272px;

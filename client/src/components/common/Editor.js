@@ -1,13 +1,12 @@
 import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import AutosizeInput from "react-input-autosize";
 import css from "styled-jsx/css";
 
 const Editor = (props) => {
   const [editing, setEditing] = React.useState(false);
 
   const [content, setContent] = React.useState("");
-
-  const [formHeight, setFormHeight] = React.useState(null);
 
   const ref = React.useRef(null);
 
@@ -39,34 +38,46 @@ const Editor = (props) => {
     return css.resolve`
       textarea {
         border: solid 2px #0079bf;
-        /* border: none; */
         border-radius: 3px;
         resize: none;
         outline: none;
         font: inherit;
-        position: relative;
-        top: -2px;
-        left: -2px;
-        width: 250px;
-        /* margin:0px; */
-        /* padding: 0px; */
-        /* overflow: hidden scroll; */
-        /* overflow-wrap: break-word; */
+        width: 100%;
+        vertical-align: top;
+        margin: 0;
+        padding: 2px;
       }
-      /* input {
+    `;
+  }
+  function getInputStyle() {
+    return css.resolve`
+      input {
         border: solid 2px #0079bf;
         border-radius: 3px;
         outline: none;
         font: inherit;
         position: relative;
         width: 100%;
-      } */
+        position: relative;
+        top: -2px;
+        left: -2px;
+        padding: 2px;
+      }
     `;
   }
-  const { className, styles } = getTextareaStyle();
+
+  const {
+    className: textareaClassName,
+    styles: textareaStylesElement,
+  } = getTextareaStyle();
+
+  const {
+    className: inputClassName,
+    styles: inputStylesElement,
+  } = getInputStyle();
 
   return (
-    <div className={`editor ${props.type}`} ref={ref}>
+    <div className={`editor ${props.multiline ? "multiline" : ""}`} ref={ref}>
       {editing && (
         <form
           onSubmit={(e) => {
@@ -74,11 +85,11 @@ const Editor = (props) => {
             updateContent();
           }}
         >
-          {props.type === "board" && (
-            <input
-              className={className}
+          {!props.multiline && (
+            <AutosizeInput
               autoFocus
               value={content}
+              inputClassName={inputClassName}
               onFocus={(e) => {
                 e.target.select();
               }}
@@ -88,9 +99,9 @@ const Editor = (props) => {
             />
           )}
 
-          {props.type !== "board" && (
+          {props.multiline && (
             <TextareaAutosize
-              className={className}
+              className={textareaClassName}
               spellCheck={false}
               maxLength={512}
               autoFocus
@@ -101,10 +112,6 @@ const Editor = (props) => {
                   updateContent();
                 }
               }}
-              onHeightChange={(height) => {
-                // console.log(height);
-                setFormHeight(height);
-              }}
               onFocus={(e) => {
                 e.target.select();
               }}
@@ -113,16 +120,16 @@ const Editor = (props) => {
               }}
             />
           )}
-          {styles}
+          {textareaStylesElement}
+          {inputStylesElement}
         </form>
       )}
 
       {!editing && (
         <div
-          className="editor-content"
+          className={`editor-content ${props.multiline ? "multiline" : ""}`}
           onClick={(e) => {
             setEditing(true);
-            // console.log(e.target.offsetWidth);
           }}
         >
           <span>{props.content}</span>
@@ -130,11 +137,18 @@ const Editor = (props) => {
       )}
       <style jsx>
         {`
-          .editor form {
-            height: ${formHeight ? formHeight - 4 + "px" : "auto"};
+          .editor {
+            width: min-content;
+          }
+          .editor.multiline {
+            width: auto;
           }
           .editor-content {
             cursor: pointer;
+            padding: 2px; /* related to input padding */
+          }
+          .editor-content.multiline {
+            padding: 4px; /* related to textarea padding */
           }
         `}
       </style>
