@@ -3,7 +3,7 @@ import React from "react";
 function BoardItem(props) {
   return (
     <div
-      className={`board-item ${props.creator ? "board-item--create" : ""}`}
+      className={`board-item ${props.creator ? "creator" : ""}`}
       onClick={props.handleClick}
     >
       <style jsx>
@@ -22,12 +22,13 @@ function BoardItem(props) {
               overflow: hidden;
               text-overflow: ellipsis;
               display: block;
+              white-space: nowrap;
             }
             &:hover {
               filter: brightness(0.9);
             }
           }
-          .board-item--create {
+          .board-item.creator {
             background: rgba(9, 30, 66, 0.04);
             color: #172b4d;
             top: 25%;

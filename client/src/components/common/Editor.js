@@ -68,12 +68,12 @@ const Editor = (props) => {
 
   const {
     className: textareaClassName,
-    styles: textareaStylesElement,
+    styles: textareaStyleElement,
   } = getTextareaStyle();
 
   const {
     className: inputClassName,
-    styles: inputStylesElement,
+    styles: inputStyleElement,
   } = getInputStyle();
 
   return (
@@ -120,8 +120,8 @@ const Editor = (props) => {
               }}
             />
           )}
-          {textareaStylesElement}
-          {inputStylesElement}
+          {textareaStyleElement}
+          {inputStyleElement}
         </form>
       )}
 

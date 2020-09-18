@@ -232,6 +232,7 @@ const Board = () => {
             left: 0;
             display: flex;
             overflow-y: hidden;
+            padding-bottom: 8px;
           }
 
           .board-title {
