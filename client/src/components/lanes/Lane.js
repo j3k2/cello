@@ -61,6 +61,7 @@ const Lane = (props) => {
                 cursor: pointer;
                 min-width: 272px;
                 max-width: 272px;
+                flex: none;
               }
             `}
           </style>
