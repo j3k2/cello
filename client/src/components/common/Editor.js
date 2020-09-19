@@ -37,31 +37,20 @@ const Editor = (props) => {
   function getTextareaStyle() {
     return css.resolve`
       textarea {
-        border: solid 2px #0079bf;
-        border-radius: 3px;
-        resize: none;
-        outline: none;
-        font: inherit;
-        width: 100%;
-        vertical-align: top;
-        margin: 0;
-        padding: 2px;
+        padding: 2px 6px;
+        position: relative;
+        top: 0px;
+        left: -4px;
       }
     `;
   }
   function getInputStyle() {
     return css.resolve`
       input {
-        border: solid 2px #0079bf;
-        border-radius: 3px;
-        outline: none;
-        font: inherit;
-        position: relative;
-        width: 100%;
         position: relative;
         top: -2px;
         left: -2px;
-        padding: 2px;
+        padding: 6px 12px;
       }
     `;
   }
@@ -127,7 +116,7 @@ const Editor = (props) => {
 
       {!editing && (
         <div
-          className={`editor-content ${props.multiline ? "multiline" : ""}`}
+          className={`editor-content ${props.hover ? "hover" : ""} ${props.multiline ? "multiline" : ""}`}
           onClick={(e) => {
             setEditing(true);
           }}
@@ -145,10 +134,17 @@ const Editor = (props) => {
           }
           .editor-content {
             cursor: pointer;
-            padding: 2px; /* related to input padding */
+            padding: 2px; 
+          }
+          .editor-content.hover{
+            border-radius: 3px;
+            padding: 6px 12px;
+            &:hover{
+              background-color: hsla(0,0%,100%,.32);
+            }
           }
           .editor-content.multiline {
-            padding: 4px; /* related to textarea padding */
+            padding: 4px;
           }
         `}
       </style>

@@ -142,6 +142,7 @@ const Board = () => {
         {board && !loading && (
           <div className="board-title">
             <Editor
+              hover
               content={board.title}
               updateContent={async (updatedTitle) => {
                 editBoard({ title: updatedTitle });
@@ -210,7 +211,7 @@ const Board = () => {
           .board-view-header {
             color: #fff;
             height: 48px;
-            padding: 0px 16px;
+            padding: 0px 8px;
           }
 
           .board-view-container {
@@ -238,7 +239,7 @@ const Board = () => {
           .board-title {
             font-size: 18px;
             font-weight: 700;
-            padding-top: 12px;
+            padding-top: 8px;
             white-space: nowrap;
             overflow: hidden;
           }

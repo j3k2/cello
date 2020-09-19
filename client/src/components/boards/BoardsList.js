@@ -52,7 +52,6 @@ const BoardsList = () => {
           .board-list-title {
             align-self: flex-start;
             margin-left: 5px;
-            color: #172b4d;
             font-size: 16px;
             font-weight: 700;
             padding: 10px;

@@ -90,8 +90,6 @@ const Creator = ({
             cursor: pointer;
             border-radius: 3px;
             display: flex;
-            font-size: 14px;
-            line-height: 20px;
             .toggle-icon {
               margin: 0 2px;
             }
@@ -103,29 +101,20 @@ const Creator = ({
             background: #ebecf0;
             border-radius: 3px;
             padding: 4px;
+            height: 80px;
           }
 
           .creator-form input {
-            width: 100%;
+            height: 36px;
           }
 
           .creator-form-actions {
             display: flex;
-            margin-top: 5px;
+            margin-top: 4px;
           }
 
           .creator-form-actions button {
-            background-color: #5aac44;
-            border: none;
-            border-radius: 3px;
-            margin-right: 10px;
-            color: #fff;
-            padding: 6px 12px;
-            font-size: 14px;
-            cursor: pointer;
-            &:hover {
-              background-color: #61bd4f;
-            }
+            margin-right: 8px;
           }
 
           .creator-form-actions a {
@@ -146,15 +135,21 @@ const Creator = ({
               background-color: hsla(0, 0%, 100%, 0.32);
             }
           }
+          
           .creator-toggle.card {
             height: 28px;
             background: transparent;
             color: #5e6c84;
-            padding: 4px 8px;
+            margin: 2px 8px 8px 8px;
+            padding: 4px 6px;
             &:hover {
               background-color: rgba(9, 30, 66, 0.08);
               color: #172b4d;
             }
+          }
+          .creator-form.card{
+            padding: 0px 8px;
+            margin-top: 8px;
           }
         `}
       </style>
