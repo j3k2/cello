@@ -18,10 +18,11 @@ async function findOne(db, params, outputColumns) {
   return res;
 }
 
-async function find(db, params, outputColumns) {
+async function find(db, params, outputColumns, order = 'id') {
   const res = await knex(db)
     .select(outputColumns)
-    .where(params);
+    .where(params)
+    .orderBy(order);
 
   return res;
 }

@@ -7,7 +7,7 @@ async function createBoard(params) {
 }
 
 async function getBoards(params) {
-	return find('boards', params, ['id', 'title']);
+	return find('boards', params, ['id', 'title'], 'title');
 }
 
 async function getBoard(params) {
