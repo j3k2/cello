@@ -1,25 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useUserContext } from '../../contexts/User';
-import authService from '../../services/auth';
-import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useUserContext } from "../../contexts/User";
+import authService from "../../services/auth";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const userContext = useUserContext();
 
   const history = useHistory();
 
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  React.useEffect(()=>{
-    document.title = 'Log in to Cello';
+  React.useEffect(() => {
+    document.title = "Log in to Cello";
   });
-  
+
   async function login() {
-    if(!username.length || !password.length) {
-      toast.error('Username and password are required');
+    if (!username.length || !password.length) {
+      toast.error("Username and password are required");
       return;
     }
     try {
@@ -29,7 +29,7 @@ const Login = () => {
 
       if (user) {
         userContext.setUser(user);
-        history.push('/dashboard');
+        history.push("/dashboard");
       }
     } catch (err) {
       console.log(err);
@@ -45,21 +45,31 @@ const Login = () => {
         onSubmit={(e) => {
           e.preventDefault();
           login();
-        }}>
+        }}
+      >
         <input
           value={username}
           placeholder="Enter username"
-          onChange={(e) => setUsername(e.target.value)} />
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <input
           type="password"
           value={password}
           placeholder="Enter password"
-          onChange={(e) => setPassword(e.target.value)} />
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <input type="submit" value="Log in" />
       </form>
       <Link to="/signup">Sign up for an account</Link>
+      <style jsx>
+        {`
+          input {
+            margin: 8px;
+          }
+        `}
+      </style>
     </main>
-  )
-}
+  );
+};
 
 export default Login;

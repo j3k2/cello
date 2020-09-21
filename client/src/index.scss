@@ -93,3 +93,15 @@ textarea {
   vertical-align: top;
   margin: 0;
 }
+
+a {
+  &:visited,
+  &:link,
+  &:active {
+    color: #0052CC;
+    text-decoration: none;
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}
