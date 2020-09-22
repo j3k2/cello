@@ -113,7 +113,7 @@ const InlineEditor = (props) => {
 
       {!editing && (
         <div
-          className={`editor-content ${props.hover ? "hover" : ""} ${props.multiline ? "multiline" : ""}`}
+          className={`editor-content ${props.lane ? "lane" : ""} ${props.hover ? "hover" : ""} ${props.multiline ? "multiline" : ""}`}
           onClick={(e) => {
             setEditing(true);
           }}
@@ -142,6 +142,9 @@ const InlineEditor = (props) => {
           }
           .editor-content.multiline {
             padding: 4px;
+          }
+          .editor-content.lane {
+            width: 246px;
           }
         `}
       </style>

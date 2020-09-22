@@ -16,6 +16,7 @@ const Lane = (props) => {
             <div className="lane-header">
               <InlineEditor
                 multiline
+                lane
                 content={props.title}
                 updateContent={async (updatedTitle) => {
                   props.editLane(props.id, { title: updatedTitle });
