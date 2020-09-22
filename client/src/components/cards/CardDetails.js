@@ -2,8 +2,9 @@ import React from "react";
 import InlineEditor from "../common/InlineEditor";
 import TextEditor from "../common/TextEditor";
 import cardsService from "../../services/cards";
+import Deleter from "../common/Deleter";
 
-function CardDetails({ id, editCard, laneId, title }) {
+function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
   const [card, setCard] = React.useState();
 
   React.useEffect(() => {
@@ -27,9 +28,19 @@ function CardDetails({ id, editCard, laneId, title }) {
                 const updatedCard = await cardsService.editCard(id, {
                   title: updatedTitle,
                 });
-                editCard(id, laneId, updatedCard);
+                if(updatedCard) {
+                  editCard(id, laneId, updatedCard);
+                }
               }}
             />
+            <Deleter delete={async ()=>{
+              const res = await cardsService.deleteCard(id);
+              if(res) {
+                closeAction();
+                deleteCard(id, laneId);
+              }
+            }} 
+            dialogTitle="Delete Card?" />
           </div>
           <h3>Description</h3>
           <TextEditor
@@ -53,6 +64,7 @@ function CardDetails({ id, editCard, laneId, title }) {
                 font-size: 20px;
                 font-weight: 600;
                 line-height: 24px;
+                display: flex;
               }
             `}
           </style>

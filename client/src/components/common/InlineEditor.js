@@ -62,7 +62,7 @@ const InlineEditor = (props) => {
   } = getInputStyle();
 
   return (
-    <div className={`editor ${props.multiline ? "multiline" : ""}`} ref={ref}>
+    <div className={`editor ${props.lane ? "lane" : ""} ${props.hover ? "hover" : ""} ${props.multiline ? "multiline" : ""}`} ref={ref}>
       {editing && (
         <form
           onSubmit={(e) => {
@@ -113,7 +113,7 @@ const InlineEditor = (props) => {
 
       {!editing && (
         <div
-          className={`editor-content ${props.lane ? "lane" : ""} ${props.hover ? "hover" : ""} ${props.multiline ? "multiline" : ""}`}
+          className="editor-content"
           onClick={(e) => {
             setEditing(true);
           }}
@@ -126,25 +126,32 @@ const InlineEditor = (props) => {
           .editor {
             width: min-content;
           }
-          .editor.multiline {
-            width: auto;
+          .multiline.editor{
+            width: 100%;
           }
           .editor-content {
             cursor: pointer;
             padding: 2px; 
           }
-          .editor-content.hover{
+          .hover .editor-content{
             border-radius: 3px;
             padding: 6px 12px;
+            padding-right: 18px;
             &:hover{
               background-color: hsla(0,0%,100%,.32);
             }
           }
-          .editor-content.multiline {
+          .multiline .editor-content{
             padding: 4px;
           }
-          .editor-content.lane {
-            width: 246px;
+          .multiline form {
+            width: auto;
+          }
+          .lane .editor-content{
+            width: 224px;
+          }
+          .lane form{
+            width: 228px;
           }
         `}
       </style>

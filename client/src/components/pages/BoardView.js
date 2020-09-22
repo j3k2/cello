@@ -4,6 +4,7 @@ import { useParams, useHistory } from "react-router-dom";
 import LanesList from "../lanes/LanesList";
 import LaneCreator from "../lanes/LaneCreator";
 import InlineEditor from "../common/InlineEditor";
+import Deleter from "../common/Deleter";
 
 import boardsService from "../../services/boards";
 import cardsService from "../../services/cards";
@@ -14,6 +15,7 @@ import Spinner from "react-spinkit";
 
 const Board = () => {
   const params = useParams();
+  const history = useHistory();
 
   const [board, setBoard] = React.useState(null);
 
@@ -96,6 +98,17 @@ const Board = () => {
     });
   };
 
+  const deleteCard = (id, laneId) => {
+    const lanes = [...board.lanes];
+    const lane = lanes.find((lane) => lane.id === laneId);
+    const cards = [...lane.cards];
+    const cardIdx = cards.findIndex((card) => card.id === id);
+    cards.splice(cardIdx, 1);
+    lane.cards = cards;
+
+    setBoard({ ...board, lanes });
+  };
+
   const editCard = (cardId, laneId, edits) => {
     const lanes = [...board.lanes];
     const lane = lanes.find((lane) => lane.id === laneId);
@@ -103,6 +116,14 @@ const Board = () => {
     let card = cards.find((card) => card.id === cardId);
     card = Object.assign(card, edits);
     lane.cards = cards;
+    setBoard({ ...board, lanes });
+  };
+
+  const deleteLane = (id) => {
+    const lanes = [...board.lanes];
+    const laneIdx = lanes.findIndex((lane) => lane.id === id);
+    lanes.splice(laneIdx, 1);
+
     setBoard({ ...board, lanes });
   };
 
@@ -166,6 +187,14 @@ const Board = () => {
             />
           </div>
         )}
+        <Deleter 
+        delete={async ()=>{
+          const res = await boardsService.deleteBoard(params.id);
+          if(res) {
+            history.push('/');
+          }
+        }}
+        dialogTitle="Delete Board?" overlay />
       </div>
       <div className="board-view-container">
         {board && !loading && (
@@ -186,6 +215,8 @@ const Board = () => {
                     addCard={addCard}
                     editLane={editLane}
                     editCard={editCard}
+                    deleteCard={deleteCard}
+                    deleteLane={deleteLane}
                   />
                   {provided.placeholder}
                   <LaneCreator
@@ -223,6 +254,8 @@ const Board = () => {
             color: #fff;
             height: 48px;
             padding: 0px 8px;
+            display: flex;
+            padding-top: 8px;
           }
 
           .board-view-container {
@@ -250,9 +283,10 @@ const Board = () => {
           .board-title {
             font-size: 18px;
             font-weight: 700;
-            padding-top: 8px;
             white-space: nowrap;
             overflow: hidden;
+            margin-right: 4px;
+            padding-right: 4px;
           }
         `}
       </style>

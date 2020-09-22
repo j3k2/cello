@@ -6,6 +6,7 @@ import Creator from "../common/Creator";
 import LaneWrapper from "./LaneWrapper";
 import lanesService from "../../services/lanes";
 import { Draggable } from "react-beautiful-dnd";
+import Deleter from "../common/Deleter";
 
 const Lane = (props) => {
   return (
@@ -28,8 +29,24 @@ const Lane = (props) => {
                   }
                 }}
               />
+              <div className="deleter-wrapper">
+                <Deleter delete={async ()=>{
+                  const res = await lanesService.deleteLane(props.id);
+                  if(res) {
+                    props.deleteLane(props.id);
+                  }
+                }}
+                
+                dialogTitle="Delete List?" />
+              </div>
             </div>
-            <CardsList laneId={props.id} editCard={props.editCard} cards={props.cards} laneId={props.id} />
+            <CardsList
+              laneId={props.id}
+              editCard={props.editCard}
+              cards={props.cards}
+              laneId={props.id}
+              deleteCard={props.deleteCard}
+            />
             <Creator
               create={async (cardTitle) => {
                 const card = await cardsService.createCard({
@@ -69,6 +86,13 @@ const Lane = (props) => {
                 min-width: 272px;
                 max-width: 272px;
                 flex: none;
+                position: relative;
+              }
+
+              .deleter-wrapper{
+                position: absolute;
+                top: 4px;
+                right: 4px;
               }
             `}
           </style>

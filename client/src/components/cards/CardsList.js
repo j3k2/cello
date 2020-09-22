@@ -14,7 +14,15 @@ const CardsList = (props) => {
           {props.cards &&
             props.cards.map((card, idx) => {
               return (
-                <Card editCard={props.editCard} laneId={props.laneId} title={card.title} idx={idx} id={card.id} key={card.id} />
+                <Card
+                  deleteCard={props.deleteCard}
+                  editCard={props.editCard}
+                  laneId={props.laneId}
+                  title={card.title}
+                  idx={idx}
+                  id={card.id}
+                  key={card.id}
+                />
               );
             })}
           {provided.placeholder}

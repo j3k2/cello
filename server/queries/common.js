@@ -52,10 +52,19 @@ async function update(db, where, params, outputColumns = '*') {
   return res[0];
 }
 
+async function del(db, where) {
+  const res = await knex(db)
+    .where(where)
+    .del();
+
+  return res;
+}
+
 module.exports = {
   findOne,
   find,
   create,
   count,
-  update
+  update,
+  del
 }

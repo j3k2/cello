@@ -50,9 +50,20 @@ async function editBoard(req, res) {
 	}
 }
 
+async function deleteBoard(req, res) {
+	try {
+		const board = await boardQuery.deleteBoard(req.params.id);
+		res.json(board);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server Error: ' + err.message);
+	}
+}
+
 module.exports = {
 	createBoard,
 	getBoards,
 	getBoard,
-	editBoard
+	editBoard,
+	deleteBoard
 }
