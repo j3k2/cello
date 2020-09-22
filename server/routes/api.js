@@ -15,7 +15,9 @@ const {
 
 const {
 	createCard,
-	moveCard
+	moveCard,
+	getCard,
+	editCard
 } = require('../controllers/cards');
 
 const authorizer = require('../middleware/authorizer');
@@ -31,4 +33,7 @@ router.patch('/api/lanes/:id', authorizer, editLane);
 
 router.post('/api/cards/', authorizer, createCard);
 router.post('/api/cards/:id/move', authorizer, moveCard);
+router.get('/api/cards/:id', authorizer, getCard);
+router.patch('/api/cards/:id', authorizer, editCard);
+
 module.exports = router;

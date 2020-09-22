@@ -24,7 +24,8 @@ exports.up = function(knex) {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
     table.uuid('lane_id').notNullable();
     table.foreign('lane_id').references('id').inTable('lanes');
-    table.string('text').notNullable();
+    table.string('title').notNullable();
+    table.text('description');
     table.integer('order').notNullable();
   });
 };

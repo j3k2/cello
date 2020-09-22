@@ -1,8 +1,8 @@
-const lane = require('../queries/lane');
+const laneQuery = require('../queries/lane');
 
 async function createLane(req, res) {
 	try {
-		const created = await lane.createLane({
+		const created = await laneQuery.createLane({
 			board_id: req.body.boardId,
 			title: req.body.title
 		});
@@ -15,7 +15,7 @@ async function createLane(req, res) {
 
 async function moveLane(req, res) {
 	try {
-		const success = await lane.moveLane(req.params.id, {
+		const success = await laneQuery.moveLane(req.params.id, {
 			prev: req.body.prev,
 			next: req.body.next,
 			board_id: req.body.boardId
@@ -34,8 +34,8 @@ async function moveLane(req, res) {
 
 async function editLane(req, res) {
 	try {
-		const board = await lane.editLane(req.params.id, req.body);
-		res.json(board);
+		const lane = await laneQuery.editLane(req.params.id, req.body);
+		res.json(lane);
 	} catch (err) {
 		console.error(err.message);
 		res.status(500).json('Server Error: ' + err.message);

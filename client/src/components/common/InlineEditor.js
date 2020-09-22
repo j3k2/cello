@@ -3,10 +3,10 @@ import TextareaAutosize from "react-textarea-autosize";
 import AutosizeInput from "react-input-autosize";
 import css from "styled-jsx/css";
 
-const Editor = (props) => {
+const InlineEditor = (props) => {
   const [editing, setEditing] = React.useState(false);
 
-  const [content, setContent] = React.useState("");
+  const [content, setContent] = React.useState(props.content);
 
   const ref = React.useRef(null);
 
@@ -29,10 +29,6 @@ const Editor = (props) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref, content, updateContent]);
-
-  React.useEffect(() => {
-    setContent(props.content);
-  }, [props.content]);
 
   function getTextareaStyle() {
     return css.resolve`
@@ -92,9 +88,10 @@ const Editor = (props) => {
             <TextareaAutosize
               className={textareaClassName}
               spellCheck={false}
-              maxLength={512}
+              maxLength={255}
               autoFocus
               value={content}
+              placeholder={props.placeholder}
               onKeyDown={(e) => {
                 if (e.key == "Enter") {
                   e.preventDefault();
@@ -152,4 +149,4 @@ const Editor = (props) => {
   );
 };
 
-export default Editor;
+export default InlineEditor;

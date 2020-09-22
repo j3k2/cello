@@ -3,7 +3,7 @@ import { useParams, useHistory } from "react-router-dom";
 
 import LanesList from "../lanes/LanesList";
 import LaneCreator from "../lanes/LaneCreator";
-import Editor from "../common/Editor";
+import InlineEditor from "../common/InlineEditor";
 
 import boardsService from "../../services/boards";
 import cardsService from "../../services/cards";
@@ -96,6 +96,16 @@ const Board = () => {
     });
   };
 
+  const editCard = (cardId, laneId, edits) => {
+    const lanes = [...board.lanes];
+    const lane = lanes.find((lane) => lane.id === laneId);
+    const cards = [...lane.cards];
+    let card = cards.find((card) => card.id === cardId);
+    card = Object.assign(card, edits);
+    lane.cards = cards;
+    setBoard({ ...board, lanes });
+  };
+
   const editLane = (id, edits) => {
     const lanes = [...board.lanes];
     let lane = lanes.find((lane) => lane.id === id);
@@ -141,7 +151,7 @@ const Board = () => {
       <div className="board-view-header">
         {board && !loading && (
           <div className="board-title">
-            <Editor
+            <InlineEditor
               hover
               content={board.title}
               updateContent={async (updatedTitle) => {
@@ -175,6 +185,7 @@ const Board = () => {
                     lanes={board.lanes}
                     addCard={addCard}
                     editLane={editLane}
+                    editCard={editCard}
                   />
                   {provided.placeholder}
                   <LaneCreator

@@ -3,11 +3,6 @@ import { Droppable } from "react-beautiful-dnd";
 import Card from "./Card";
 
 const CardsList = (props) => {
-  const List = (props) => {
-    return props.cards.map((card, idx) => {
-      return <Card text={card.text} idx={idx} id={card.id} key={card.id} />;
-    });
-  };
   return (
     <Droppable type="CARD" droppableId={`droppable.${props.laneId}`}>
       {(provided, snapshot) => (
@@ -16,7 +11,12 @@ const CardsList = (props) => {
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
-          {props.cards && <List cards={props.cards} />}
+          {props.cards &&
+            props.cards.map((card, idx) => {
+              return (
+                <Card editCard={props.editCard} laneId={props.laneId} title={card.title} idx={idx} id={card.id} key={card.id} />
+              );
+            })}
           {provided.placeholder}
           <style jsx>
             {`

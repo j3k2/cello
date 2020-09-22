@@ -1,7 +1,7 @@
 import React from "react";
 import cardsService from "../../services/cards";
 import CardsList from "../cards/CardsList";
-import Editor from "../common/Editor";
+import InlineEditor from "../common/InlineEditor";
 import Creator from "../common/Creator";
 import LaneWrapper from "./LaneWrapper";
 import lanesService from "../../services/lanes";
@@ -14,7 +14,7 @@ const Lane = (props) => {
         <LaneWrapper ref={provided.innerRef} {...provided.draggableProps}>
           <div className="lane-content" {...provided.dragHandleProps}>
             <div className="lane-header">
-              <Editor
+              <InlineEditor
                 multiline
                 content={props.title}
                 updateContent={async (updatedTitle) => {
@@ -28,12 +28,12 @@ const Lane = (props) => {
                 }}
               />
             </div>
-            <CardsList cards={props.cards} laneId={props.id} />
+            <CardsList laneId={props.id} editCard={props.editCard} cards={props.cards} laneId={props.id} />
             <Creator
-              create={async (cardText) => {
+              create={async (cardTitle) => {
                 const card = await cardsService.createCard({
                   laneId: props.id,
-                  text: cardText,
+                  title: cardTitle,
                 });
                 if (card) {
                   props.addCard(props.id, card);

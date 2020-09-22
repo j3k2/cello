@@ -10,6 +10,7 @@ const LanesList = (props) => {
         key={lane.id}
         id={lane.id}
         cards={lane.cards}
+        editCard={props.editCard}
         editLane={props.editLane}
         addCard={props.addCard} />
     })}

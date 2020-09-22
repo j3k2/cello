@@ -1,9 +1,13 @@
-const { create } = require('./common');
+const { create, findOne, update} = require('./common');
 const knex = require('../knex');
 
 async function createCard(params) {
 	params.order = knex('cards').count().where({ lane_id: params.lane_id });
-	return create('cards', params, ['id', 'text']);
+	return create('cards', params, ['id', 'title']);
+}
+
+async function getCard(params) {
+	return findOne('cards', params);
 }
 
 async function moveCardWithinLane(id, params) {
@@ -41,8 +45,14 @@ async function moveCardBetweenLanes(id, params) {
 	return knex('cards').where({ id }).update({ order: next, lane_id: nextLaneId });
 }
 
+const editCard = (id, params) => {
+	return update('cards', { id }, params, Object.keys(params));
+}
+
 module.exports = {
 	createCard,
+	getCard,
 	moveCardWithinLane,
-	moveCardBetweenLanes
+	moveCardBetweenLanes,
+	editCard
 }
