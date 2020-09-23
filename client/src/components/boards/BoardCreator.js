@@ -37,7 +37,7 @@ const BoardCreator = (props) => {
         onRequestClose={() => {
           setShowModal(false);
         }}
-        shouldCloseOnOverlayClick={true}
+        shouldCloseOnOverlayClick
       >
         <Creator
           create={async (boardTitle) => {

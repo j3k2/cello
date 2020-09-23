@@ -40,6 +40,7 @@ function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
                 deleteCard(id, laneId);
               }
             }} 
+            message="Are you sure you want to delete this card? There is no undo."
             dialogTitle="Delete Card?" />
           </div>
           <h3>Description</h3>

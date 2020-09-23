@@ -194,6 +194,7 @@ const Board = () => {
             history.push('/');
           }
         }}
+        message="Are you sure you want to delete this board and its lists and cards? There is no undo."
         dialogTitle="Delete Board?" overlay />
       </div>
       <div className="board-view-container">

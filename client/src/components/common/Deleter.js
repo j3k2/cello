@@ -12,7 +12,7 @@ function Deleter(props) {
         setShowDialog(false)}} 
       showDialog={showDialog}
       title={props.dialogTitle}
-      message="There is no undo"
+      message={props.message}
       buttonText="Delete"
       confirm={props.delete}
       />

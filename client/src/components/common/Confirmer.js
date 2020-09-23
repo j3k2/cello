@@ -1,24 +1,35 @@
 import React from "react";
+import ReactModal from "react-modal";
+import css from "styled-jsx/css";
 
 function Dialog(props) {
-  const ref = React.useRef(null);
-
-  React.useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        props.hideDialog();
+  ReactModal.setAppElement("#root");
+  function getModalStyle() {
+    return css.resolve`
+      .ReactModal__Content {
+        border-radius: 3px;
+        width: 304px;
+        margin: 100px auto;
+        border-radius: 3px;
       }
-    }
+    `;
+  }
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const {
+    className: modalClassName,
+    styles: modalStyleElement,
+  } = getModalStyle();
 
   return (
-    <div ref={ref}>
-      {props.showDialog && (
+    <div>
+      <ReactModal
+        className={modalClassName}
+        isOpen={props.showDialog}
+        onRequestClose={() => {
+          props.hideDialog();
+        }}
+        shouldCloseOnOverlayClick
+      >
         <div className="dialog">
           <div className="title">{props.title}</div>
           <p className="message">{props.message}</p>
@@ -32,7 +43,8 @@ function Dialog(props) {
             {props.buttonText}
           </button>
         </div>
-      )}
+        {modalStyleElement}
+      </ReactModal>
       <style jsx>
         {`
           .dialog {
@@ -43,9 +55,9 @@ function Dialog(props) {
             cursor: default;
             background-color: #fff;
             color: black;
-            position: absolute;
-            border-radius: 3px;
-            width: 304px;
+            /*position: absolute;*/
+            /*border-radius: 3px;
+            width: 304px;*/
             padding: 12px;
             z-index: 999;
             box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),

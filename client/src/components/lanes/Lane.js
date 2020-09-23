@@ -36,7 +36,7 @@ const Lane = (props) => {
                     props.deleteLane(props.id);
                   }
                 }}
-                
+                message="Are you sure you want to delete this list and its cards? There is no undo."
                 dialogTitle="Delete List?" />
               </div>
             </div>
