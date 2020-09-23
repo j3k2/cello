@@ -17,9 +17,7 @@ const BoardCreator = (props) => {
     return css.resolve`
       .ReactModal__Content {
         width: 296px;
-        height: 75px;
         margin: 100px auto;
-        border-radius: 3px;
       }
     `;
   }

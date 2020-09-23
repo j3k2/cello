@@ -153,3 +153,12 @@ a.light {
     color: #c4c9cc;
   }
 }
+
+span.close-action {
+  cursor: pointer;
+  color: #6b778c;
+  z-index: 99;
+  &:hover {
+    color: #172b4d;
+  }
+}

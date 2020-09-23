@@ -15,7 +15,6 @@ const Card = (props) => {
       .ReactModal__Content {
         width: 640px;
         margin: 100px auto;
-        border-radius: 3px;
       }
     `;
   }

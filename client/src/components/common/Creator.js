@@ -118,12 +118,7 @@ const Creator = ({
           }
 
           .creator-form-actions .close-action {
-            cursor: pointer;
             padding-top: 4px;
-            color: #6b778c;
-            &:hover {
-              color: #172b4d;
-            }
           }
 
           .creator-toggle.lane {

@@ -3,6 +3,7 @@ import InlineEditor from "../common/InlineEditor";
 import TextEditor from "../common/TextEditor";
 import cardsService from "../../services/cards";
 import Deleter from "../common/Deleter";
+import { MdClose } from "react-icons/md";
 
 function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
   const [card, setCard] = React.useState();
@@ -19,6 +20,9 @@ function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
     <React.Fragment>
       {card && (
         <div className="card-details">
+          <span className="close-action" onClick={closeAction}>
+            <MdClose size={20}/>
+          </span>
           <div className="card-details-header">
             <InlineEditor
               multiline
@@ -28,20 +32,22 @@ function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
                 const updatedCard = await cardsService.editCard(id, {
                   title: updatedTitle,
                 });
-                if(updatedCard) {
+                if (updatedCard) {
                   editCard(id, laneId, updatedCard);
                 }
               }}
             />
-            <Deleter delete={async ()=>{
-              const res = await cardsService.deleteCard(id);
-              if(res) {
-                closeAction();
-                deleteCard(id, laneId);
-              }
-            }} 
-            message="Are you sure you want to delete this card? There is no undo."
-            dialogTitle="Delete Card?" />
+            <Deleter
+              delete={async () => {
+                const res = await cardsService.deleteCard(id);
+                if (res) {
+                  closeAction();
+                  deleteCard(id, laneId);
+                }
+              }}
+              message="Are you sure you want to delete this card? There is no undo."
+              dialogTitle="Delete Card?"
+            />
           </div>
           <h3>Description</h3>
           <TextEditor
@@ -60,12 +66,19 @@ function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
                 background-color: #f4f5f7;
                 border-radius: 3px;
                 padding: 12px;
+                position: relative;
               }
               .card-details-header {
                 font-size: 20px;
                 font-weight: 600;
                 line-height: 24px;
                 display: flex;
+                width: 600px;
+              }
+              .close-action {
+                position: absolute;
+                right: 8px;
+                top: 8px;
               }
             `}
           </style>
