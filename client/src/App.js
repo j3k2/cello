@@ -24,62 +24,54 @@ import authService from "./services/auth";
 
 import Spinner from "react-spinkit";
 import "typeface-pacifico";
-import css from "styled-jsx/css";
 
 function AuthenticatedApp() {
   const userContext = useUserContext();
 
-  function getLinkStyle() {
-    return css.resolve`
-      a {
-        &:visited,
-        &:link,
-        &:active {
-          color: #fff;
-          text-decoration: underline;
-        }
-        &:hover {
-          color: #c4c9cc;
-        }
-      }
-    `;
-  }
-  const { className: linkClassName, styles: linkStyleElement } = getLinkStyle();
-
   return (
     <Router>
-      <Header>
-        <span>
-          <Link className={linkClassName} to="/">
-            Home
-          </Link>
-        </span>
-        <span>
-          Cello
-          <style jsx>
-            {`
-              span {
-                font-family: "Pacifico";
-                font-size: 20px;
-                padding-top: 2px;
-              }
-            `}
-          </style>
-        </span>
-        <div>
-          <span>{`Logged in as: ${userContext.user.username}`}</span>
-          <Link
-            className={linkClassName}
-            onClick={() => {
-              authService.logout();
-              userContext.setUser(null);
-            }}
-          >
-            Logout
-          </Link>
-        </div>
-        {linkStyleElement}
-      </Header>
+      <Header
+        left={() => {
+          return (
+            <span>
+              <Link className="light" to="/">
+                Home
+              </Link>
+            </span>
+          );
+        }}
+        center={() => {
+          return (
+            <span>
+              Cello
+              <style jsx>
+                {`
+                  span {
+                    font-family: "Pacifico";
+                    font-size: 20px;
+                  }
+                `}
+              </style>
+            </span>
+          );
+        }}
+        right={() => {
+          return (
+            <React.Fragment>
+              <span>{`Logged in as: ${userContext.user.username}`}</span>
+              <Link
+                className="light"
+                onClick={() => {
+                  authService.logout();
+                  userContext.setUser(null);
+                }}
+              >
+                Logout
+              </Link>
+            </React.Fragment>
+          );
+        }}
+      />
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/board/:id">

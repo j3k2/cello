@@ -14,6 +14,7 @@ function BoardItem(props) {
             height: 96px;
             margin: 10px;
             width: 12%;
+            min-width: 130px;
             cursor: pointer;
             background-color: rgb(0, 121, 191);
             span {

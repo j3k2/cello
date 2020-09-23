@@ -41,13 +41,31 @@ code {
   align-items: center;
 }
 
-header * {
-  margin: 0px 5px;
-}
-
-header {
-  display: flex;
-  justify-content: flex-end;
+header.app-header {
+  height: 40px;
+  background: #026aa7;
+  color: white;
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 6px;
+  .center {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .left {
+    > * {
+      margin-left: 8px;
+    }
+  }
+  .right {
+    text-align: right;
+    > * {
+      margin-right: 8px;
+    }
+  }
 }
 
 input::placeholder,
@@ -77,7 +95,7 @@ input[type="submit"] {
   background-color: transparent;
   display: inline;
   &:hover {
-    background-color: rgba(9,30,66,.08);
+    background-color: rgba(9, 30, 66, 0.08);
   }
 }
 
@@ -97,8 +115,8 @@ button.warning {
   padding: 6px 12px;
   color: #fff;
   background-color: #cf513d;
-  &:hover{
-    background-color:#eb5a46;
+  &:hover {
+    background-color: #eb5a46;
   }
 }
 
@@ -122,5 +140,17 @@ a {
   }
   &:hover {
     text-decoration: underline;
+  }
+}
+
+a.light {
+  &:visited,
+  &:link,
+  &:active {
+    color: #fff;
+    text-decoration: underline;
+  }
+  &:hover {
+    color: #c4c9cc;
   }
 }

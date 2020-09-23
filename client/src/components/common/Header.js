@@ -2,21 +2,10 @@ import React from "react";
 
 export default function Header(props) {
   return (
-    <header className="header">
-      {props.children}
-      <style jsx>
-        {`
-          .header {
-            height: 40px;
-            background: #026aa7;
-            color: white;
-            flex: 0 0 auto;
-            display: flex;
-            justify-content: space-between;
-            padding-top: 6px;
-          }
-        `}
-      </style>
+    <header className="app-header">
+      <div className="left">{props.left && props.left()}</div>
+      <div className="center">{props.center && props.center()}</div>
+      <div className="right">{props.right && props.right()}</div>
     </header>
   );
 }
