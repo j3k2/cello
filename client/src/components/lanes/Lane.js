@@ -44,7 +44,6 @@ const Lane = (props) => {
               laneId={props.id}
               editCard={props.editCard}
               cards={props.cards}
-              laneId={props.id}
               deleteCard={props.deleteCard}
             />
             <Creator

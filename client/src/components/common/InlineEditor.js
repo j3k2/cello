@@ -93,7 +93,7 @@ const InlineEditor = (props) => {
               value={content}
               placeholder={props.placeholder}
               onKeyDown={(e) => {
-                if (e.key == "Enter") {
+                if (e.key === "Enter") {
                   e.preventDefault();
                   updateContent();
                 }

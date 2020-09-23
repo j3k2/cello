@@ -60,13 +60,13 @@ const Creator = ({
           />
           <div className="creator-form-actions">
             <button>{buttonText}</button>
-            <a
+            <span className="close-action"
               onClick={() => {
                 closeAction ? closeAction() : setShowForm(false);
               }}
             >
               <MdClose size={24} />
-            </a>
+            </span>
           </div>
         </form>
       )}
@@ -117,7 +117,7 @@ const Creator = ({
             margin-right: 8px;
           }
 
-          .creator-form-actions a {
+          .creator-form-actions .close-action {
             cursor: pointer;
             padding-top: 4px;
             color: #6b778c;
