@@ -29,7 +29,7 @@ const Login = () => {
 
       if (user) {
         userContext.setUser(user);
-        history.push("/dashboard");
+        history.push("/");
       }
     } catch (err) {
       console.log(err);

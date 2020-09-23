@@ -75,8 +75,6 @@ textarea::placeholder {
 
 input:not([type="submit"]) {
   background: #fff;
-  // box-shadow: inset 0 0 0 2px #0079bf;
-  // border: none;
   border: solid 2px #0079bf;
   margin: 0;
   width: 100%;
@@ -100,6 +98,7 @@ input[type="submit"] {
 }
 
 form button,
+button.action,
 input[type="submit"] {
   height: 32px;
   padding: 6px 12px;
