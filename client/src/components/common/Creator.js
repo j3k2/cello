@@ -1,6 +1,6 @@
 import React from "react";
 import { MdClose, MdAdd } from "react-icons/md";
-import useOnOutsideClick from "../hooks/useOnOutsideClick";
+import useOnOutsideClick from "../../hooks/useOnOutsideClick";
 
 const Creator = ({
   type,

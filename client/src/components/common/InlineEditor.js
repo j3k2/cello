@@ -2,7 +2,7 @@ import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import AutosizeInput from "react-input-autosize";
 import css from "styled-jsx/css";
-import useOnOutsideClick from "../hooks/useOnOutsideClick";
+import useOnOutsideClick from "../../hooks/useOnOutsideClick";
 
 const InlineEditor = (props) => {
   const [editing, setEditing] = React.useState(false);
