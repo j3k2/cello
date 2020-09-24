@@ -183,81 +183,89 @@ const Board = () => {
 
   return (
     <div className="board-view-wrapper">
-      <div className="board-view-header">
-        {board && !loading && (
-          <div className="board-title">
-            <InlineEditor
-              hover
-              content={board.title}
-              updateContent={async (updatedTitle) => {
-                editBoard({ title: updatedTitle });
-                const updatedFields = await boardsService.editBoard(params.id, {
-                  title: updatedTitle,
-                });
-                if (updatedFields) {
-                  editBoard(updatedFields);
+      {board && !loading && (
+        <React.Fragment>
+          <div className="board-view-header">
+            <div className="board-title">
+              <InlineEditor
+                hover
+                content={board.title}
+                updateContent={async (updatedTitle) => {
+                  editBoard({ title: updatedTitle });
+                  const updatedFields = await boardsService.editBoard(
+                    params.id,
+                    {
+                      title: updatedTitle,
+                    }
+                  );
+                  if (updatedFields) {
+                    editBoard(updatedFields);
+                  }
+                }}
+              />
+            </div>
+            <Deleter
+              delete={async () => {
+                const res = await boardsService.deleteBoard(params.id);
+                if (res) {
+                  history.push("/");
                 }
               }}
+              message="Are you sure you want to delete this board and its lists and cards? There is no undo."
+              dialogTitle="Delete Board?"
+              className="overlay"
             />
           </div>
-        )}
-        <Deleter
-          delete={async () => {
-            const res = await boardsService.deleteBoard(params.id);
-            if (res) {
-              history.push("/");
-            }
-          }}
-          message="Are you sure you want to delete this board and its lists and cards? There is no undo."
-          dialogTitle="Delete Board?"
-          className="overlay"
-        />
-      </div>
-      <div className="board-view-container">
-        {board && !loading && (
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable
-              type="LANE"
-              droppableId="droppable.board"
-              direction="horizontal"
-            >
-              {(provided, snapshot) => (
-                <div
-                  className="board-view-content"
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
-                  <LanesList
-                    lanes={board.lanes}
-                    addCard={addCard}
-                    editLane={editLane}
-                    editCard={editCard}
-                    deleteCard={deleteCard}
-                    deleteLane={deleteLane}
-                  />
-                  {provided.placeholder}
-                  <LaneCreator
-                    lanes={board.lanes}
-                    create={async (laneTitle) => {
-                      const lane = await lanesService.createLane({
-                        boardId: params.id,
-                        title: laneTitle,
-                      });
-                      if (lane) {
-                        addLane(lane);
-                      }
-                    }}
-                  />
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        )}
-        {!board && !loading && (
-          <div className="page-message">Board not found</div>
-        )}
-        {loading && <Spinner className="page-loading-spinner" name="circle" />}
-      </div>
+          <div className="board-view-container">
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable
+                type="LANE"
+                droppableId="droppable.board"
+                direction="horizontal"
+              >
+                {(provided, snapshot) => (
+                  <div
+                    className="board-view-content"
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <LanesList
+                      lanes={board.lanes}
+                      addCard={addCard}
+                      editLane={editLane}
+                      editCard={editCard}
+                      deleteCard={deleteCard}
+                      deleteLane={deleteLane}
+                    />
+                    {provided.placeholder}
+                    <LaneCreator
+                      lanes={board.lanes}
+                      create={async (laneTitle) => {
+                        const lane = await lanesService.createLane({
+                          boardId: params.id,
+                          title: laneTitle,
+                        });
+                        if (lane) {
+                          addLane(lane);
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          </div>
+        </React.Fragment>
+      )}
+
+      {!board && !loading && (
+        <div className="page-message">
+          <h1>Board not found.</h1>
+        </div>
+      )}
+      {loading && (
+        <Spinner className="page-loading-spinner" name="circle" />
+      )}
       <style jsx>
         {`
           .board-view-wrapper {
@@ -265,6 +273,7 @@ const Board = () => {
             display: flex;
             flex-direction: column;
             background: rgb(0, 121, 191);
+            color: #fff;
           }
 
           .board-view-header {
@@ -278,12 +287,6 @@ const Board = () => {
           .board-view-container {
             position: relative;
             flex-grow: 1;
-          }
-
-          .page-message {
-            justify-content: center;
-            display: flex;
-            font-size: 26px;
           }
 
           .board-view-content {
