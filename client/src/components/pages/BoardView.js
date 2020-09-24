@@ -141,7 +141,7 @@ const Board = () => {
     const lanes = [...board.lanes];
     const laneIdx = lanes.findIndex((lane) => lane.id === id);
     const lane = { ...lanes[laneIdx], ...edits };
-    
+
     lanes.splice(laneIdx, 1, lane);
 
     setBoard({ ...board, lanes });
@@ -210,7 +210,7 @@ const Board = () => {
           }}
           message="Are you sure you want to delete this board and its lists and cards? There is no undo."
           dialogTitle="Delete Board?"
-          overlay
+          className="overlay"
         />
       </div>
       <div className="board-view-container">

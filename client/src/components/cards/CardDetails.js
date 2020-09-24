@@ -38,6 +38,7 @@ function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
               }}
             />
             <Deleter
+              className="action"
               delete={async () => {
                 const res = await cardsService.deleteCard(id);
                 if (res) {

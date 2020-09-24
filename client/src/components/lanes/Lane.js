@@ -30,14 +30,17 @@ const Lane = (props) => {
                 }}
               />
               <div className="deleter-wrapper">
-                <Deleter delete={async ()=>{
-                  const res = await lanesService.deleteLane(props.id);
-                  if(res) {
-                    props.deleteLane(props.id);
-                  }
-                }}
-                message="Are you sure you want to delete this list and its cards? There is no undo."
-                dialogTitle="Delete List?" />
+                <Deleter
+                  className="action"
+                  delete={async () => {
+                    const res = await lanesService.deleteLane(props.id);
+                    if (res) {
+                      props.deleteLane(props.id);
+                    }
+                  }}
+                  message="Are you sure you want to delete this list and its cards? There is no undo."
+                  dialogTitle="Delete List?"
+                />
               </div>
             </div>
             <CardsList
@@ -88,7 +91,7 @@ const Lane = (props) => {
                 position: relative;
               }
 
-              .deleter-wrapper{
+              .deleter-wrapper {
                 position: absolute;
                 top: 4px;
                 right: 4px;

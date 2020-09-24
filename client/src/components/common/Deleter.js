@@ -20,24 +20,16 @@ function Deleter(props) {
         onClick={() => {
           setShowDialog(true);
         }}
-        className={`deleter-button ${props.overlay ? "overlay" : ""}`}
+        className={`deleter-button ${props.className ? props.className : ""}`}
       >
         <MdDelete />
       </button>
-
       <style jsx>
         {`
           .deleter-button {
             padding: 6px;
             height: 32px;
             width: 32px;
-          }
-          .overlay {
-            color: #fff;
-            background-color: hsla(0, 0%, 100%, 0.24);
-            &:hover {
-              background-color: hsla(0, 0%, 100%, 0.32);
-            }
           }
         `}
       </style>

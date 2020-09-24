@@ -37,10 +37,10 @@ export default function Landing() {
         right={() => {
           return (
             <React.Fragment>
-              <Link className="light" to="/login">
+              <Link className="button" to="/login">
                 Log in
               </Link>
-              <Link className="light" to="/signup">
+              <Link className="button" to="/signup">
                 Sign Up
               </Link>
             </React.Fragment>
@@ -52,7 +52,7 @@ export default function Landing() {
           Cello is a full-stack Trello clone built with Postgres, NodeJS, and React.
           Sign up/log in with your own account, or click this button to see a demo without signing up:
           <br/>
-          <button className="action" onClick={login}>
+          <button className="submit" onClick={login}>
             Log in as demo user
           </button>
         </div>

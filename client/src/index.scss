@@ -17,6 +17,7 @@ html {
 
 body * {
   box-sizing: border-box;
+  outline: none;
 }
 
 #root {
@@ -41,33 +42,6 @@ code {
   align-items: center;
 }
 
-header.app-header {
-  height: 40px;
-  background: #026aa7;
-  color: white;
-  flex: 0 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 6px;
-  .center {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .left {
-    > * {
-      margin-left: 8px;
-    }
-  }
-  .right {
-    text-align: right;
-    > * {
-      margin-right: 8px;
-    }
-  }
-}
-
 input::placeholder,
 textarea::placeholder {
   color: #5e6c84;
@@ -81,8 +55,17 @@ input:not([type="submit"]) {
   color: #172b4d;
   border-radius: 3px;
   font: inherit;
-  outline: none;
   padding: 8px 10px;
+}
+
+textarea {
+  border: solid 2px #0079bf;
+  border-radius: 3px;
+  resize: none;
+  font: inherit;
+  width: 100%;
+  vertical-align: top;
+  margin: 0;
 }
 
 button,
@@ -90,18 +73,13 @@ input[type="submit"] {
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  background-color: transparent;
-  display: inline;
-  &:hover {
-    background-color: rgba(9, 30, 66, 0.08);
-  }
+  height: 32px;
+  padding: 6px 12px;
 }
 
 form button,
-button.action,
+button.submit,
 input[type="submit"] {
-  height: 32px;
-  padding: 6px 12px;
   background-color: #5aac44;
   color: #fff !important;
   &:hover {
@@ -109,25 +87,27 @@ input[type="submit"] {
   }
 }
 
+button.action {
+  background-color: transparent;
+  &:hover {
+    background-color: rgba(9, 30, 66, 0.08);
+  }
+}
+
+button.overlay {
+  color: #fff;
+  background-color: hsla(0, 0%, 100%, 0.24);
+  &:hover {
+    background-color: hsla(0, 0%, 100%, 0.32);
+  }
+}
+
 button.warning {
-  height: 32px;
-  padding: 6px 12px;
   color: #fff;
   background-color: #cf513d;
   &:hover {
     background-color: #eb5a46;
   }
-}
-
-textarea {
-  border: solid 2px #0079bf;
-  border-radius: 3px;
-  resize: none;
-  outline: none;
-  font: inherit;
-  width: 100%;
-  vertical-align: top;
-  margin: 0;
 }
 
 a {
@@ -151,6 +131,20 @@ a.light {
   }
   &:hover {
     color: #c4c9cc;
+  }
+}
+
+a.button {
+  border-radius: 3px;
+  display: inline-block;
+  height: 32px;
+  padding: 6px 12px;
+  color: #fff;
+  background-color: hsla(0, 0%, 100%, 0.24);
+  text-decoration: none;
+  &:hover {
+    background-color: hsla(0, 0%, 100%, 0.32);
+    text-decoration: none;
   }
 }
 

@@ -16,9 +16,9 @@ import Dashboard from "./components/pages/Dashboard";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Landing from "./components/pages/Landing";
-import Header from "./components/common/Header";
-
 import BoardView from "./components/pages/BoardView";
+
+import Header from "./components/common/Header";
 
 import authService from "./services/auth";
 
@@ -33,11 +33,9 @@ function AuthenticatedApp() {
       <Header
         left={() => {
           return (
-            <span>
-              <Link className="light" to="/">
-                Home
-              </Link>
-            </span>
+            <Link className="button" to="/">
+              Home
+            </Link>
           );
         }}
         center={() => {
@@ -59,15 +57,15 @@ function AuthenticatedApp() {
           return (
             <React.Fragment>
               <span>{`Logged in as: ${userContext.user.username}`}</span>
-              <Link
-                className="light"
+              <button
+                className="overlay"
                 onClick={() => {
                   authService.logout();
                   userContext.setUser(null);
                 }}
               >
-                Logout
-              </Link>
+                Log Out
+              </button>
             </React.Fragment>
           );
         }}
