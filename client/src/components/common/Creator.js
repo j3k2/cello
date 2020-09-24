@@ -1,5 +1,6 @@
 import React from "react";
 import { MdClose, MdAdd } from "react-icons/md";
+import useOnOutsideClick from "../hooks/useOnOutsideClick";
 
 const Creator = ({
   type,
@@ -13,22 +14,11 @@ const Creator = ({
 
   const [content, setContent] = React.useState("");
 
-  const wrapperRef = React.useRef(null);
-
-  const inputRef = React.useRef(null);
-
-  React.useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setShowForm(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [wrapperRef, content]);
+  const ref = useOnOutsideClick(() => {
+    setShowForm(false);
+  });
+  
+  const inputRef = React.useRef();
 
   const createEntity = async () => {
     if (content.length) {
@@ -39,10 +29,9 @@ const Creator = ({
   };
 
   return (
-    <div className={`creator-section ${type}`}>
+    <div ref={ref} className={`creator-section ${type}`}>
       {(showForm || !toggleText) && (
         <form
-          ref={wrapperRef}
           className={`creator-form ${type}`}
           onSubmit={(e) => {
             e.preventDefault();
@@ -60,7 +49,8 @@ const Creator = ({
           />
           <div className="creator-form-actions">
             <button>{buttonText}</button>
-            <span className="close-action"
+            <span
+              className="close-action"
               onClick={() => {
                 closeAction ? closeAction() : setShowForm(false);
               }}
@@ -130,7 +120,7 @@ const Creator = ({
               background-color: hsla(0, 0%, 100%, 0.32);
             }
           }
-          
+
           .creator-toggle.card {
             height: 28px;
             background: transparent;
@@ -142,7 +132,7 @@ const Creator = ({
               color: #172b4d;
             }
           }
-          .creator-form.card{
+          .creator-form.card {
             padding: 0px 8px;
             margin-top: 8px;
           }

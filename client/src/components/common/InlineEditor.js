@@ -2,13 +2,12 @@ import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import AutosizeInput from "react-input-autosize";
 import css from "styled-jsx/css";
+import useOnOutsideClick from "../hooks/useOnOutsideClick";
 
 const InlineEditor = (props) => {
   const [editing, setEditing] = React.useState(false);
 
   const [content, setContent] = React.useState(props.content);
-
-  const ref = React.useRef(null);
 
   const updateContent = () => {
     if (content.length && content !== props.content) {
@@ -17,18 +16,7 @@ const InlineEditor = (props) => {
     setEditing(false);
   };
 
-  React.useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        updateContent();
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref, content, updateContent]);
+  const ref = useOnOutsideClick(updateContent);
 
   function getTextareaStyle() {
     return css.resolve`
@@ -62,7 +50,12 @@ const InlineEditor = (props) => {
   } = getInputStyle();
 
   return (
-    <div className={`editor ${props.lane ? "lane" : ""} ${props.hover ? "hover" : ""} ${props.multiline ? "multiline" : ""}`} ref={ref}>
+    <div
+      className={`editor ${props.lane ? "lane" : ""} ${
+        props.hover ? "hover" : ""
+      } ${props.multiline ? "multiline" : ""}`}
+      ref={ref}
+    >
       {editing && (
         <form
           onSubmit={(e) => {
@@ -126,31 +119,31 @@ const InlineEditor = (props) => {
           .editor {
             width: min-content;
           }
-          .multiline.editor{
+          .multiline.editor {
             width: 100%;
           }
           .editor-content {
             cursor: pointer;
-            padding: 2px; 
+            padding: 2px;
           }
-          .hover .editor-content{
+          .hover .editor-content {
             border-radius: 3px;
             padding: 6px 12px;
             padding-right: 18px;
-            &:hover{
-              background-color: hsla(0,0%,100%,.32);
+            &:hover {
+              background-color: hsla(0, 0%, 100%, 0.32);
             }
           }
-          .multiline .editor-content{
+          .multiline .editor-content {
             padding: 4px;
           }
           .multiline form {
             width: auto;
           }
-          .lane .editor-content{
+          .lane .editor-content {
             width: 224px;
           }
-          .lane form{
+          .lane form {
             width: 228px;
           }
         `}

@@ -1,13 +1,12 @@
 import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import css from "styled-jsx/css";
+import useOnOutsideClick from "../hooks/useOnOutsideClick";
 
 function TextEditor(props) {
   const [editing, setEditing] = React.useState(false);
 
   const [text, setText] = React.useState(props.text);
-
-  const ref = React.useRef(null);
 
   const updateText = () => {
     if (text.length && text !== props.text) {
@@ -16,18 +15,7 @@ function TextEditor(props) {
     setEditing(false);
   };
 
-  React.useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        updateText();
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref, updateText]);
+  const ref = useOnOutsideClick(updateText);
 
   function getTextareaStyle() {
     return css.resolve`
