@@ -7,8 +7,15 @@ import LaneWrapper from "./LaneWrapper";
 import lanesService from "../../services/lanes";
 import { Draggable } from "react-beautiful-dnd";
 import Deleter from "../common/Deleter";
+import { useBoardContext } from "../../contexts/Board";
 
 const Lane = (props) => {
+  const {
+    addCard,
+    editLane,
+    deleteLane
+  } = useBoardContext();
+
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
       {(provided, snapshot) => (
@@ -20,12 +27,12 @@ const Lane = (props) => {
                 lane
                 content={props.title}
                 updateContent={async (updatedTitle) => {
-                  props.editLane(props.id, { title: updatedTitle });
+                  editLane(props.id, { title: updatedTitle });
                   const updatedFields = await lanesService.editLane(props.id, {
                     title: updatedTitle,
                   });
                   if (updatedFields) {
-                    props.editLane(props.id, updatedFields);
+                    editLane(props.id, updatedFields);
                   }
                 }}
               />
@@ -35,7 +42,7 @@ const Lane = (props) => {
                   delete={async () => {
                     const res = await lanesService.deleteLane(props.id);
                     if (res) {
-                      props.deleteLane(props.id);
+                      deleteLane(props.id);
                     }
                   }}
                   message="Are you sure you want to delete this list and its cards? There is no undo."
@@ -45,9 +52,7 @@ const Lane = (props) => {
             </div>
             <CardsList
               laneId={props.id}
-              editCard={props.editCard}
               cards={props.cards}
-              deleteCard={props.deleteCard}
             />
             <Creator
               create={async (cardTitle) => {
@@ -56,7 +61,7 @@ const Lane = (props) => {
                   title: cardTitle,
                 });
                 if (card) {
-                  props.addCard(props.id, card);
+                  addCard(props.id, card);
                 }
               }}
               type="card"

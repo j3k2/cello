@@ -15,8 +15,6 @@ const CardsList = (props) => {
             props.cards.map((card, idx) => {
               return (
                 <Card
-                  deleteCard={props.deleteCard}
-                  editCard={props.editCard}
                   laneId={props.laneId}
                   title={card.title}
                   idx={idx}

@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 import { useUserContext } from "./contexts/User";
+import { BoardProvider } from "./contexts/Board";
 
 import Dashboard from "./components/pages/Dashboard";
 import Login from "./components/pages/Login";
@@ -73,7 +74,9 @@ function AuthenticatedApp() {
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/board/:id">
-          <BoardView />
+          <BoardProvider>
+            <BoardView />
+          </BoardProvider>
         </Route>
         <Route path="*">
           <Redirect to="/dashboard" />

@@ -4,8 +4,9 @@ import TextEditor from "../common/TextEditor";
 import cardsService from "../../services/cards";
 import Deleter from "../common/Deleter";
 import { MdClose } from "react-icons/md";
+import { useBoardContext } from "../../contexts/Board";
 
-function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
+function CardDetails({ closeAction, id, laneId, title }) {
   const [card, setCard] = React.useState();
 
   React.useEffect(() => {
@@ -16,12 +17,14 @@ function CardDetails({ deleteCard, closeAction, id, editCard, laneId, title }) {
     fetchCard();
   }, [id]);
 
+  const { editCard, deleteCard } = useBoardContext();
+
   return (
     <React.Fragment>
       {card && (
         <div className="card-details">
           <span className="close-action" onClick={closeAction}>
-            <MdClose size={20}/>
+            <MdClose size={20} />
           </span>
           <div className="card-details-header">
             <InlineEditor

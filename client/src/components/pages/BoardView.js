@@ -7,152 +7,33 @@ import InlineEditor from "../common/InlineEditor";
 import Deleter from "../common/Deleter";
 
 import boardsService from "../../services/boards";
-import cardsService from "../../services/cards";
 import lanesService from "../../services/lanes";
+
+import { useBoardContext } from "../../contexts/Board";
 
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Spinner from "react-spinkit";
 
-const Board = () => {
+const BoardView = () => {
   const params = useParams();
   const history = useHistory();
-
-  const [board, setBoard] = React.useState(null);
-
-  const [loading, setLoading] = React.useState(true);
+  const {
+    board,
+    boardLoading,
+    updateBoardId,
+    addLane,
+    editBoard,
+    reorderLaneCards,
+    moveCardToLane,
+    moveLane
+  } = useBoardContext();
 
   React.useEffect(() => {
-    const fetchBoard = async () => {
-      const board = await boardsService.getBoard(params.id);
-      if (board) {
-        setBoard(board);
-        document.title = `${board.title} | Cello`;
-      }
-      setLoading(false);
+    updateBoardId(params.id);
+    return () => {
+      updateBoardId();
     };
-    fetchBoard();
-  }, [params.id]);
-
-  const addLane = (lane) => {
-    lane.cards = [];
-
-    setBoard({ ...board, lanes: [...board.lanes, lane] });
-  };
-
-  const addCard = (laneId, card) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-
-    lane.cards = [...lane.cards, card];
-
-    setBoard({ ...board, lanes });
-  };
-
-  const reorderLaneCards = (laneId, cardId, prevIdx, nextIdx) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-    const cards = [...lane.cards];
-    const card = cards.find((card) => card.id === cardId);
-
-    cards.splice(prevIdx, 1);
-    cards.splice(nextIdx, 0, card);
-    lane.cards = cards;
-
-    setBoard({ ...board, lanes });
-    cardsService.moveCard(cardId, {
-      next: nextIdx,
-      prev: prevIdx,
-      laneId,
-    });
-  };
-
-  const moveCardToLane = (cardId, prevLaneId, nextLaneId, prevIdx, nextIdx) => {
-    const lanes = [...board.lanes];
-    const prevLane = lanes.find((lane) => lane.id === prevLaneId);
-    const prevCards = [...prevLane.cards];
-    const nextLane = lanes.find((lane) => lane.id === nextLaneId);
-    const nextCards = [...nextLane.cards];
-    const card = prevCards.find((card) => card.id === cardId);
-
-    prevCards.splice(prevIdx, 1);
-    nextCards.splice(nextIdx, 0, card);
-    prevLane.cards = prevCards;
-    nextLane.cards = nextCards;
-
-    setBoard({ ...board, lanes });
-    cardsService.moveCard(cardId, {
-      next: nextIdx,
-      prev: prevIdx,
-      prevLaneId,
-      nextLaneId,
-    });
-  };
-
-  const moveLane = (laneId, prevIdx, nextIdx) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-
-    lanes.splice(prevIdx, 1);
-    lanes.splice(nextIdx, 0, lane);
-
-    setBoard({ ...board, lanes });
-    lanesService.moveLane(laneId, {
-      next: nextIdx,
-      prev: prevIdx,
-      boardId: params.id,
-    });
-  };
-
-  const deleteCard = (id, laneId) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-    const cards = [...lane.cards];
-    const cardIdx = cards.findIndex((card) => card.id === id);
-
-    cards.splice(cardIdx, 1);
-    lane.cards = cards;
-
-    setBoard({ ...board, lanes });
-  };
-
-  const editCard = (cardId, laneId, edits) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-    const cards = [...lane.cards];
-    const cardIdx = cards.findIndex((card) => card.id === cardId);
-    const card = { ...cards[cardIdx], ...edits };
-
-    cards.splice(cardIdx, 1, card);
-    lane.cards = cards;
-
-    setBoard({ ...board, lanes });
-  };
-
-  const deleteLane = (id) => {
-    const lanes = [...board.lanes];
-    const laneIdx = lanes.findIndex((lane) => lane.id === id);
-
-    lanes.splice(laneIdx, 1);
-
-    setBoard({ ...board, lanes });
-  };
-
-  const editLane = (id, edits) => {
-    const lanes = [...board.lanes];
-    const laneIdx = lanes.findIndex((lane) => lane.id === id);
-    const lane = { ...lanes[laneIdx], ...edits };
-
-    lanes.splice(laneIdx, 1, lane);
-
-    setBoard({ ...board, lanes });
-  };
-
-  const editBoard = (updates) => {
-    const updatedBoard = { ...board, ...updates };
-
-    setBoard(updatedBoard);
-    document.title = `${updatedBoard.title} | Cello`;
-  };
+  }, [updateBoardId, params.id]);
 
   const onDragEnd = (result, provided) => {
     const { destination, source, draggableId, type } = result;
@@ -183,7 +64,7 @@ const Board = () => {
 
   return (
     <div className="board-view-wrapper">
-      {board && !loading && (
+      {board && !boardLoading && (
         <React.Fragment>
           <div className="board-view-header">
             <div className="board-title">
@@ -231,11 +112,6 @@ const Board = () => {
                   >
                     <LanesList
                       lanes={board.lanes}
-                      addCard={addCard}
-                      editLane={editLane}
-                      editCard={editCard}
-                      deleteCard={deleteCard}
-                      deleteLane={deleteLane}
                     />
                     {provided.placeholder}
                     <LaneCreator
@@ -258,12 +134,12 @@ const Board = () => {
         </React.Fragment>
       )}
 
-      {!board && !loading && (
+      {!board && !boardLoading && (
         <div className="page-message">
           <h1>Board not found.</h1>
         </div>
       )}
-      {loading && (
+      {boardLoading && (
         <Spinner className="page-loading-spinner" name="circle" />
       )}
       <style jsx>
@@ -314,4 +190,4 @@ const Board = () => {
   );
 };
 
-export default Board;
+export default BoardView;

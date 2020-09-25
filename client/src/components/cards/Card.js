@@ -41,8 +41,6 @@ const Card = (props) => {
           closeAction={() => {
             setShowModal(false);
           }}
-          deleteCard={props.deleteCard}
-          editCard={props.editCard}
         />
         {modalStyleElement}
       </ReactModal>
