@@ -72,7 +72,7 @@ const BoardView = () => {
                 hover
                 content={board.title}
                 updateContent={async (updatedTitle) => {
-                  const board = { ...board };
+                  const oldBoard = { ...board };
                   editBoard({ title: updatedTitle });
                   const updatedFields = await boardsService.editBoard(
                     params.id,
@@ -83,7 +83,7 @@ const BoardView = () => {
                   if (updatedFields) {
                     editBoard(updatedFields);
                   } else {
-                    editBoard(board);
+                    editBoard(oldBoard);
                   }
                 }}
               />
