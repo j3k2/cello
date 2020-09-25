@@ -5,7 +5,7 @@ import lanesService from "../../services/lanes";
 import { useBoardContext } from "../../contexts/Board";
 
 function LaneCreator(props) {
-  const { addLane } = useBoardContext();
+  const { addLane, boardId } = useBoardContext();
 
   return (
     <LaneWrapper>
@@ -15,7 +15,7 @@ function LaneCreator(props) {
           buttonClassName="overlay"
           create={async (laneTitle) => {
             const lane = await lanesService.createLane({
-              boardId: props.boardId,
+              boardId,
               title: laneTitle,
             });
             if (lane) {

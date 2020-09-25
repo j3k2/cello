@@ -154,6 +154,7 @@ function BoardProvider(props) {
     <BoardContext.Provider
       value={{
         board,
+        boardId,
         boardLoading,
         updateBoardId,
         addCard,

@@ -113,7 +113,7 @@ const BoardView = () => {
                   >
                     <LanesList lanes={board.lanes} />
                     {provided.placeholder}
-                    <LaneCreator boardId={params.id} numLanes={board.lanes && board.lanes.length} />
+                    <LaneCreator numLanes={board.lanes && board.lanes.length} />
                   </div>
                 )}
               </Droppable>
