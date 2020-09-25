@@ -1,5 +1,5 @@
 # Cello 
-Cello is a full-stack Trello clone built with Postgres, NodeJS, and React. 
+Cello is a full-stack Trello clone built with Postgres, Node.js, and React. 
 
 Features:
 - Includes drag and drop lists and inline editing features of Trello
