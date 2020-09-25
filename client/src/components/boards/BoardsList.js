@@ -1,35 +1,65 @@
-import React from 'react';
-import board from '../../services/boards';
-import BoardCreator from './BoardCreator';
-import './boards.css';
-
+import React from "react";
+import boardsService from "../../services/boards";
+import BoardCreator from "./BoardCreator";
+import BoardItem from "./BoardItem";
+import { useHistory } from "react-router-dom";
 
 const BoardsList = () => {
-	const [boards, setBoards] = React.useState([]);
+  const history = useHistory();
 
-	const fetchBoards = async () => {
-		board.getBoards().then((res) => {
-			console.log(res);
-			setBoards(res)
-		})
-	}
+  const [boards, setBoards] = React.useState([]);
 
-	React.useEffect(() => {
-		fetchBoards();
-	}, [])
+  const fetchBoards = async () => {
+    const boards = await boardsService.getBoards();
+    if (boards) {
+      setBoards(boards);
+    }
+  };
 
-	return (
-		<React.Fragment>
-			{boards.map(board => {
-				return (<div key={board.id} className="board-item">
-					{board.title}
-				</div>)
-			})}
-			<BoardCreator updateList={(createdBoard) => {
-				setBoards([...boards, createdBoard])
-			}} />
-		</React.Fragment>
-	)
-}
+  React.useEffect(() => {
+    document.title = "Boards | Cello";
+    fetchBoards();
+  }, []);
 
-export default BoardsList; 
+  return (
+    <React.Fragment>
+      <div className="board-list-title">Your boards</div>
+      <div className="board-list">
+        {boards.map((board) => {
+          return (
+            <BoardItem
+              key={board.id}
+              handleClick={() => {
+                history.push(`/board/${board.id}`);
+							}}
+							text={board.title}
+            />
+          );
+        })}
+        <BoardCreator
+          updateList={(createdBoard) => {
+            setBoards([...boards, createdBoard]);
+          }}
+        />
+      </div>
+      <style jsx>
+        {`
+          .board-list {
+            display: flex;
+            flex-wrap: wrap;
+          }
+
+          .board-list-title {
+            align-self: flex-start;
+            margin-left: 5px;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 10px;
+          }
+        `}
+      </style>
+    </React.Fragment>
+  );
+};
+
+export default BoardsList;

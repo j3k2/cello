@@ -1,51 +1,89 @@
-import React from 'react';
+import React from "react";
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  Link,
 } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
-import { useUserContext } from './contexts/User';
+import { useUserContext } from "./contexts/User";
+import { BoardProvider } from "./contexts/Board";
 
-import Dashboard from './components/pages/Dashboard';
-import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
-import Landing from './components/pages/Landing';
-import Header from './components/common/Header';
+import Dashboard from "./components/pages/Dashboard";
+import Login from "./components/pages/Login";
+import Signup from "./components/pages/Signup";
+import Landing from "./components/pages/Landing";
+import BoardView from "./components/pages/BoardView";
 
-import Board from './components/boards/Board';
+import Header from "./components/common/Header";
 
-import loadingSpinner from './assets/loading.gif';
-import auth from './services/auth';
+import authService from "./services/auth";
+
+import Spinner from "react-spinkit";
+import "typeface-pacifico";
 
 function AuthenticatedApp() {
   const userContext = useUserContext();
 
   return (
     <Router>
-      <Header>
-        <span>{`Logged in as: ${userContext.user.username}`}
-        </span>
-        <button onClick={() => {
-          auth.logout();
-          userContext.setUser(null);
-        }}>Logout</button>
-      </Header>
+      <Header
+        left={() => {
+          return (
+            <Link className="button" to="/">
+              Home
+            </Link>
+          );
+        }}
+        center={() => {
+          return (
+            <span>
+              Cello
+              <style jsx>
+                {`
+                  span {
+                    font-family: "Pacifico";
+                    font-size: 20px;
+                  }
+                `}
+              </style>
+            </span>
+          );
+        }}
+        right={() => {
+          return (
+            <React.Fragment>
+              <span>{`Logged in as: ${userContext.user.username}`}</span>
+              <button
+                className="overlay"
+                onClick={() => {
+                  authService.logout();
+                  userContext.setUser(null);
+                }}
+              >
+                Log Out
+              </button>
+            </React.Fragment>
+          );
+        }}
+      />
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/board/:id">
-          <Board />
+          <BoardProvider>
+            <BoardView />
+          </BoardProvider>
         </Route>
         <Route path="*">
           <Redirect to="/dashboard" />
         </Route>
       </Switch>
     </Router>
-  )
+  );
 }
 
 function UnauthenticatedApp() {
@@ -60,7 +98,7 @@ function UnauthenticatedApp() {
         </Route>
       </Switch>
     </Router>
-  )
+  );
 }
 
 function App() {
@@ -68,16 +106,16 @@ function App() {
   const user = userContext.user;
   const userPending = userContext.userPending;
 
-  return (<React.Fragment>
-    {userPending && <img
-      className="page-loading-spinner"
-      width={24}
-      alt="loading"
-      src={loadingSpinner} />}
-    {!userPending && user && <AuthenticatedApp />}
-    {!userPending && !user && <UnauthenticatedApp />}
-    <ToastContainer />
-  </React.Fragment>);
+  return (
+    <React.Fragment>
+      {userPending && (
+        <Spinner className="page-loading-spinner" name="circle" />
+      )}
+      {!userPending && user && <AuthenticatedApp />}
+      {!userPending && !user && <UnauthenticatedApp />}
+      <ToastContainer />
+    </React.Fragment>
+  );
 }
 
 export default App;

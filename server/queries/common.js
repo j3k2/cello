@@ -18,10 +18,11 @@ async function findOne(db, params, outputColumns) {
   return res;
 }
 
-async function find(db, params, outputColumns) {
+async function find(db, params, outputColumns, order = 'id') {
   const res = await knex(db)
     .select(outputColumns)
-    .where(params);
+    .where(params)
+    .orderBy(order);
 
   return res;
 }
@@ -33,14 +34,37 @@ async function create(db, params, outputColumns = 'id') {
 
   if (!res.length) {
     return null;
-  }  
-  
+  }
+
   return res[0];
+}
+
+async function update(db, where, params, outputColumns = '*') {
+  const res = await knex(db)
+    .update(params)
+    .where(where)
+    .returning(outputColumns);
+
+  if (!res.length) {
+    return null;
+  }
+
+  return res[0];
+}
+
+async function del(db, where) {
+  const res = await knex(db)
+    .where(where)
+    .del();
+
+  return res;
 }
 
 module.exports = {
   findOne,
   find,
   create,
-  count
+  count,
+  update,
+  del
 }
