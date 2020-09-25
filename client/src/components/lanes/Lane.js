@@ -19,7 +19,6 @@ const Lane = (props) => {
             <div className="lane-header">
               <InlineEditor
                 multiline
-                lane
                 content={props.title}
                 updateContent={async (updatedTitle) => {
                   const oldLane = { ...board.lanes[props.idx] };
@@ -49,7 +48,10 @@ const Lane = (props) => {
               </div>
             </div>
             <CardsList laneId={props.id} cards={props.cards} />
-            <CardCreator laneId={props.id} numCards={props.cards && props.cards.length}/>
+            <CardCreator
+              laneId={props.id}
+              numCards={props.cards && props.cards.length}
+            />
           </div>
           <style jsx>
             {`
@@ -71,6 +73,14 @@ const Lane = (props) => {
                 max-width: 272px;
                 flex: none;
                 position: relative;
+              }
+
+              .lane-header :global(.editor-content) {
+                width: 224px;
+              }
+
+              .lane-header :global(.editor-form) {
+                width: 228px;
               }
 
               .deleter-wrapper {

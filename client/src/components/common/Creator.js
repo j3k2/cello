@@ -1,14 +1,17 @@
 import React from "react";
 import { MdClose } from "react-icons/md";
 import useOnOutsideClick from "../../hooks/useOnOutsideClick";
+import { MdAdd } from "react-icons/md";
 
 const Creator = ({
   create,
   placeholder,
   buttonText,
   closeAction,
-  buttonComponent,
   formClassName,
+  buttonClassName,
+  toggleText,
+  hasButton,
 }) => {
   const [showForm, setShowForm] = React.useState(false);
 
@@ -29,10 +32,10 @@ const Creator = ({
   };
 
   return (
-    <div ref={ref} className={`creator-section`}>
-      {(showForm || !buttonComponent) && (
+    <div ref={ref} className="creator-wrapper">
+      {(showForm || !hasButton) && (
         <form
-          className={`creator-form ${formClassName ? formClassName : ""}`}
+          className={`creator-form ${formClassName}`}
           onSubmit={(e) => {
             e.preventDefault();
             createEntity();
@@ -61,17 +64,35 @@ const Creator = ({
         </form>
       )}
 
-      {!showForm &&
-        buttonComponent &&
-        buttonComponent({
-          onClick: () => {
+      {!showForm && hasButton && (
+        <button
+          className={`creator-button ${buttonClassName}`}
+          onClick={() => {
             setShowForm(true);
-          },
-        })}
+          }}
+        >
+          <div className="toggle-icon">
+            <MdAdd size={20} />
+          </div>
+          <div className="toggle-text">{toggleText}</div>
+        </button>
+      )}
       <style jsx>
         {`
-          .creator-section {
+          .creator-wrapper {
             display: flex;
+          }
+
+          .creator-button {
+            width: 100%;
+            display: flex;
+            .toggle-icon {
+              margin: 0 2px;
+            }
+            .toggle-text {
+              margin: 2px 0;
+              font-size: 14px;
+            }
           }
 
           .creator-form {

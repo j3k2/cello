@@ -1,6 +1,5 @@
 import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
-import css from "styled-jsx/css";
 import useOnOutsideClick from "../../hooks/useOnOutsideClick";
 
 function TextEditor(props) {
@@ -17,25 +16,11 @@ function TextEditor(props) {
 
   const ref = useOnOutsideClick(updateText);
 
-  function getTextareaStyle() {
-    return css.resolve`
-      textarea {
-        padding: 8px 12px;
-      }
-    `;
-  }
-
-  const {
-    className: textareaClassName,
-    styles: textareaStyleElement,
-  } = getTextareaStyle();
-
   return (
-    <div ref={ref}>
+    <div className="text-editor" ref={ref}>
       {editing && (
         <TextareaAutosize
           minRows={4}
-          className={textareaClassName}
           value={text}
           placeholder={props.placeholder}
           onChange={(e) => {
@@ -63,9 +48,11 @@ function TextEditor(props) {
           {props.placeholder}
         </div>
       )}
-      {textareaStyleElement}
       <style jsx>
         {`
+          .text-editor :global(textarea) {
+            padding: 8px 12px;
+          }
           .editor-display,
           .editor-toggle {
             white-space: pre-line;

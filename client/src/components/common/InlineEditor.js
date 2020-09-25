@@ -1,7 +1,6 @@
 import React from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import AutosizeInput from "react-input-autosize";
-import css from "styled-jsx/css";
 import useOnOutsideClick from "../../hooks/useOnOutsideClick";
 
 const InlineEditor = (props) => {
@@ -18,46 +17,11 @@ const InlineEditor = (props) => {
 
   const ref = useOnOutsideClick(updateContent);
 
-  function getTextareaStyle() {
-    return css.resolve`
-      textarea {
-        padding: 2px 6px;
-        position: relative;
-        top: 0px;
-        left: -4px;
-      }
-    `;
-  }
-  function getInputStyle() {
-    return css.resolve`
-      input {
-        position: relative;
-        top: -2px;
-        left: -2px;
-        padding: 6px 12px;
-      }
-    `;
-  }
-
-  const {
-    className: textareaClassName,
-    styles: textareaStyleElement,
-  } = getTextareaStyle();
-
-  const {
-    className: inputClassName,
-    styles: inputStyleElement,
-  } = getInputStyle();
-
   return (
-    <div
-      className={`editor ${props.lane ? "lane" : ""} ${
-        props.hover ? "hover" : ""
-      } ${props.multiline ? "multiline" : ""}`}
-      ref={ref}
-    >
+    <div className={`editor ${props.multiline ? "multiline" : ""}`} ref={ref}>
       {editing && (
         <form
+          className="editor-form"
           onSubmit={(e) => {
             e.preventDefault();
             updateContent();
@@ -67,7 +31,6 @@ const InlineEditor = (props) => {
             <AutosizeInput
               autoFocus
               value={content}
-              inputClassName={inputClassName}
               onFocus={(e) => {
                 e.target.select();
               }}
@@ -79,7 +42,6 @@ const InlineEditor = (props) => {
 
           {props.multiline && (
             <TextareaAutosize
-              className={textareaClassName}
               spellCheck={false}
               maxLength={255}
               autoFocus
@@ -99,8 +61,6 @@ const InlineEditor = (props) => {
               }}
             />
           )}
-          {textareaStyleElement}
-          {inputStyleElement}
         </form>
       )}
 
@@ -119,32 +79,27 @@ const InlineEditor = (props) => {
           .editor {
             width: min-content;
           }
-          .multiline.editor {
-            width: 100%;
-          }
           .editor-content {
             cursor: pointer;
             padding: 2px;
           }
-          .hover .editor-content {
-            border-radius: 3px;
-            padding: 6px 12px;
-            padding-right: 18px;
-            &:hover {
-              background-color: hsla(0, 0%, 100%, 0.32);
+          .multiline {
+            width: 100%;
+            .editor-content {
+              padding: 4px;
             }
           }
-          .multiline .editor-content {
-            padding: 4px;
+          .editor :global(textarea) {
+            padding: 2px 6px;
+            position: relative;
+            top: 0px;
+            left: -4px;
           }
-          .multiline form {
-            width: auto;
-          }
-          .lane .editor-content {
-            width: 224px;
-          }
-          .lane form {
-            width: 228px;
+          .editor :global(input) {
+            position: relative;
+            top: -2px;
+            left: -2px;
+            padding: 6px 12px;
           }
         `}
       </style>

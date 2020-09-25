@@ -170,7 +170,15 @@ const BoardView = () => {
             white-space: nowrap;
             overflow: hidden;
             margin-right: 4px;
-            padding-right: 4px;
+          }
+
+          .board-title :global(.editor-content) {
+            border-radius: 3px;
+            padding: 6px 12px;
+            padding-right: 18px;
+            &:hover {
+              background-color: hsla(0, 0%, 100%, 0.32);
+            }
           }
         `}
       </style>
