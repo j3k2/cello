@@ -7,9 +7,9 @@ Features:
 - User authentication with JWT and bcrypt password encryption
 - React Context/hooks used to keep state logic separate from presentation components and prevent unnecessary prop drilling
 - Styled-jsx as CSS-in-JS solution, letting scoped styles live in the same files as markup and logic
+- Uses transactions for related database queries
 
 To Do:
-- Use transactions for related database queries
 - Tests
 - Animations and dragging styles
 - Custom colors and backgrounds
