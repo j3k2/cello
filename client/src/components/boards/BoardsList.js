@@ -3,17 +3,22 @@ import boardsService from "../../services/boards";
 import BoardCreator from "./BoardCreator";
 import BoardItem from "./BoardItem";
 import { useHistory } from "react-router-dom";
+import Spinner from "react-spinkit";
 
 const BoardsList = () => {
   const history = useHistory();
 
   const [boards, setBoards] = React.useState([]);
 
+  const [loading, setLoading] = React.useState(true);
+
   const fetchBoards = async () => {
+    setLoading(true);
     const boards = await boardsService.getBoards();
     if (boards) {
       setBoards(boards);
     }
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -23,7 +28,7 @@ const BoardsList = () => {
 
   return (
     <React.Fragment>
-      <div className="board-list-title">Your boards</div>
+      {!loading && <React.Fragment><div className="board-list-title">Your boards</div>
       <div className="board-list">
         {boards.map((board) => {
           return (
@@ -41,7 +46,10 @@ const BoardsList = () => {
             setBoards([...boards, createdBoard]);
           }}
         />
-      </div>
+      </div></React.Fragment>}
+      {loading && (
+        <Spinner className="page-loading-spinner" name="circle" />
+      )}
       <style jsx>
         {`
           .board-list {
