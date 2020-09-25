@@ -9,12 +9,13 @@ Features:
 - Styled-jsx as CSS-in-JS solution, letting scoped styles live in the same files as markup and logic
 
 To Do:
-- Use render props for Creator/InlineEditor components
 - Use transactions for related database queries
 - Tests
+- Animations and dragging styles
+- Custom colors and backgrounds
+- Multiple users/teams
+- Activity feeds
+- Archiving functionality
+- Fully-featured cards (with dates, checklists, attachments, etc.)
 - Routing for card details modals
 - Markdown parsing for card descriptions
-- Animations and dragging styles
-- Multiple users
-- Fully-featured cards (with dates, checklists, etc.)
-- Custom colors and backgrounds
