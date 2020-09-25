@@ -1,16 +1,15 @@
 import React from "react";
-import cardsService from "../../services/cards";
 import CardsList from "../cards/CardsList";
 import InlineEditor from "../common/InlineEditor";
-import Creator from "../common/Creator";
 import LaneWrapper from "./LaneWrapper";
+import CardCreator from "../cards/CardCreator";
 import lanesService from "../../services/lanes";
 import { Draggable } from "react-beautiful-dnd";
 import Deleter from "../common/Deleter";
 import { useBoardContext } from "../../contexts/Board";
 
 const Lane = (props) => {
-  const { addCard, editLane, deleteLane, board } = useBoardContext();
+  const { editLane, deleteLane, board } = useBoardContext();
 
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
@@ -50,25 +49,7 @@ const Lane = (props) => {
               </div>
             </div>
             <CardsList laneId={props.id} cards={props.cards} />
-            <Creator
-              create={async (cardTitle) => {
-                const card = await cardsService.createCard({
-                  laneId: props.id,
-                  title: cardTitle,
-                });
-                if (card) {
-                  addCard(props.id, card);
-                }
-              }}
-              type="card"
-              placeholder={"Enter a title for this card..."}
-              buttonText={"Add Card"}
-              toggleText={
-                props.cards && props.cards.length
-                  ? "Add another card"
-                  : "Add a card"
-              }
-            />
+            <CardCreator laneId={props.id} numCards={props.cards && props.cards.length}/>
           </div>
           <style jsx>
             {`

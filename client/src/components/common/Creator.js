@@ -1,14 +1,14 @@
 import React from "react";
-import { MdClose, MdAdd } from "react-icons/md";
+import { MdClose } from "react-icons/md";
 import useOnOutsideClick from "../../hooks/useOnOutsideClick";
 
 const Creator = ({
-  type,
   create,
   placeholder,
   buttonText,
-  toggleText,
   closeAction,
+  buttonComponent,
+  formClassName,
 }) => {
   const [showForm, setShowForm] = React.useState(false);
 
@@ -17,7 +17,7 @@ const Creator = ({
   const ref = useOnOutsideClick(() => {
     setShowForm(false);
   });
-  
+
   const inputRef = React.useRef();
 
   const createEntity = async () => {
@@ -29,10 +29,10 @@ const Creator = ({
   };
 
   return (
-    <div ref={ref} className={`creator-section ${type}`}>
-      {(showForm || !toggleText) && (
+    <div ref={ref} className={`creator-section`}>
+      {(showForm || !buttonComponent) && (
         <form
-          className={`creator-form ${type}`}
+          className={`creator-form ${formClassName ? formClassName : ""}`}
           onSubmit={(e) => {
             e.preventDefault();
             createEntity();
@@ -61,28 +61,17 @@ const Creator = ({
         </form>
       )}
 
-      {!showForm && toggleText && (
-        <div
-          className={`creator-toggle ${type}`}
-          onClick={() => {
+      {!showForm &&
+        buttonComponent &&
+        buttonComponent({
+          onClick: () => {
             setShowForm(true);
-          }}
-        >
-          <div className="toggle-icon">
-            <MdAdd size={20} />
-          </div>
-          <div className="toggle-text">{toggleText}</div>
-        </div>
-      )}
+          },
+        })}
       <style jsx>
         {`
-          .creator-toggle {
-            cursor: pointer;
-            border-radius: 3px;
+          .creator-section {
             display: flex;
-            .toggle-icon {
-              margin: 0 2px;
-            }
           }
 
           .creator-form {
@@ -92,6 +81,7 @@ const Creator = ({
             border-radius: 3px;
             padding: 4px;
             height: 80px;
+            width: 100%;
           }
 
           .creator-form input {
@@ -109,32 +99,6 @@ const Creator = ({
 
           .creator-form-actions .close-action {
             padding-top: 4px;
-          }
-
-          .creator-toggle.lane {
-            height: 40px;
-            color: #fff;
-            background-color: hsla(0, 0%, 100%, 0.24);
-            padding: 10px 8px;
-            &:hover {
-              background-color: hsla(0, 0%, 100%, 0.32);
-            }
-          }
-
-          .creator-toggle.card {
-            height: 28px;
-            background: transparent;
-            color: #5e6c84;
-            margin: 2px 8px 8px 8px;
-            padding: 4px 6px;
-            &:hover {
-              background-color: rgba(9, 30, 66, 0.08);
-              color: #172b4d;
-            }
-          }
-          .creator-form.card {
-            padding: 0px 8px;
-            margin-top: 8px;
           }
         `}
       </style>

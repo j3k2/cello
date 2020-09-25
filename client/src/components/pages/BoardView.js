@@ -7,7 +7,6 @@ import InlineEditor from "../common/InlineEditor";
 import Deleter from "../common/Deleter";
 
 import boardsService from "../../services/boards";
-import lanesService from "../../services/lanes";
 
 import { useBoardContext } from "../../contexts/Board";
 
@@ -21,7 +20,6 @@ const BoardView = () => {
     board,
     boardLoading,
     updateBoardId,
-    addLane,
     editBoard,
     reorderLaneCards,
     moveCardToLane,
@@ -115,18 +113,7 @@ const BoardView = () => {
                   >
                     <LanesList lanes={board.lanes} />
                     {provided.placeholder}
-                    <LaneCreator
-                      lanes={board.lanes}
-                      create={async (laneTitle) => {
-                        const lane = await lanesService.createLane({
-                          boardId: params.id,
-                          title: laneTitle,
-                        });
-                        if (lane) {
-                          addLane(lane);
-                        }
-                      }}
-                    />
+                    <LaneCreator boardId={params.id} numLanes={board.lanes && board.lanes.length} />
                   </div>
                 )}
               </Droppable>
