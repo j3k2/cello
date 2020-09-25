@@ -39,12 +39,12 @@ const BoardCreator = (props) => {
       >
         <Creator
           create={async (boardTitle) => {
-            const createdBoard = await boardsService.createBoard({
-              title: boardTitle,
-            });
-            if (createdBoard) {
+            try {
+              const createdBoard = await boardsService.createBoard({
+                title: boardTitle,
+              });
               history.push(`/board/${createdBoard.id}`);
-            }
+            } catch {}
           }}
           closeAction={() => {
             setShowModal(false);

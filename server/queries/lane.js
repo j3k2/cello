@@ -1,29 +1,58 @@
-const { create, update, findOne, del } = require("./common");
+const { update } = require("./common");
 const knex = require("../knex");
 
 async function createLane(params) {
-  const { board_id } = params;
-  params.order = knex("lanes").count().where({ board_id });
-  return create("lanes", params, ["id", "title"]);
+  try {
+    return await knex.transaction(async (trx) => {
+      const { board_id } = params;
+      const counts = await knex("lanes")
+        .count()
+        .where({ board_id })
+        .first()
+        .transacting(trx);
+
+      params.order = parseInt(counts.count);
+
+      const lanes = await knex("lanes")
+        .insert(params)
+        .returning(["id", "title"])
+        .transacting(trx);
+
+      return lanes[0];
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
 }
 
 async function moveLane(id, params) {
-  const { next, prev, board_id } = params;
-  if (next > prev) {
-    await knex("lanes")
-      .where({ board_id })
-      .andWhere("order", "<=", next)
-      .andWhere("order", ">", 0)
-      .decrement("order", 1);
+  try {
+    await knex.transaction(async (trx) => {
+      const { next, prev, board_id } = params;
+      if (next > prev) {
+        await knex("lanes")
+          .where({ board_id })
+          .andWhere("order", "<=", next)
+          .andWhere("order", ">", 0)
+          .decrement("order", 1)
+          .transacting(trx);
+      }
+      if (prev > next) {
+        await knex("lanes")
+          .where({ board_id })
+          .andWhere("order", ">=", next)
+          .andWhere("order", "<", knex("lanes").count().where({ board_id }))
+          .increment("order", 1)
+          .transacting(trx);
+      }
+      await knex("lanes")
+        .where({ id })
+        .update({ order: next })
+        .transacting(trx);
+    });
+  } catch (err) {
+    throw new Error(err.message);
   }
-  if (prev > next) {
-    await knex("lanes")
-      .where({ board_id })
-      .andWhere("order", ">=", next)
-      .andWhere("order", "<", knex("lanes").count().where({ board_id }))
-      .increment("order", 1);
-  }
-  return knex("lanes").where({ id }).update({ order: next });
 }
 
 const editLane = (id, params) => {
@@ -31,16 +60,23 @@ const editLane = (id, params) => {
 };
 
 async function deleteLane(id) {
-  const lane = await findOne("lanes", { id });
+  try {
+    await knex.transaction(async (trx) => {
+      const lane = await knex("lanes").where({ id }).first().transacting(trx);
 
-  await knex("lanes")
-    .where({ board_id: lane.board_id })
-    .andWhere("order", ">", lane.order)
-    .decrement("order", 1);
+      await knex("lanes")
+        .where({ board_id: lane.board_id })
+        .andWhere("order", ">", lane.order)
+        .decrement("order", 1)
+        .transacting(trx);
 
-  await del("cards", { lane_id: id });
+      await knex("cards").where({ lane_id: id }).delete().transacting(trx);
 
-  return del("lanes", { id });
+      await knex("lanes").where({ id }).delete().transacting(trx);
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
 }
 
 module.exports = {

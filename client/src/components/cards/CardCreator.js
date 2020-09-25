@@ -12,13 +12,13 @@ export default function CardCreator(props) {
         hasButton
         buttonClassName="action"
         create={async (cardTitle) => {
-          const card = await cardsService.createCard({
-            laneId: props.laneId,
-            title: cardTitle,
-          });
-          if (card) {
+          try {
+            const card = await cardsService.createCard({
+              laneId: props.laneId,
+              title: cardTitle,
+            });
             addCard(props.laneId, card);
-          }
+          } catch {}
         }}
         toggleText={props.numCards ? "Add another card" : "Add a card"}
         placeholder={"Enter a title for this card..."}

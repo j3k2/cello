@@ -25,7 +25,7 @@ function BoardProvider(props) {
     setBoard({ ...board, lanes });
   };
 
-  const reorderLaneCards = (laneId, cardId, prevIdx, nextIdx) => {
+  const reorderLaneCards = async (laneId, cardId, prevIdx, nextIdx) => {
     const lanes = [...board.lanes];
     const lane = lanes.find((lane) => lane.id === laneId);
     const cards = [...lane.cards];
@@ -36,14 +36,17 @@ function BoardProvider(props) {
     lane.cards = cards;
 
     setBoard({ ...board, lanes });
-    cardsService.moveCard(cardId, {
-      next: nextIdx,
-      prev: prevIdx,
-      laneId,
-    });
+
+    try {
+      await cardsService.moveCard(cardId, {
+        next: nextIdx,
+        prev: prevIdx,
+        laneId,
+      });
+    } catch {}
   };
 
-  const moveCardToLane = (cardId, prevLaneId, nextLaneId, prevIdx, nextIdx) => {
+  const moveCardToLane = async (cardId, prevLaneId, nextLaneId, prevIdx, nextIdx) => {
     const lanes = [...board.lanes];
     const prevLane = lanes.find((lane) => lane.id === prevLaneId);
     const prevCards = [...prevLane.cards];
@@ -57,15 +60,18 @@ function BoardProvider(props) {
     nextLane.cards = nextCards;
 
     setBoard({ ...board, lanes });
-    cardsService.moveCard(cardId, {
-      next: nextIdx,
-      prev: prevIdx,
-      prevLaneId,
-      nextLaneId,
-    });
+
+    try {
+      await cardsService.moveCard(cardId, {
+        next: nextIdx,
+        prev: prevIdx,
+        prevLaneId,
+        nextLaneId,
+      });
+    } catch {}
   };
 
-  const moveLane = (laneId, prevIdx, nextIdx) => {
+  const moveLane = async (laneId, prevIdx, nextIdx) => {
     const lanes = [...board.lanes];
     const lane = lanes.find((lane) => lane.id === laneId);
 
@@ -73,11 +79,14 @@ function BoardProvider(props) {
     lanes.splice(nextIdx, 0, lane);
 
     setBoard({ ...board, lanes });
-    lanesService.moveLane(laneId, {
-      next: nextIdx,
-      prev: prevIdx,
-      boardId,
-    });
+
+    try {
+      await lanesService.moveLane(laneId, {
+        next: nextIdx,
+        prev: prevIdx,
+        boardId,
+      });
+    } catch {}
   };
 
   const deleteCard = (id, laneId) => {
@@ -134,11 +143,11 @@ function BoardProvider(props) {
   React.useEffect(() => {
     const fetchBoard = async () => {
       setBoardLoading(true);
-      const board = await boardsService.getBoard(boardId);
-      if (board) {
-        setBoard(board);
-        document.title = `${board.title} | Cello`;
-      }
+      try {
+        const board = await boardsService.getBoard(boardId);
+          setBoard(board);
+          document.title = `${board.title} | Cello`;
+      } catch {}
       setBoardLoading(false);
     };
     if (boardId) {

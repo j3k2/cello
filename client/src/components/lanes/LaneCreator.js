@@ -14,13 +14,13 @@ function LaneCreator(props) {
           hasButton
           buttonClassName="overlay"
           create={async (laneTitle) => {
-            const lane = await lanesService.createLane({
-              boardId,
-              title: laneTitle,
-            });
-            if (lane) {
+            try {
+              const lane = await lanesService.createLane({
+                boardId,
+                title: laneTitle,
+              });
               addLane(lane);
-            }
+            } catch {}
           }}
           toggleText={props.numLanes ? "Add another list" : "Add a list"}
           placeholder={"Enter list title..."}

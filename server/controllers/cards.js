@@ -9,7 +9,7 @@ async function createCard(req, res) {
     res.json(created);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json("Server Error: " + err.message);
+    res.status(500).json("Error creating card");
   }
 }
 
@@ -20,7 +20,7 @@ async function getCard(req, res) {
     res.json(card);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json("Server Error: " + err.message);
+    res.status(500).json("Error loading card");
   }
 }
 
@@ -30,53 +30,36 @@ async function editCard(req, res) {
     res.json(card);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json("Server Error: " + err.message);
+    res.status(500).json("Error editing card");
   }
 }
 
 async function moveCard(req, res) {
   try {
     if (req.body.nextLaneId) {
-      const success = await cardQuery.moveCardBetweenLanes(
-        req.params.id,
-        req.body
-      );
-
-      if (success) {
-        res.status(200).json("OK");
-      } else {
-        res.status(500).json("Could not update card position");
-      }
+      await cardQuery.moveCardBetweenLanes(req.params.id, req.body);
+      res.json();
     } else {
-      const success = await cardQuery.moveCardWithinLane(req.params.id, {
+      await cardQuery.moveCardWithinLane(req.params.id, {
         prev: req.body.prev,
         next: req.body.next,
         lane_id: req.body.laneId,
       });
-
-      if (success) {
-        res.status(200).json("OK");
-      } else {
-        res.status(500).json("Could not update card position");
-      }
+      res.json();
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).json("Server Error: " + err.message);
+    res.status(500).json("Error moving card");
   }
 }
 
 async function deleteCard(req, res) {
   try {
-		const success = await cardQuery.deleteCard(req.params.id);
-    if (success) {
-      res.status(200).json("OK");
-    } else {
-      res.status(500).json("Could not delete card");
-    }
+    await cardQuery.deleteCard(req.params.id);
+    res.json();
   } catch (err) {
     console.error(err.message);
-    res.status(500).json("Server Error: " + err.message);
+    res.status(500).json("Error deleting card");
   }
 }
 

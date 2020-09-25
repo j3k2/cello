@@ -72,15 +72,15 @@ const BoardView = () => {
                 updateContent={async (updatedTitle) => {
                   const oldBoard = { ...board };
                   editBoard({ title: updatedTitle });
-                  const updatedFields = await boardsService.editBoard(
-                    params.id,
-                    {
-                      title: updatedTitle,
-                    }
-                  );
-                  if (updatedFields) {
+                  try {
+                    const updatedFields = await boardsService.editBoard(
+                      params.id,
+                      {
+                        title: updatedTitle,
+                      }
+                    );
                     editBoard(updatedFields);
-                  } else {
+                  } catch {
                     editBoard(oldBoard);
                   }
                 }}
@@ -88,10 +88,10 @@ const BoardView = () => {
             </div>
             <Deleter
               delete={async () => {
-                const res = await boardsService.deleteBoard(params.id);
-                if (res) {
+                try {
+                  await boardsService.deleteBoard(params.id);
                   history.push("/");
-                }
+                } catch {}
               }}
               message="Are you sure you want to delete this board and its lists and cards? There is no undo."
               dialogTitle="Delete Board?"

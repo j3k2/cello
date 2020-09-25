@@ -14,10 +14,10 @@ const BoardsList = () => {
 
   const fetchBoards = async () => {
     setLoading(true);
-    const boards = await boardsService.getBoards();
-    if (boards) {
+    try {
+      const boards = await boardsService.getBoards();
       setBoards(boards);
-    }
+    } catch {}
     setLoading(false);
   };
 
@@ -28,28 +28,30 @@ const BoardsList = () => {
 
   return (
     <React.Fragment>
-      {!loading && <React.Fragment><div className="board-list-title">Your boards</div>
-      <div className="board-list">
-        {boards.map((board) => {
-          return (
-            <BoardItem
-              key={board.id}
-              handleClick={() => {
-                history.push(`/board/${board.id}`);
-							}}
-							text={board.title}
+      {!loading && (
+        <React.Fragment>
+          <div className="board-list-title">Your boards</div>
+          <div className="board-list">
+            {boards.map((board) => {
+              return (
+                <BoardItem
+                  key={board.id}
+                  handleClick={() => {
+                    history.push(`/board/${board.id}`);
+                  }}
+                  text={board.title}
+                />
+              );
+            })}
+            <BoardCreator
+              updateList={(createdBoard) => {
+                setBoards([...boards, createdBoard]);
+              }}
             />
-          );
-        })}
-        <BoardCreator
-          updateList={(createdBoard) => {
-            setBoards([...boards, createdBoard]);
-          }}
-        />
-      </div></React.Fragment>}
-      {loading && (
-        <Spinner className="page-loading-spinner" name="circle" />
+          </div>
+        </React.Fragment>
       )}
+      {loading && <Spinner className="page-loading-spinner" name="circle" />}
       <style jsx>
         {`
           .board-list {

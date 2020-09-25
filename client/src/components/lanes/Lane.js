@@ -23,12 +23,15 @@ const Lane = (props) => {
                 updateContent={async (updatedTitle) => {
                   const oldLane = { ...board.lanes[props.idx] };
                   editLane(props.id, { title: updatedTitle });
-                  const updatedFields = await lanesService.editLane(props.id, {
-                    title: updatedTitle,
-                  });
-                  if (updatedFields) {
+                  try {
+                    const updatedFields = await lanesService.editLane(
+                      props.id,
+                      {
+                        title: updatedTitle,
+                      }
+                    );
                     editLane(props.id, updatedFields);
-                  } else {
+                  } catch {
                     editLane(props.id, oldLane);
                   }
                 }}
@@ -37,10 +40,10 @@ const Lane = (props) => {
                 <Deleter
                   className="action"
                   delete={async () => {
-                    const res = await lanesService.deleteLane(props.id);
-                    if (res) {
+                    try {
+                      await lanesService.deleteLane(props.id);
                       deleteLane(props.id);
-                    }
+                    } catch {}
                   }}
                   message="Are you sure you want to delete this list and its cards? There is no undo."
                   dialogTitle="Delete List?"

@@ -11,8 +11,10 @@ function CardDetails({ closeAction, id, laneId, title }) {
 
   React.useEffect(() => {
     async function fetchCard() {
-      const res = await cardsService.getCard(id);
-      setCard(res);
+      try {
+        const res = await cardsService.getCard(id);
+        setCard(res);
+      } catch {}
     }
     fetchCard();
   }, [id]);
@@ -33,12 +35,12 @@ function CardDetails({ closeAction, id, laneId, title }) {
               updateContent={async (updatedTitle) => {
                 const oldCard = { ...card };
                 editCard(id, laneId, { title: updatedTitle });
-                const updatedFields = await cardsService.editCard(id, {
-                  title: updatedTitle,
-                });
-                if (updatedFields) {
+                try {
+                  const updatedFields = await cardsService.editCard(id, {
+                    title: updatedTitle,
+                  });
                   editCard(id, laneId, updatedFields);
-                } else {
+                } catch {
                   editCard(id, laneId, oldCard);
                 }
               }}
@@ -46,11 +48,11 @@ function CardDetails({ closeAction, id, laneId, title }) {
             <Deleter
               className="action"
               delete={async () => {
-                const res = await cardsService.deleteCard(id);
-                if (res) {
+                try {
+                  await cardsService.deleteCard(id);
                   closeAction();
                   deleteCard(id, laneId);
-                }
+                } catch {}
               }}
               message="Are you sure you want to delete this card? There is no undo."
               dialogTitle="Delete Card?"
@@ -59,10 +61,12 @@ function CardDetails({ closeAction, id, laneId, title }) {
           <h3>Description</h3>
           <TextEditor
             update={async (description) => {
-              const updatedCard = await cardsService.editCard(id, {
-                description,
-              });
-              setCard(updatedCard);
+              try {
+                const updatedCard = await cardsService.editCard(id, {
+                  description,
+                });
+                setCard(updatedCard);
+              } catch {}
             }}
             placeholder="Add a more detailed description..."
             text={card.description || ""}
