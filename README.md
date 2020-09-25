@@ -1,10 +1,20 @@
-# PERN Starter
-Starter kit for PERN (Postgres, Express, React, and Node) stack apps with full-stack JWT-based user authentication
+# Cello 
+Cello is a full-stack Trello clone built with Postgres, NodeJS, and React. 
 
-- Uses [`knex`](https://www.npmjs.com/package/knex) for dynamic SQL query building, database migrations and seeding
-- Uses [`jsonwebtoken`](https://www.npmjs.com/package/jsonwebtoken) for user authentication and [`bcrypt`](https://www.npmjs.com/package/bcrypt) for password encryption
+Features:
+- Includes drag and drop lists and inline editing features of Trello
+- Lightweight: No ORM for database queries, just Knex library for query building. No additional state management solution other than React Context
+- User authentication with JWT and bcrypt password encryption
+- React Context/hooks used to keep state logic separate from presentation components and prevent unnecessary prop drilling
+- Styled-jsx as CSS-in-JS solution, letting scoped styles live in the same files as markup and logic
 
-## Set up
-- Start a new project without the repository's commit history: `git clone --depth=1 https://github.com/j3k2/pern-starter.git <your-project-name>`.
-- Create .env file in the root directory with DATABASE_URL (connection string for your Postgres database) and JWT_SECRET (secret to be used for JWT signature).
-- Run the initial database migration with `knex migrate:latest`.
+To Do:
+- Use render props for Creator/InlineEditor components
+- Use transactions for related database queries
+- Tests
+- Routing for card details modals
+- Markdown parsing for card descriptions
+- Animations and dragging styles
+- Multiple users
+- Fully-featured cards (with dates, checklists, etc.)
+- Custom colors and backgrounds
