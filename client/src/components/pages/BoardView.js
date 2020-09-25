@@ -169,13 +169,12 @@ const BoardView = () => {
             font-weight: 700;
             white-space: nowrap;
             overflow: hidden;
-            margin-right: 4px;
           }
 
           .board-title :global(.editor-content) {
             border-radius: 3px;
             padding: 6px 12px;
-            padding-right: 18px;
+            margin-right: 6px;
             &:hover {
               background-color: hsla(0, 0%, 100%, 0.32);
             }
