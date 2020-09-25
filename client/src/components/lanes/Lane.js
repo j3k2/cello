@@ -67,7 +67,7 @@ const Lane = (props) => {
               .lane-header {
                 min-height: 40px;
                 font-weight: bold;
-                padding: 6px 10px 4px 12px;
+                padding: 6px 10px 6px 12px;
                 cursor: pointer;
                 min-width: 272px;
                 max-width: 272px;
