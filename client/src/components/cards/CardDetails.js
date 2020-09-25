@@ -31,12 +31,15 @@ function CardDetails({ closeAction, id, laneId, title }) {
               multiline
               content={title}
               updateContent={async (updatedTitle) => {
+                const oldCard = { ...card };
                 editCard(id, laneId, { title: updatedTitle });
-                const updatedCard = await cardsService.editCard(id, {
+                const updatedFields = await cardsService.editCard(id, {
                   title: updatedTitle,
                 });
-                if (updatedCard) {
-                  editCard(id, laneId, updatedCard);
+                if (updatedFields) {
+                  editCard(id, laneId, updatedFields);
+                } else {
+                  editCard(id, laneId, oldCard);
                 }
               }}
             />

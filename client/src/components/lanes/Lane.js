@@ -10,11 +10,7 @@ import Deleter from "../common/Deleter";
 import { useBoardContext } from "../../contexts/Board";
 
 const Lane = (props) => {
-  const {
-    addCard,
-    editLane,
-    deleteLane
-  } = useBoardContext();
+  const { addCard, editLane, deleteLane, board } = useBoardContext();
 
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
@@ -27,12 +23,15 @@ const Lane = (props) => {
                 lane
                 content={props.title}
                 updateContent={async (updatedTitle) => {
+                  const oldLane = { ...board.lanes[props.idx] };
                   editLane(props.id, { title: updatedTitle });
                   const updatedFields = await lanesService.editLane(props.id, {
                     title: updatedTitle,
                   });
                   if (updatedFields) {
                     editLane(props.id, updatedFields);
+                  } else {
+                    editLane(props.id, oldLane);
                   }
                 }}
               />
@@ -50,10 +49,7 @@ const Lane = (props) => {
                 />
               </div>
             </div>
-            <CardsList
-              laneId={props.id}
-              cards={props.cards}
-            />
+            <CardsList laneId={props.id} cards={props.cards} />
             <Creator
               create={async (cardTitle) => {
                 const card = await cardsService.createCard({

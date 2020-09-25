@@ -25,7 +25,7 @@ const BoardView = () => {
     editBoard,
     reorderLaneCards,
     moveCardToLane,
-    moveLane
+    moveLane,
   } = useBoardContext();
 
   React.useEffect(() => {
@@ -72,6 +72,7 @@ const BoardView = () => {
                 hover
                 content={board.title}
                 updateContent={async (updatedTitle) => {
+                  const board = { ...board };
                   editBoard({ title: updatedTitle });
                   const updatedFields = await boardsService.editBoard(
                     params.id,
@@ -81,6 +82,8 @@ const BoardView = () => {
                   );
                   if (updatedFields) {
                     editBoard(updatedFields);
+                  } else {
+                    editBoard(board);
                   }
                 }}
               />
@@ -110,9 +113,7 @@ const BoardView = () => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                   >
-                    <LanesList
-                      lanes={board.lanes}
-                    />
+                    <LanesList lanes={board.lanes} />
                     {provided.placeholder}
                     <LaneCreator
                       lanes={board.lanes}
