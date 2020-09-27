@@ -1,11 +1,10 @@
 import React from "react";
+import { Draggable } from "react-beautiful-dnd";
 import CardsList from "../cards/CardsList";
 import InlineEditor from "../common/InlineEditor";
-import LaneWrapper from "./LaneWrapper";
 import CardCreator from "../cards/CardCreator";
-import lanesService from "../../services/lanes";
-import { Draggable } from "react-beautiful-dnd";
 import Deleter from "../common/Deleter";
+import lanesService from "../../services/lanes";
 import { useBoardContext } from "../../contexts/Board";
 
 const Lane = (props) => {
@@ -14,7 +13,7 @@ const Lane = (props) => {
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
       {(provided, snapshot) => (
-        <LaneWrapper ref={provided.innerRef} {...provided.draggableProps}>
+        <div className={props.className} ref={provided.innerRef} {...provided.draggableProps}>
           <div className="lane-content" {...provided.dragHandleProps}>
             <div className="lane-header">
               <InlineEditor
@@ -93,7 +92,7 @@ const Lane = (props) => {
               }
             `}
           </style>
-        </LaneWrapper>
+        </div>
       )}
     </Draggable>
   );

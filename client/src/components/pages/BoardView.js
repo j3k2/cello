@@ -2,7 +2,6 @@ import React from "react";
 import { BOARD_PATH, CARD_PATH } from "../../constants";
 
 import LanesList from "../lanes/LanesList";
-import LaneCreator from "../lanes/LaneCreator";
 import InlineEditor from "../common/InlineEditor";
 import Deleter from "../common/Deleter";
 import CardView from "../cards/CardView";
@@ -12,7 +11,6 @@ import boardsService from "../../services/boards";
 import { useBoardContext } from "../../contexts/Board";
 import { useCardContext } from "../../contexts/Card";
 import { useParams, useHistory, useLocation } from "react-router-dom";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import Spinner from "react-spinkit";
 
 const BoardView = () => {
@@ -27,9 +25,6 @@ const BoardView = () => {
     boardId,
     setBoardId,
     editBoard,
-    reorderLaneCards,
-    moveCardToLane,
-    moveLane,
   } = useBoardContext();
 
   const { setCardId } = useCardContext();
@@ -42,33 +37,6 @@ const BoardView = () => {
       setCardId(params.id);
     }
   }, [setBoardId, setCardId, pathType, params.id]);
-
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId, type } = result;
-    if (!destination) {
-      return;
-    }
-    if (type === "CARD") {
-      const cardId = draggableId.split(".")[1];
-      const prevIdx = source.index;
-      const nextIdx = destination.index;
-      if (
-        destination.droppableId === source.droppableId &&
-        destination.index !== source.index
-      ) {
-        const laneId = destination.droppableId.split(".")[1];
-        reorderLaneCards(laneId, cardId, prevIdx, nextIdx);
-      }
-      if (destination.droppableId !== source.droppableId) {
-        const prevLaneId = source.droppableId.split(".")[1];
-        const nextLaneId = destination.droppableId.split(".")[1];
-        moveCardToLane(cardId, prevLaneId, nextLaneId, prevIdx, nextIdx);
-      }
-    }
-    if (type === "LANE") {
-      moveLane(draggableId.split(".")[1], source.index, destination.index);
-    }
-  };
 
   return (
     <React.Fragment>
@@ -110,29 +78,7 @@ const BoardView = () => {
                 className="overlay"
               />
             </div>
-            <div className="board-view-container">
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable
-                  type="LANE"
-                  droppableId="droppable.board"
-                  direction="horizontal"
-                >
-                  {(provided) => (
-                    <div
-                      className="board-view-content"
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      <LanesList lanes={board.lanes} />
-                      {provided.placeholder}
-                      <LaneCreator
-                        numLanes={board.lanes && board.lanes.length}
-                      />
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </div>
+            <LanesList lanes={board.lanes}/>
           </React.Fragment>
         )}
 
@@ -160,22 +106,6 @@ const BoardView = () => {
               padding: 0px 8px;
               display: flex;
               padding-top: 8px;
-            }
-
-            .board-view-container {
-              position: relative;
-              flex-grow: 1;
-            }
-
-            .board-view-content {
-              position: absolute;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              left: 0;
-              display: flex;
-              overflow-y: hidden;
-              padding-bottom: 8px;
             }
 
             .board-title {
