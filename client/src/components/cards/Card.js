@@ -9,7 +9,6 @@ const Card = (props) => {
       .card-item {
         background-color: #fff;
         margin-bottom: 8px;
-        min-height: 32px;
         border-radius: 3px;
         padding: 6px 8px;
         box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
