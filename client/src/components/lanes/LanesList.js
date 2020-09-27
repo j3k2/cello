@@ -1,5 +1,6 @@
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { DRAG_TYPE_CARD, DRAG_TYPE_LANE } from "../../constants";
 import Lane from "./Lane";
 import LaneCreator from "../lanes/LaneCreator";
 import { useBoardContext } from "../../contexts/Board";
@@ -12,7 +13,7 @@ const LanesList = (props) => {
     if (!destination) {
       return;
     }
-    if (type === "CARD") {
+    if (type === DRAG_TYPE_CARD) {
       const cardId = draggableId.split(".")[1];
       const prevIdx = source.index;
       const nextIdx = destination.index;
@@ -29,7 +30,7 @@ const LanesList = (props) => {
         moveCardToLane(cardId, prevLaneId, nextLaneId, prevIdx, nextIdx);
       }
     }
-    if (type === "LANE") {
+    if (type === DRAG_TYPE_LANE) {
       moveLane(draggableId.split(".")[1], source.index, destination.index);
     }
   };
@@ -38,7 +39,7 @@ const LanesList = (props) => {
     <div className="lanes-wrapper">
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
-          type="LANE"
+          type={DRAG_TYPE_LANE}
           droppableId="droppable.board"
           direction="horizontal"
         >

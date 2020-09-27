@@ -1,10 +1,11 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { DRAG_TYPE_CARD } from "../../constants";
 import Card from "./Card";
 
 const CardsList = (props) => {
   return (
-    <Droppable type="CARD" droppableId={`droppable.${props.laneId}`}>
+    <Droppable type={DRAG_TYPE_CARD} droppableId={`droppable.${props.laneId}`}>
       {(provided, snapshot) => (
         <div
           className="cards-list"
