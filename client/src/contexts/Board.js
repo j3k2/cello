@@ -46,7 +46,13 @@ function BoardProvider(props) {
     } catch {}
   };
 
-  const moveCardToLane = async (cardId, prevLaneId, nextLaneId, prevIdx, nextIdx) => {
+  const moveCardToLane = async (
+    cardId,
+    prevLaneId,
+    nextLaneId,
+    prevIdx,
+    nextIdx
+  ) => {
     const lanes = [...board.lanes];
     const prevLane = lanes.find((lane) => lane.id === prevLaneId);
     const prevCards = [...prevLane.cards];
@@ -140,24 +146,30 @@ function BoardProvider(props) {
     document.title = `${updatedBoard.title} | Cello`;
   };
 
+  function usePrevious(value) {
+    const ref = React.useRef();
+    React.useEffect(() => {
+      ref.current = value;
+    }, [value]);
+    return ref.current;
+  }
+
+  const prevBoardId = usePrevious(boardId);
+
   React.useEffect(() => {
     const fetchBoard = async () => {
       setBoardLoading(true);
       try {
         const board = await boardsService.getBoard(boardId);
-          setBoard(board);
-          document.title = `${board.title} | Cello`;
+        setBoard(board);
+        document.title = `${board.title} | Cello`;
       } catch {}
       setBoardLoading(false);
     };
-    if (boardId) {
+    if (boardId !== prevBoardId) {
       fetchBoard(boardId);
     }
-  }, [boardId]);
-
-  function updateBoardId(id) {
-    setBoardId(id);
-  }
+  }, [boardId, prevBoardId]);
 
   return (
     <BoardContext.Provider
@@ -165,7 +177,8 @@ function BoardProvider(props) {
         board,
         boardId,
         boardLoading,
-        updateBoardId,
+        setBoardLoading,
+        setBoardId,
         addCard,
         addLane,
         editBoard,

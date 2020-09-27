@@ -4,6 +4,7 @@ async function createCard(req, res) {
   try {
     const created = await cardQuery.createCard({
       lane_id: req.body.laneId,
+      board_id: req.body.boardId,
       title: req.body.title,
     });
     res.json(created);
@@ -16,7 +17,8 @@ async function createCard(req, res) {
 async function getCard(req, res) {
   try {
     const card = await cardQuery.getCard(req.params);
-
+    card.boardId = card.board_id;
+    card.laneId = card.lane_id;
     res.json(card);
   } catch (err) {
     console.error(err.message);

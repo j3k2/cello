@@ -1,13 +1,10 @@
 import React from "react";
 import boardsService from "../../services/boards";
 import BoardCreator from "./BoardCreator";
-import BoardItem from "./BoardItem";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Spinner from "react-spinkit";
 
 const BoardsList = () => {
-  const history = useHistory();
-
   const [boards, setBoards] = React.useState([]);
 
   const [loading, setLoading] = React.useState(true);
@@ -34,20 +31,23 @@ const BoardsList = () => {
           <div className="board-list">
             {boards.map((board) => {
               return (
-                <BoardItem
+                <Link
+                  className="board-item text"
                   key={board.id}
-                  handleClick={() => {
-                    history.push(`/board/${board.id}`);
-                  }}
-                  text={board.title}
-                />
+                  to={`/b/${board.id}`}
+                >
+                  <span>{board.title}</span>
+                </Link>
               );
             })}
             <BoardCreator
+              className="board-item creator"
               updateList={(createdBoard) => {
                 setBoards([...boards, createdBoard]);
               }}
-            />
+            >
+              <span>Create new board</span>
+            </BoardCreator>
           </div>
         </React.Fragment>
       )}
@@ -65,6 +65,47 @@ const BoardsList = () => {
             font-size: 16px;
             font-weight: 700;
             padding: 10px;
+          }
+
+          .board-list :global(.board-item) {
+            border-radius: 3px;
+            padding: 8px;
+            height: 96px;
+            margin: 10px;
+            width: 12%;
+            min-width: 130px;
+            cursor: pointer;
+            background-color: rgb(0, 121, 191);
+            span {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: block;
+              white-space: nowrap;
+              font-weight: bold;
+              font-size: 16px;
+              color: #fff;
+            }
+            &:hover {
+              filter: brightness(0.9);
+            }
+          }
+
+          .board-list :global(.board-item.creator) {
+            background: rgba(9, 30, 66, 0.04);
+            top: 25%;
+            display: flex;
+            text-align: center;
+            font-weight: normal;
+            span {
+              align-self: center;
+              margin: 0 auto;
+              font-size: 14px;
+              font-weight: normal;
+              color: #172b4d;
+            }
+            &:hover {
+              background-color: rgba(9, 30, 66, 0.08);
+            }
           }
         `}
       </style>

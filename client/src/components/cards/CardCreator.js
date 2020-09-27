@@ -4,7 +4,7 @@ import cardsService from "../../services/cards";
 import { useBoardContext } from "../../contexts/Board";
 
 export default function CardCreator(props) {
-  const { addCard } = useBoardContext();
+  const { addCard, boardId } = useBoardContext();
 
   return (
     <div className="card-creator">
@@ -15,6 +15,7 @@ export default function CardCreator(props) {
           try {
             const card = await cardsService.createCard({
               laneId: props.laneId,
+              boardId,
               title: cardTitle,
             });
             addCard(props.laneId, card);

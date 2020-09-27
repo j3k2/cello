@@ -24,6 +24,8 @@ exports.up = function(knex) {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
     table.uuid('lane_id').notNullable();
     table.foreign('lane_id').references('id').inTable('lanes');
+    table.uuid('board_id').notNullable();
+    table.foreign('board_id').references('id').inTable('boards');
     table.string('title').notNullable();
     table.text('description');
     table.integer('order').notNullable();
