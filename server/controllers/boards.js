@@ -9,7 +9,7 @@ async function createBoard(req, res) {
 		res.json(created);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error: ' + err.message);
+		res.status(500).json('Error creating board');
 	}
 }
 
@@ -19,7 +19,7 @@ async function getBoards(req, res) {
 		res.json(boards);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error: ' + err.message);
+		res.status(500).json('Error loading boards for user');
 	}
 }
 
@@ -27,7 +27,7 @@ async function getBoard(req, res) {
 	try {
 		const board = await boardQuery.getBoard(req.params);
 		if (!board) {
-			return res.status(500).json('Could not find board');
+			return res.status(500).json('Error loading board');
 		}
 		if (board.creator_id !== req.userId) {
 			res.status(403).json('User cannot access this board');
@@ -36,7 +36,7 @@ async function getBoard(req, res) {
 		}
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error: ' + err.message);
+		res.status(500).json('Error loading board');
 	}
 }
 
@@ -46,17 +46,17 @@ async function editBoard(req, res) {
 		res.json(board);
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error: ' + err.message);
+		res.status(500).json('Error editing board');
 	}
 }
 
 async function deleteBoard(req, res) {
 	try {
-		const board = await boardQuery.deleteBoard(req.params.id);
-		res.json(board);
+		await boardQuery.deleteBoard(req.params.id);
+		res.json();
 	} catch (err) {
 		console.error(err.message);
-		res.status(500).json('Server Error: ' + err.message);
+		res.status(500).json('Error deleting board');
 	}
 }
 

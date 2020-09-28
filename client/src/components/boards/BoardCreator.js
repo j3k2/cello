@@ -1,9 +1,8 @@
 import React from "react";
-import boardsService from "../../services/boards";
 import ReactModal from "react-modal";
-import { useHistory } from "react-router-dom";
 import Creator from "../common/Creator";
-import BoardItem from "./BoardItem";
+import boardsService from "../../services/boards";
+import { useHistory } from "react-router-dom";
 import css from "styled-jsx/css";
 
 const BoardCreator = (props) => {
@@ -39,12 +38,12 @@ const BoardCreator = (props) => {
       >
         <Creator
           create={async (boardTitle) => {
-            const createdBoard = await boardsService.createBoard({
-              title: boardTitle,
-            });
-            if (createdBoard) {
-              history.push(`/board/${createdBoard.id}`);
-            }
+            try {
+              const createdBoard = await boardsService.createBoard({
+                title: boardTitle,
+              });
+              history.push(`/b/${createdBoard.id}`);
+            } catch {}
           }}
           closeAction={() => {
             setShowModal(false);
@@ -55,13 +54,14 @@ const BoardCreator = (props) => {
         />
         {modalStyleElement}
       </ReactModal>
-      <BoardItem
-        handleClick={() => {
+      <div
+        className={props.className}
+        onClick={() => {
           setShowModal(true);
         }}
-        creator
-        text="Create new board"
-      />
+      >
+        {props.children}
+      </div>
     </React.Fragment>
   );
 };

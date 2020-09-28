@@ -6,8 +6,8 @@ async function createEncryptedPassword(password, saltRounds) {
 }
 
 exports.seed = async function (knex) {
-  const username = 'test';
-  const password = 'test';
+  const username = 'demo';
+  const password = 'demo';
   const encryptedPassword = await createEncryptedPassword(password, 10);
   
   // Deletes ALL existing entries

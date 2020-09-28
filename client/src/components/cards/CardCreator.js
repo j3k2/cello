@@ -4,7 +4,7 @@ import cardsService from "../../services/cards";
 import { useBoardContext } from "../../contexts/Board";
 
 export default function CardCreator(props) {
-  const { addCard } = useBoardContext();
+  const { addCard, boardId } = useBoardContext();
 
   return (
     <div className="card-creator">
@@ -12,13 +12,14 @@ export default function CardCreator(props) {
         hasButton
         buttonClassName="action"
         create={async (cardTitle) => {
-          const card = await cardsService.createCard({
-            laneId: props.laneId,
-            title: cardTitle,
-          });
-          if (card) {
-            addCard(props.laneId, card);
-          }
+          try {
+            const card = await cardsService.createCard({
+              listId: props.listId,
+              boardId,
+              title: cardTitle,
+            });
+            addCard(props.listId, card);
+          } catch {}
         }}
         toggleText={props.numCards ? "Add another card" : "Add a card"}
         placeholder={"Enter a title for this card..."}
@@ -26,17 +27,19 @@ export default function CardCreator(props) {
       />
       <style jsx>
         {`
-          .card-creator :global(.creator-form) {
-            padding: 0px 8px;
-            margin-top: 8px;
-          }
-          .card-creator :global(.creator-button) {
-            height: 28px;
-            color: #5e6c84;
-            margin: 2px 8px 8px 8px;
-            padding: 4px 6px;
-            &:hover {
-              color: #172b4d;
+          .card-creator {
+            :global(.creator-form) {
+              padding: 0px 8px;
+              margin-top: 8px;
+            }
+            :global(.creator-button) {
+              height: 28px;
+              color: #5e6c84;
+              margin: 2px 8px 8px 8px;
+              padding: 4px 6px;
+              &:hover {
+                color: #172b4d;
+              }
             }
           }
         `}

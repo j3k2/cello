@@ -1,23 +1,25 @@
 import React from "react";
 import InlineEditor from "../common/InlineEditor";
 import TextEditor from "../common/TextEditor";
-import cardsService from "../../services/cards";
 import Deleter from "../common/Deleter";
-import { MdClose } from "react-icons/md";
+
+import cardsService from "../../services/cards";
 import { useBoardContext } from "../../contexts/Board";
+import { useCardContext } from "../../contexts/Card";
+import { MdClose } from "react-icons/md";
 
-function CardDetails({ closeAction, id, laneId, title }) {
-  const [card, setCard] = React.useState();
+function CardDetails({ closeAction }) {
+  const {
+    editCard: editListCard,
+    deleteCard: deleteListCard,
+  } = useBoardContext();
 
-  React.useEffect(() => {
-    async function fetchCard() {
-      const res = await cardsService.getCard(id);
-      setCard(res);
-    }
-    fetchCard();
-  }, [id]);
+  const { editCard: editModalCard, card } = useCardContext();
 
-  const { editCard, deleteCard } = useBoardContext();
+  const updateCardObjects = (id, listId, updates) => {
+    editListCard(id, listId, updates);
+    editModalCard(updates);
+  };
 
   return (
     <React.Fragment>
@@ -29,28 +31,30 @@ function CardDetails({ closeAction, id, laneId, title }) {
           <div className="card-details-header">
             <InlineEditor
               multiline
-              content={title}
+              content={card.title}
               updateContent={async (updatedTitle) => {
                 const oldCard = { ...card };
-                editCard(id, laneId, { title: updatedTitle });
-                const updatedFields = await cardsService.editCard(id, {
+                updateCardObjects(card.id, card.listId, {
                   title: updatedTitle,
                 });
-                if (updatedFields) {
-                  editCard(id, laneId, updatedFields);
-                } else {
-                  editCard(id, laneId, oldCard);
+                try {
+                  const updatedFields = await cardsService.editCard(card.id, {
+                    title: updatedTitle,
+                  });
+                  updateCardObjects(card.id, card.listId, updatedFields);
+                } catch {
+                  updateCardObjects(card.id, card.listId, oldCard);
                 }
               }}
             />
             <Deleter
               className="action"
               delete={async () => {
-                const res = await cardsService.deleteCard(id);
-                if (res) {
+                try {
+                  await cardsService.deleteCard(card.id);
                   closeAction();
-                  deleteCard(id, laneId);
-                }
+                  deleteListCard(card.id, card.listId);
+                } catch {}
               }}
               message="Are you sure you want to delete this card? There is no undo."
               dialogTitle="Delete Card?"
@@ -59,10 +63,12 @@ function CardDetails({ closeAction, id, laneId, title }) {
           <h3>Description</h3>
           <TextEditor
             update={async (description) => {
-              const updatedCard = await cardsService.editCard(id, {
-                description,
-              });
-              setCard(updatedCard);
+              try {
+                const updates = await cardsService.editCard(card.id, {
+                  description,
+                });
+                editModalCard(updates);
+              } catch {}
             }}
             placeholder="Add a more detailed description..."
             text={card.description || ""}
@@ -81,6 +87,9 @@ function CardDetails({ closeAction, id, laneId, title }) {
                 line-height: 24px;
                 display: flex;
                 width: 600px;
+                :global(.editor-content) {
+                  word-break: break-word;
+                }
               }
               .close-action {
                 position: absolute;

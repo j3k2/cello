@@ -1,35 +1,41 @@
 import React from "react";
-import CardsList from "../cards/CardsList";
-import InlineEditor from "../common/InlineEditor";
-import LaneWrapper from "./LaneWrapper";
-import CardCreator from "../cards/CardCreator";
-import lanesService from "../../services/lanes";
 import { Draggable } from "react-beautiful-dnd";
+import CardsGroup from "../cards/CardsGroup";
+import InlineEditor from "../common/InlineEditor";
+import CardCreator from "../cards/CardCreator";
 import Deleter from "../common/Deleter";
+import listsService from "../../services/lists";
 import { useBoardContext } from "../../contexts/Board";
 
-const Lane = (props) => {
-  const { editLane, deleteLane, board } = useBoardContext();
+const List = (props) => {
+  const { editList, deleteList, board } = useBoardContext();
 
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
       {(provided, snapshot) => (
-        <LaneWrapper ref={provided.innerRef} {...provided.draggableProps}>
-          <div className="lane-content" {...provided.dragHandleProps}>
-            <div className="lane-header">
+        <div
+          className={props.className}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+        >
+          <div className="list-content" {...provided.dragHandleProps}>
+            <div className="list-header">
               <InlineEditor
                 multiline
                 content={props.title}
                 updateContent={async (updatedTitle) => {
-                  const oldLane = { ...board.lanes[props.idx] };
-                  editLane(props.id, { title: updatedTitle });
-                  const updatedFields = await lanesService.editLane(props.id, {
-                    title: updatedTitle,
-                  });
-                  if (updatedFields) {
-                    editLane(props.id, updatedFields);
-                  } else {
-                    editLane(props.id, oldLane);
+                  const oldList = { ...board.lists[props.idx] };
+                  editList(props.id, { title: updatedTitle });
+                  try {
+                    const updatedFields = await listsService.editList(
+                      props.id,
+                      {
+                        title: updatedTitle,
+                      }
+                    );
+                    editList(props.id, updatedFields);
+                  } catch {
+                    editList(props.id, oldList);
                   }
                 }}
               />
@@ -37,25 +43,25 @@ const Lane = (props) => {
                 <Deleter
                   className="action"
                   delete={async () => {
-                    const res = await lanesService.deleteLane(props.id);
-                    if (res) {
-                      deleteLane(props.id);
-                    }
+                    try {
+                      await listsService.deleteList(props.id);
+                      deleteList(props.id);
+                    } catch {}
                   }}
                   message="Are you sure you want to delete this list and its cards? There is no undo."
                   dialogTitle="Delete List?"
                 />
               </div>
             </div>
-            <CardsList laneId={props.id} cards={props.cards} />
+            <CardsGroup listId={props.id} cards={props.cards} />
             <CardCreator
-              laneId={props.id}
+              listId={props.id}
               numCards={props.cards && props.cards.length}
             />
           </div>
           <style jsx>
             {`
-              .lane-content {
+              .list-content {
                 border-radius: 3px;
                 background: #ebecf0;
                 color: rgb(23, 43, 77);
@@ -64,7 +70,7 @@ const Lane = (props) => {
                 flex-direction: column;
               }
 
-              .lane-header {
+              .list-header {
                 min-height: 40px;
                 font-weight: bold;
                 padding: 6px 10px 6px 12px;
@@ -73,14 +79,12 @@ const Lane = (props) => {
                 max-width: 272px;
                 flex: none;
                 position: relative;
-              }
-
-              .lane-header :global(.editor-content) {
-                width: 224px;
-              }
-
-              .lane-header :global(.editor-form) {
-                width: 228px;
+                :global(.editor-content) {
+                  width: 224px;
+                }
+                :global(.editor-form) {
+                  width: 228px;
+                }
               }
 
               .deleter-wrapper {
@@ -90,10 +94,10 @@ const Lane = (props) => {
               }
             `}
           </style>
-        </LaneWrapper>
+        </div>
       )}
     </Draggable>
   );
 };
 
-export default Lane;
+export default List;

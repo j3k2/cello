@@ -36,7 +36,7 @@ code {
   top: 50%;
 }
 
-.page-message{
+.page-message {
   display: block;
   margin: 75px auto;
   text-align: center;
@@ -115,6 +115,16 @@ button.warning {
   background-color: #cf513d;
   &:hover {
     background-color: #eb5a46;
+  }
+}
+
+a.text {
+  &:link,
+  &:visited,
+  &:active,
+  &:hover {
+    text-decoration: none;
+    color: #172b4d;
   }
 }
 

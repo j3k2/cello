@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 
 import { useUserContext } from "./contexts/User";
 import { BoardProvider } from "./contexts/Board";
+import { CardProvider } from "./contexts/Card";
 
 import Dashboard from "./components/pages/Dashboard";
 import Login from "./components/pages/Login";
@@ -73,9 +74,11 @@ function AuthenticatedApp() {
       />
       <Switch>
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/board/:id">
+        <Route path={["/b/:id", "/c/:id"]}>
           <BoardProvider>
-            <BoardView />
+            <CardProvider>
+              <BoardView />
+            </CardProvider>
           </BoardProvider>
         </Route>
         <Route path="*">

@@ -17,6 +17,7 @@ async function post(url, params = {}) {
         toast.error(JSON.stringify(err));
       }
     }
+    throw new Error();
   }
 }
 
@@ -35,6 +36,7 @@ async function get(url, params) {
         toast.error(JSON.stringify(err));
       }
     }
+    throw new Error();
   }
 }
 
@@ -53,14 +55,13 @@ async function patch(url, params) {
         toast.error(JSON.stringify(err));
       }
     }
+    throw new Error();
   }
 }
 
 async function del(url, params) {
   try {
-    const res = await request.del(url).set(getAuthHeader()).send(params);
-
-    return res.body;
+    await request.del(url).set(getAuthHeader()).send(params);
   } catch (err) {
     if (err.status === 401) {
       window.location.href = "/login";
@@ -71,6 +72,7 @@ async function del(url, params) {
         toast.error(JSON.stringify(err));
       }
     }
+    throw new Error();
   }
 }
 

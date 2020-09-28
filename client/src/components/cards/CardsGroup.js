@@ -1,13 +1,14 @@
 import React from "react";
 import { Droppable } from "react-beautiful-dnd";
+import { DRAG_TYPE_CARD } from "../../constants";
 import Card from "./Card";
 
-const CardsList = (props) => {
+const CardsGroup = (props) => {
   return (
-    <Droppable type="CARD" droppableId={`droppable.${props.laneId}`}>
+    <Droppable type={DRAG_TYPE_CARD} droppableId={`droppable.${props.listId}`}>
       {(provided, snapshot) => (
         <div
-          className="cards-list"
+          className="cards-group"
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
@@ -15,7 +16,7 @@ const CardsList = (props) => {
             props.cards.map((card, idx) => {
               return (
                 <Card
-                  laneId={props.laneId}
+                  listId={props.listId}
                   title={card.title}
                   idx={idx}
                   id={card.id}
@@ -26,7 +27,7 @@ const CardsList = (props) => {
           {provided.placeholder}
           <style jsx>
             {`
-              .cards-list {
+              .cards-group {
                 display: flex;
                 flex-direction: column;
                 min-height: 1px;
@@ -41,4 +42,4 @@ const CardsList = (props) => {
   );
 };
 
-export default CardsList;
+export default CardsGroup;
