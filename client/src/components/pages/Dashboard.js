@@ -1,9 +1,9 @@
 import React from 'react';
-import BoardsList from '../boards/BoardsList';
+import BoardsGroup from '../boards/BoardsGroup';
 
 const Dashboard = () => {
   return (
-      <BoardsList />
+      <BoardsGroup />
   )
 }
 

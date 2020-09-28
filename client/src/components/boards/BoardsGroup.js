@@ -4,7 +4,7 @@ import BoardCreator from "./BoardCreator";
 import { Link } from "react-router-dom";
 import Spinner from "react-spinkit";
 
-const BoardsList = () => {
+const BoardsGroup = () => {
   const [boards, setBoards] = React.useState([]);
 
   const [loading, setLoading] = React.useState(true);
@@ -27,8 +27,8 @@ const BoardsList = () => {
     <React.Fragment>
       {!loading && (
         <React.Fragment>
-          <div className="board-list-title">Your boards</div>
-          <div className="board-list">
+          <div className="boards-group-title">Your boards</div>
+          <div className="boards-group">
             {boards.map((board) => {
               return (
                 <Link
@@ -42,9 +42,6 @@ const BoardsList = () => {
             })}
             <BoardCreator
               className="board-item creator"
-              updateList={(createdBoard) => {
-                setBoards([...boards, createdBoard]);
-              }}
             >
               <span>Create new board</span>
             </BoardCreator>
@@ -54,14 +51,14 @@ const BoardsList = () => {
       {loading && <Spinner className="page-loading-spinner" name="circle" />}
       <style jsx>
         {`
-          .board-list-title {
+          .boards-group-title {
             align-self: flex-start;
             margin-left: 5px;
             font-size: 16px;
             font-weight: 700;
             padding: 10px;
           }
-          .board-list {
+          .boards-group {
             display: flex;
             flex-wrap: wrap;
             :global(.board-item) {
@@ -110,4 +107,4 @@ const BoardsList = () => {
   );
 };
 
-export default BoardsList;
+export default BoardsGroup;

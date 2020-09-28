@@ -1,6 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import CardsList from "../cards/CardsList";
+import CardsGroup from "../cards/CardsGroup";
 import InlineEditor from "../common/InlineEditor";
 import CardCreator from "../cards/CardCreator";
 import Deleter from "../common/Deleter";
@@ -53,7 +53,7 @@ const Lane = (props) => {
                 />
               </div>
             </div>
-            <CardsList laneId={props.id} cards={props.cards} />
+            <CardsGroup laneId={props.id} cards={props.cards} />
             <CardCreator
               laneId={props.id}
               numCards={props.cards && props.cards.length}

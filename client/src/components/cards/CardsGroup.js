@@ -3,12 +3,12 @@ import { Droppable } from "react-beautiful-dnd";
 import { DRAG_TYPE_CARD } from "../../constants";
 import Card from "./Card";
 
-const CardsList = (props) => {
+const CardsGroup = (props) => {
   return (
     <Droppable type={DRAG_TYPE_CARD} droppableId={`droppable.${props.laneId}`}>
       {(provided, snapshot) => (
         <div
-          className="cards-list"
+          className="cards-group"
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
@@ -27,7 +27,7 @@ const CardsList = (props) => {
           {provided.placeholder}
           <style jsx>
             {`
-              .cards-list {
+              .cards-group {
                 display: flex;
                 flex-direction: column;
                 min-height: 1px;
@@ -42,4 +42,4 @@ const CardsList = (props) => {
   );
 };
 
-export default CardsList;
+export default CardsGroup;

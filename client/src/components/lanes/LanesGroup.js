@@ -2,10 +2,10 @@ import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { DRAG_TYPE_CARD, DRAG_TYPE_LANE } from "../../constants";
 import Lane from "./Lane";
-import LaneCreator from "../lanes/LaneCreator";
+import LaneCreator from "./LaneCreator";
 import { useBoardContext } from "../../contexts/Board";
 
-const LanesList = (props) => {
+const LanesGroup = (props) => {
   const { reorderLaneCards, moveCardToLane, moveLane } = useBoardContext();
 
   const onDragEnd = (result) => {
@@ -108,4 +108,4 @@ const LanesList = (props) => {
   );
 };
 
-export default LanesList;
+export default LanesGroup;
