@@ -3,7 +3,7 @@ const cardQuery = require("../queries/card");
 async function createCard(req, res) {
   try {
     const created = await cardQuery.createCard({
-      lane_id: req.body.laneId,
+      list_id: req.body.listId,
       board_id: req.body.boardId,
       title: req.body.title,
     });
@@ -18,7 +18,7 @@ async function getCard(req, res) {
   try {
     const card = await cardQuery.getCard(req.params);
     card.boardId = card.board_id;
-    card.laneId = card.lane_id;
+    card.listId = card.list_id;
     res.json(card);
   } catch (err) {
     console.error(err.message);
@@ -38,14 +38,14 @@ async function editCard(req, res) {
 
 async function moveCard(req, res) {
   try {
-    if (req.body.nextLaneId) {
-      await cardQuery.moveCardBetweenLanes(req.params.id, req.body);
+    if (req.body.nextListId) {
+      await cardQuery.moveCardBetweenLists(req.params.id, req.body);
       res.json();
     } else {
-      await cardQuery.moveCardWithinLane(req.params.id, {
+      await cardQuery.moveCardWithinList(req.params.id, {
         prev: req.body.prev,
         next: req.body.next,
-        lane_id: req.body.laneId,
+        list_id: req.body.listId,
       });
       res.json();
     }

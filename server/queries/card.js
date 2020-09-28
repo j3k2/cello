@@ -6,7 +6,7 @@ async function createCard(params) {
     return await knex.transaction(async (trx) => {
       const counts = await knex("cards")
         .count()
-        .where({ lane_id: params.lane_id })
+        .where({ list_id: params.list_id })
         .first()
         .transacting(trx);
 
@@ -28,13 +28,13 @@ async function getCard(params) {
   return findOne("cards", params);
 }
 
-async function moveCardWithinLane(id, params) {
+async function moveCardWithinList(id, params) {
   try {
     await knex.transaction(async (trx) => {
-      const { next, prev, lane_id } = params;
+      const { next, prev, list_id } = params;
       if (next > prev) {
         await knex("cards")
-          .where({ lane_id })
+          .where({ list_id })
           .andWhere("order", "<=", next)
           .andWhere("order", ">", 0)
           .decrement("order", 1)
@@ -42,9 +42,9 @@ async function moveCardWithinLane(id, params) {
       }
       if (prev > next) {
         await knex("cards")
-          .where({ lane_id })
+          .where({ list_id })
           .andWhere("order", ">=", next)
-          .andWhere("order", "<", knex("cards").count().where({ lane_id }))
+          .andWhere("order", "<", knex("cards").count().where({ list_id }))
           .increment("order", 1)
           .transacting(trx);
       }
@@ -58,26 +58,26 @@ async function moveCardWithinLane(id, params) {
   }
 }
 
-async function moveCardBetweenLanes(id, params) {
+async function moveCardBetweenLists(id, params) {
   try {
     await knex.transaction(async (trx) => {
-      const { next, prev, nextLaneId, prevLaneId } = params;
+      const { next, prev, nextListId, prevListId } = params;
 
       await knex("cards")
-        .where({ lane_id: prevLaneId })
+        .where({ list_id: prevListId })
         .andWhere("order", ">=", prev)
         .decrement("order", 1)
         .transacting(trx);
 
       await knex("cards")
-        .where({ lane_id: nextLaneId })
+        .where({ list_id: nextListId })
         .andWhere("order", ">=", next)
         .increment("order", 1)
         .transacting(trx);
 
       await knex("cards")
         .where({ id })
-        .update({ order: next, lane_id: nextLaneId })
+        .update({ order: next, list_id: nextListId })
         .transacting(trx);
     });
   } catch (err) {
@@ -95,7 +95,7 @@ async function deleteCard(id) {
       const card = await knex("cards").where({ id }).first().transacting(trx);
 
       await knex("cards")
-        .where({ lane_id: card.lane_id })
+        .where({ list_id: card.list_id })
         .andWhere("order", ">", card.order)
         .decrement("order", 1)
         .transacting(trx);
@@ -110,8 +110,8 @@ async function deleteCard(id) {
 module.exports = {
   createCard,
   getCard,
-  moveCardWithinLane,
-  moveCardBetweenLanes,
+  moveCardWithinList,
+  moveCardBetweenLists,
   editCard,
   deleteCard,
 };

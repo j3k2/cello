@@ -4,11 +4,11 @@ import CardsGroup from "../cards/CardsGroup";
 import InlineEditor from "../common/InlineEditor";
 import CardCreator from "../cards/CardCreator";
 import Deleter from "../common/Deleter";
-import lanesService from "../../services/lanes";
+import listsService from "../../services/lists";
 import { useBoardContext } from "../../contexts/Board";
 
-const Lane = (props) => {
-  const { editLane, deleteLane, board } = useBoardContext();
+const List = (props) => {
+  const { editList, deleteList, board } = useBoardContext();
 
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
@@ -18,24 +18,24 @@ const Lane = (props) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
-          <div className="lane-content" {...provided.dragHandleProps}>
-            <div className="lane-header">
+          <div className="list-content" {...provided.dragHandleProps}>
+            <div className="list-header">
               <InlineEditor
                 multiline
                 content={props.title}
                 updateContent={async (updatedTitle) => {
-                  const oldLane = { ...board.lanes[props.idx] };
-                  editLane(props.id, { title: updatedTitle });
+                  const oldList = { ...board.lists[props.idx] };
+                  editList(props.id, { title: updatedTitle });
                   try {
-                    const updatedFields = await lanesService.editLane(
+                    const updatedFields = await listsService.editList(
                       props.id,
                       {
                         title: updatedTitle,
                       }
                     );
-                    editLane(props.id, updatedFields);
+                    editList(props.id, updatedFields);
                   } catch {
-                    editLane(props.id, oldLane);
+                    editList(props.id, oldList);
                   }
                 }}
               />
@@ -44,8 +44,8 @@ const Lane = (props) => {
                   className="action"
                   delete={async () => {
                     try {
-                      await lanesService.deleteLane(props.id);
-                      deleteLane(props.id);
+                      await listsService.deleteList(props.id);
+                      deleteList(props.id);
                     } catch {}
                   }}
                   message="Are you sure you want to delete this list and its cards? There is no undo."
@@ -53,15 +53,15 @@ const Lane = (props) => {
                 />
               </div>
             </div>
-            <CardsGroup laneId={props.id} cards={props.cards} />
+            <CardsGroup listId={props.id} cards={props.cards} />
             <CardCreator
-              laneId={props.id}
+              listId={props.id}
               numCards={props.cards && props.cards.length}
             />
           </div>
           <style jsx>
             {`
-              .lane-content {
+              .list-content {
                 border-radius: 3px;
                 background: #ebecf0;
                 color: rgb(23, 43, 77);
@@ -70,7 +70,7 @@ const Lane = (props) => {
                 flex-direction: column;
               }
 
-              .lane-header {
+              .list-header {
                 min-height: 40px;
                 font-weight: bold;
                 padding: 6px 10px 6px 12px;
@@ -100,4 +100,4 @@ const Lane = (props) => {
   );
 };
 
-export default Lane;
+export default List;

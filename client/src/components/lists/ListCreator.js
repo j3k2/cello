@@ -1,32 +1,32 @@
 import React from "react";
 import Creator from "../common/Creator";
-import lanesService from "../../services/lanes";
+import listsService from "../../services/lists";
 import { useBoardContext } from "../../contexts/Board";
 
-function LaneCreator(props) {
-  const { addLane, boardId } = useBoardContext();
+function ListCreator(props) {
+  const { addList, boardId } = useBoardContext();
 
   return (
-    <div className="lane-creator">
+    <div className="list-creator">
       <Creator
         hasButton
         buttonClassName="overlay"
-        create={async (laneTitle) => {
+        create={async (listTitle) => {
           try {
-            const lane = await lanesService.createLane({
+            const list = await listsService.createList({
               boardId,
-              title: laneTitle,
+              title: listTitle,
             });
-            addLane(lane);
+            addList(list);
           } catch {}
         }}
-        toggleText={props.numLanes ? "Add another list" : "Add a list"}
+        toggleText={props.numLists ? "Add another list" : "Add a list"}
         placeholder={"Enter list title..."}
         buttonText={"Add List"}
       />
       <style jsx>
         {`
-          .lane-creator :global(.creator-button) {
+          .list-creator :global(.creator-button) {
             height: 40px;
             padding: 10px 10px;
           }
@@ -36,4 +36,4 @@ function LaneCreator(props) {
   );
 }
 
-export default LaneCreator;
+export default ListCreator;

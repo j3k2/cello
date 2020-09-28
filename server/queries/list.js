@@ -1,11 +1,11 @@
 const { update } = require("./common");
 const knex = require("../knex");
 
-async function createLane(params) {
+async function createList(params) {
   try {
     return await knex.transaction(async (trx) => {
       const { board_id } = params;
-      const counts = await knex("lanes")
+      const counts = await knex("lists")
         .count()
         .where({ board_id })
         .first()
@@ -13,24 +13,24 @@ async function createLane(params) {
 
       params.order = parseInt(counts.count);
 
-      const lanes = await knex("lanes")
+      const lists = await knex("lists")
         .insert(params)
         .returning(["id", "title"])
         .transacting(trx);
 
-      return lanes[0];
+      return lists[0];
     });
   } catch (err) {
     throw new Error(err.message);
   }
 }
 
-async function moveLane(id, params) {
+async function moveList(id, params) {
   try {
     await knex.transaction(async (trx) => {
       const { next, prev, board_id } = params;
       if (next > prev) {
-        await knex("lanes")
+        await knex("lists")
           .where({ board_id })
           .andWhere("order", "<=", next)
           .andWhere("order", ">", 0)
@@ -38,14 +38,14 @@ async function moveLane(id, params) {
           .transacting(trx);
       }
       if (prev > next) {
-        await knex("lanes")
+        await knex("lists")
           .where({ board_id })
           .andWhere("order", ">=", next)
-          .andWhere("order", "<", knex("lanes").count().where({ board_id }))
+          .andWhere("order", "<", knex("lists").count().where({ board_id }))
           .increment("order", 1)
           .transacting(trx);
       }
-      await knex("lanes")
+      await knex("lists")
         .where({ id })
         .update({ order: next })
         .transacting(trx);
@@ -55,24 +55,24 @@ async function moveLane(id, params) {
   }
 }
 
-const editLane = (id, params) => {
-  return update("lanes", { id }, params, Object.keys(params));
+const editList = (id, params) => {
+  return update("lists", { id }, params, Object.keys(params));
 };
 
-async function deleteLane(id) {
+async function deleteList(id) {
   try {
     await knex.transaction(async (trx) => {
-      const lane = await knex("lanes").where({ id }).first().transacting(trx);
+      const list = await knex("lists").where({ id }).first().transacting(trx);
 
-      await knex("lanes")
-        .where({ board_id: lane.board_id })
-        .andWhere("order", ">", lane.order)
+      await knex("lists")
+        .where({ board_id: list.board_id })
+        .andWhere("order", ">", list.order)
         .decrement("order", 1)
         .transacting(trx);
 
-      await knex("cards").where({ lane_id: id }).delete().transacting(trx);
+      await knex("cards").where({ list_id: id }).delete().transacting(trx);
 
-      await knex("lanes").where({ id }).delete().transacting(trx);
+      await knex("lists").where({ id }).delete().transacting(trx);
     });
   } catch (err) {
     throw new Error(err.message);
@@ -80,8 +80,8 @@ async function deleteLane(id) {
 }
 
 module.exports = {
-  createLane,
-  moveLane,
-  editLane,
-  deleteLane,
+  createList,
+  moveList,
+  editList,
+  deleteList,
 };

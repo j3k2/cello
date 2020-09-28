@@ -13,7 +13,7 @@ exports.up = function(knex) {
     table.foreign('creator_id').references('id').inTable('users');
     table.string('title').notNullable();
   })  
-  .createTable('lanes', function (table) {
+  .createTable('lists', function (table) {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
     table.uuid('board_id').notNullable();
     table.foreign('board_id').references('id').inTable('boards');
@@ -22,8 +22,8 @@ exports.up = function(knex) {
   })
   .createTable('cards', function (table) {
     table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
-    table.uuid('lane_id').notNullable();
-    table.foreign('lane_id').references('id').inTable('lanes');
+    table.uuid('list_id').notNullable();
+    table.foreign('list_id').references('id').inTable('lists');
     table.uuid('board_id').notNullable();
     table.foreign('board_id').references('id').inTable('boards');
     table.string('title').notNullable();
@@ -35,7 +35,7 @@ exports.up = function(knex) {
 exports.down = function(knex) {
   return knex.schema
     .dropTableIfExists('cards')
-    .dropTableIfExists('lanes')
+    .dropTableIfExists('lists')
     .dropTableIfExists('boards')
     .dropTableIfExists('users');
 };

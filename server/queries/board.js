@@ -18,20 +18,20 @@ async function getBoard(params) {
         .first()
         .transacting(trx);
 
-      board.lanes = await knex("lanes")
+      board.lists = await knex("lists")
         .where({ board_id: params.id })
         .orderBy("order")
         .transacting(trx);
 
-      const laneIds = _.map(board.lanes, "id");
+      const listIds = _.map(board.lists, "id");
       const cards = await knex("cards")
-        .select("id", "lane_id", "title", "order")
-        .whereIn("lane_id", laneIds)
+        .select("id", "list_id", "title", "order")
+        .whereIn("list_id", listIds)
         .orderBy("order")
         .transacting(trx);
-      const cardsByLane = _.groupBy(cards, "lane_id");
-      board.lanes.forEach((lane) => {
-        lane.cards = cardsByLane[lane.id] ? cardsByLane[lane.id] : [];
+      const cardsByList = _.groupBy(cards, "list_id");
+      board.lists.forEach((list) => {
+        list.cards = cardsByList[list.id] ? cardsByList[list.id] : [];
       });
 
       return board;
@@ -49,15 +49,15 @@ const editBoard = (id, params) => {
 async function deleteBoard(id) {
   try {
     await knex.transaction(async (trx) => {
-      const lanes = await knex("lanes")
+      const lists = await knex("lists")
         .where({ board_id: id })
         .transacting(trx);
 
-      const laneIds = _.map(lanes, "id");
+      const listIds = _.map(lists, "id");
 
-      await knex("cards").whereIn("lane_id", laneIds).delete().transacting(trx);
+      await knex("cards").whereIn("list_id", listIds).delete().transacting(trx);
 
-      await knex("lanes").where({ board_id: id }).delete().transacting(trx);
+      await knex("lists").where({ board_id: id }).delete().transacting(trx);
 
       await knex("boards").where({ id }).delete().transacting(trx);
     });

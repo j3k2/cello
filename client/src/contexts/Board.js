@@ -1,7 +1,7 @@
 import React from "react";
 import cardsService from "../services/cards";
 import boardsService from "../services/boards";
-import lanesService from "../services/lanes";
+import listsService from "../services/lists";
 
 const BoardContext = React.createContext();
 
@@ -10,84 +10,84 @@ function BoardProvider(props) {
   const [boardId, setBoardId] = React.useState();
   const [boardLoading, setBoardLoading] = React.useState(true);
 
-  const addLane = (lane) => {
-    lane.cards = [];
+  const addList = (list) => {
+    list.cards = [];
 
-    setBoard({ ...board, lanes: [...board.lanes, lane] });
+    setBoard({ ...board, lists: [...board.lists, list] });
   };
 
-  const addCard = (laneId, card) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
+  const addCard = (listId, card) => {
+    const lists = [...board.lists];
+    const list = lists.find((list) => list.id === listId);
 
-    lane.cards = [...lane.cards, card];
+    list.cards = [...list.cards, card];
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
   };
 
-  const reorderLaneCards = async (laneId, cardId, prevIdx, nextIdx) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-    const cards = [...lane.cards];
+  const reorderListCards = async (listId, cardId, prevIdx, nextIdx) => {
+    const lists = [...board.lists];
+    const list = lists.find((list) => list.id === listId);
+    const cards = [...list.cards];
     const card = cards.find((card) => card.id === cardId);
 
     cards.splice(prevIdx, 1);
     cards.splice(nextIdx, 0, card);
-    lane.cards = cards;
+    list.cards = cards;
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
 
     try {
       await cardsService.moveCard(cardId, {
         next: nextIdx,
         prev: prevIdx,
-        laneId,
+        listId,
       });
     } catch {}
   };
 
-  const moveCardToLane = async (
+  const moveCardToList = async (
     cardId,
-    prevLaneId,
-    nextLaneId,
+    prevListId,
+    nextListId,
     prevIdx,
     nextIdx
   ) => {
-    const lanes = [...board.lanes];
-    const prevLane = lanes.find((lane) => lane.id === prevLaneId);
-    const prevCards = [...prevLane.cards];
-    const nextLane = lanes.find((lane) => lane.id === nextLaneId);
-    const nextCards = [...nextLane.cards];
+    const lists = [...board.lists];
+    const prevList = lists.find((list) => list.id === prevListId);
+    const prevCards = [...prevList.cards];
+    const nextList = lists.find((list) => list.id === nextListId);
+    const nextCards = [...nextList.cards];
     const card = prevCards.find((card) => card.id === cardId);
 
     prevCards.splice(prevIdx, 1);
     nextCards.splice(nextIdx, 0, card);
-    prevLane.cards = prevCards;
-    nextLane.cards = nextCards;
+    prevList.cards = prevCards;
+    nextList.cards = nextCards;
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
 
     try {
       await cardsService.moveCard(cardId, {
         next: nextIdx,
         prev: prevIdx,
-        prevLaneId,
-        nextLaneId,
+        prevListId,
+        nextListId,
       });
     } catch {}
   };
 
-  const moveLane = async (laneId, prevIdx, nextIdx) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
+  const moveList = async (listId, prevIdx, nextIdx) => {
+    const lists = [...board.lists];
+    const list = lists.find((list) => list.id === listId);
 
-    lanes.splice(prevIdx, 1);
-    lanes.splice(nextIdx, 0, lane);
+    lists.splice(prevIdx, 1);
+    lists.splice(nextIdx, 0, list);
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
 
     try {
-      await lanesService.moveLane(laneId, {
+      await listsService.moveList(listId, {
         next: nextIdx,
         prev: prevIdx,
         boardId,
@@ -95,48 +95,48 @@ function BoardProvider(props) {
     } catch {}
   };
 
-  const deleteCard = (id, laneId) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-    const cards = [...lane.cards];
+  const deleteCard = (id, listId) => {
+    const lists = [...board.lists];
+    const list = lists.find((list) => list.id === listId);
+    const cards = [...list.cards];
     const cardIdx = cards.findIndex((card) => card.id === id);
 
     cards.splice(cardIdx, 1);
-    lane.cards = cards;
+    list.cards = cards;
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
   };
 
-  const editCard = (cardId, laneId, edits) => {
-    const lanes = [...board.lanes];
-    const lane = lanes.find((lane) => lane.id === laneId);
-    const cards = [...lane.cards];
+  const editCard = (cardId, listId, edits) => {
+    const lists = [...board.lists];
+    const list = lists.find((list) => list.id === listId);
+    const cards = [...list.cards];
     const cardIdx = cards.findIndex((card) => card.id === cardId);
     const card = { ...cards[cardIdx], ...edits };
 
     cards.splice(cardIdx, 1, card);
-    lane.cards = cards;
+    list.cards = cards;
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
   };
 
-  const deleteLane = (id) => {
-    const lanes = [...board.lanes];
-    const laneIdx = lanes.findIndex((lane) => lane.id === id);
+  const deleteList = (id) => {
+    const lists = [...board.lists];
+    const listIdx = lists.findIndex((list) => list.id === id);
 
-    lanes.splice(laneIdx, 1);
+    lists.splice(listIdx, 1);
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
   };
 
-  const editLane = (id, edits) => {
-    const lanes = [...board.lanes];
-    const laneIdx = lanes.findIndex((lane) => lane.id === id);
-    const lane = { ...lanes[laneIdx], ...edits };
+  const editList = (id, edits) => {
+    const lists = [...board.lists];
+    const listIdx = lists.findIndex((list) => list.id === id);
+    const list = { ...lists[listIdx], ...edits };
 
-    lanes.splice(laneIdx, 1, lane);
+    lists.splice(listIdx, 1, list);
 
-    setBoard({ ...board, lanes });
+    setBoard({ ...board, lists });
   };
 
   const editBoard = (updates) => {
@@ -180,15 +180,15 @@ function BoardProvider(props) {
         setBoardLoading,
         setBoardId,
         addCard,
-        addLane,
+        addList,
         editBoard,
         editCard,
-        editLane,
-        reorderLaneCards,
-        moveCardToLane,
-        moveLane,
+        editList,
+        reorderListCards,
+        moveCardToList,
+        moveList,
         deleteCard,
-        deleteLane,
+        deleteList,
       }}
     >
       {props.children}

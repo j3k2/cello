@@ -9,11 +9,11 @@ const {
 } = require('../controllers/boards');
 
 const {
-	createLane,
-	moveLane,
-	editLane,
-	deleteLane
-} = require('../controllers/lanes');
+	createList,
+	moveList,
+	editList,
+	deleteList
+} = require('../controllers/lists');
 
 const {
 	createCard,
@@ -31,10 +31,10 @@ router.get('/api/boards/:id', authorizer, getBoard);
 router.patch('/api/boards/:id', authorizer, editBoard);
 router.delete('/api/boards/:id', authorizer, deleteBoard);
 
-router.post('/api/lanes/', authorizer, createLane);
-router.post('/api/lanes/:id/move', authorizer, moveLane);
-router.patch('/api/lanes/:id', authorizer, editLane);
-router.delete('/api/lanes/:id', authorizer, deleteLane);
+router.post('/api/lists/', authorizer, createList);
+router.post('/api/lists/:id/move', authorizer, moveList);
+router.patch('/api/lists/:id', authorizer, editList);
+router.delete('/api/lists/:id', authorizer, deleteList);
 
 router.post('/api/cards/', authorizer, createCard);
 router.post('/api/cards/:id/move', authorizer, moveCard);

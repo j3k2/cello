@@ -1,7 +1,7 @@
 import React from "react";
 import { BOARD_PATH, CARD_PATH } from "../../constants";
 
-import LanesGroup from "../lanes/LanesGroup";
+import ListsGroup from "../lists/ListsGroup";
 import InlineEditor from "../common/InlineEditor";
 import Deleter from "../common/Deleter";
 import CardView from "../cards/CardView";
@@ -78,7 +78,7 @@ const BoardView = () => {
                 className="overlay"
               />
             </div>
-            <LanesGroup lanes={board.lanes} />
+            <ListsGroup lists={board.lists} />
           </React.Fragment>
         )}
 

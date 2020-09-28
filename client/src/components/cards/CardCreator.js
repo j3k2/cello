@@ -14,11 +14,11 @@ export default function CardCreator(props) {
         create={async (cardTitle) => {
           try {
             const card = await cardsService.createCard({
-              laneId: props.laneId,
+              listId: props.listId,
               boardId,
               title: cardTitle,
             });
-            addCard(props.laneId, card);
+            addCard(props.listId, card);
           } catch {}
         }}
         toggleText={props.numCards ? "Add another card" : "Add a card"}

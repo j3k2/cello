@@ -5,7 +5,7 @@ import Card from "./Card";
 
 const CardsGroup = (props) => {
   return (
-    <Droppable type={DRAG_TYPE_CARD} droppableId={`droppable.${props.laneId}`}>
+    <Droppable type={DRAG_TYPE_CARD} droppableId={`droppable.${props.listId}`}>
       {(provided, snapshot) => (
         <div
           className="cards-group"
@@ -16,7 +16,7 @@ const CardsGroup = (props) => {
             props.cards.map((card, idx) => {
               return (
                 <Card
-                  laneId={props.laneId}
+                  listId={props.listId}
                   title={card.title}
                   idx={idx}
                   id={card.id}

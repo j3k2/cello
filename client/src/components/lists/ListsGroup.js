@@ -1,12 +1,12 @@
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { DRAG_TYPE_CARD, DRAG_TYPE_LANE } from "../../constants";
-import Lane from "./Lane";
-import LaneCreator from "./LaneCreator";
+import { DRAG_TYPE_CARD, DRAG_TYPE_LIST } from "../../constants";
+import List from "./List";
+import ListCreator from "./ListCreator";
 import { useBoardContext } from "../../contexts/Board";
 
-const LanesGroup = (props) => {
-  const { reorderLaneCards, moveCardToLane, moveLane } = useBoardContext();
+const ListsGroup = (props) => {
+  const { reorderListCards, moveCardToList, moveList } = useBoardContext();
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
@@ -21,49 +21,49 @@ const LanesGroup = (props) => {
         destination.droppableId === source.droppableId &&
         destination.index !== source.index
       ) {
-        const laneId = destination.droppableId.split(".")[1];
-        reorderLaneCards(laneId, cardId, prevIdx, nextIdx);
+        const listId = destination.droppableId.split(".")[1];
+        reorderListCards(listId, cardId, prevIdx, nextIdx);
       }
       if (destination.droppableId !== source.droppableId) {
-        const prevLaneId = source.droppableId.split(".")[1];
-        const nextLaneId = destination.droppableId.split(".")[1];
-        moveCardToLane(cardId, prevLaneId, nextLaneId, prevIdx, nextIdx);
+        const prevListId = source.droppableId.split(".")[1];
+        const nextListId = destination.droppableId.split(".")[1];
+        moveCardToList(cardId, prevListId, nextListId, prevIdx, nextIdx);
       }
     }
-    if (type === DRAG_TYPE_LANE) {
-      moveLane(draggableId.split(".")[1], source.index, destination.index);
+    if (type === DRAG_TYPE_LIST) {
+      moveList(draggableId.split(".")[1], source.index, destination.index);
     }
   };
 
   return (
-    <div className="lanes-wrapper">
+    <div className="lists-wrapper">
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
-          type={DRAG_TYPE_LANE}
+          type={DRAG_TYPE_LIST}
           droppableId="droppable.board"
           direction="horizontal"
         >
           {(provided) => (
             <div
-              className="lanes-content"
+              className="lists-content"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {props.lanes.map((lane, idx) => {
+              {props.lists.map((list, idx) => {
                 return (
-                  <Lane
-                    className="board-lane"
-                    title={lane.title}
+                  <List
+                    className="board-list"
+                    title={list.title}
                     idx={idx}
-                    key={lane.id}
-                    id={lane.id}
-                    cards={lane.cards}
+                    key={list.id}
+                    id={list.id}
+                    cards={list.cards}
                   />
                 );
               })}
               {provided.placeholder}
-              <div className="board-lane">
-                <LaneCreator numLanes={props.lanes && props.lanes.length} />
+              <div className="board-list">
+                <ListCreator numLists={props.lists && props.lists.length} />
               </div>
             </div>
           )}
@@ -71,12 +71,12 @@ const LanesGroup = (props) => {
       </DragDropContext>
       <style jsx>
         {`
-          .lanes-wrapper {
+          .lists-wrapper {
             position: relative;
             flex-grow: 1;
           }
 
-          .lanes-content {
+          .lists-content {
             position: absolute;
             top: 0;
             right: 0;
@@ -85,7 +85,7 @@ const LanesGroup = (props) => {
             display: flex;
             overflow-y: hidden;
             padding-bottom: 8px;
-            :global(.board-lane) {
+            :global(.board-list) {
               margin: 0px 4px;
               min-width: 272px;
               max-width: 272px;
@@ -108,4 +108,4 @@ const LanesGroup = (props) => {
   );
 };
 
-export default LanesGroup;
+export default ListsGroup;

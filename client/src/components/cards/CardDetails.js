@@ -16,8 +16,8 @@ function CardDetails({ closeAction }) {
 
   const { editCard: editModalCard, card } = useCardContext();
 
-  const updateCardObjects = (id, laneId, updates) => {
-    editListCard(id, laneId, updates);
+  const updateCardObjects = (id, listId, updates) => {
+    editListCard(id, listId, updates);
     editModalCard(updates);
   };
 
@@ -34,16 +34,16 @@ function CardDetails({ closeAction }) {
               content={card.title}
               updateContent={async (updatedTitle) => {
                 const oldCard = { ...card };
-                updateCardObjects(card.id, card.laneId, {
+                updateCardObjects(card.id, card.listId, {
                   title: updatedTitle,
                 });
                 try {
                   const updatedFields = await cardsService.editCard(card.id, {
                     title: updatedTitle,
                   });
-                  updateCardObjects(card.id, card.laneId, updatedFields);
+                  updateCardObjects(card.id, card.listId, updatedFields);
                 } catch {
-                  updateCardObjects(card.id, card.laneId, oldCard);
+                  updateCardObjects(card.id, card.listId, oldCard);
                 }
               }}
             />
@@ -53,7 +53,7 @@ function CardDetails({ closeAction }) {
                 try {
                   await cardsService.deleteCard(card.id);
                   closeAction();
-                  deleteListCard(card.id, card.laneId);
+                  deleteListCard(card.id, card.listId);
                 } catch {}
               }}
               message="Are you sure you want to delete this card? There is no undo."
