@@ -54,11 +54,6 @@ const BoardsList = () => {
       {loading && <Spinner className="page-loading-spinner" name="circle" />}
       <style jsx>
         {`
-          .board-list {
-            display: flex;
-            flex-wrap: wrap;
-          }
-
           .board-list-title {
             align-self: flex-start;
             margin-left: 5px;
@@ -66,45 +61,47 @@ const BoardsList = () => {
             font-weight: 700;
             padding: 10px;
           }
-
-          .board-list :global(.board-item) {
-            border-radius: 3px;
-            padding: 8px;
-            height: 96px;
-            margin: 10px;
-            width: 12%;
-            min-width: 130px;
-            cursor: pointer;
-            background-color: rgb(0, 121, 191);
-            span {
-              overflow: hidden;
-              text-overflow: ellipsis;
-              display: block;
-              white-space: nowrap;
-              font-weight: bold;
-              font-size: 16px;
-              color: #fff;
-            }
-            &:hover {
-              filter: brightness(0.9);
-            }
-          }
-
-          .board-list :global(.board-item.creator) {
-            background: rgba(9, 30, 66, 0.04);
-            top: 25%;
+          .board-list {
             display: flex;
-            text-align: center;
-            font-weight: normal;
-            span {
-              align-self: center;
-              margin: 0 auto;
-              font-size: 14px;
-              font-weight: normal;
-              color: #172b4d;
+            flex-wrap: wrap;
+            :global(.board-item) {
+              border-radius: 3px;
+              padding: 8px;
+              height: 96px;
+              margin: 10px;
+              width: 12%;
+              min-width: 130px;
+              cursor: pointer;
+              background-color: rgb(0, 121, 191);
+              span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+                white-space: nowrap;
+                font-weight: bold;
+                font-size: 16px;
+                color: #fff;
+              }
+              &:hover {
+                filter: brightness(0.9);
+              }
             }
-            &:hover {
-              background-color: rgba(9, 30, 66, 0.08);
+            :global(.board-item.creator) {
+              background: rgba(9, 30, 66, 0.04);
+              top: 25%;
+              display: flex;
+              text-align: center;
+              font-weight: normal;
+              span {
+                align-self: center;
+                margin: 0 auto;
+                font-size: 14px;
+                font-weight: normal;
+                color: #172b4d;
+              }
+              &:hover {
+                background-color: rgba(9, 30, 66, 0.08);
+              }
             }
           }
         `}

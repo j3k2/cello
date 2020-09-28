@@ -29,6 +29,7 @@ const InlineEditor = (props) => {
         >
           {!props.multiline && (
             <AutosizeInput
+              maxLength={255}
               autoFocus
               value={content}
               onFocus={(e) => {
@@ -78,6 +79,18 @@ const InlineEditor = (props) => {
         {`
           .editor {
             width: min-content;
+            :global(textarea) {
+              padding: 2px 6px;
+              position: relative;
+              top: 0px;
+              left: -4px;
+            }
+            :global(input) {
+              position: relative;
+              top: -2px;
+              left: -2px;
+              padding: 6px 12px;
+            }
           }
           .editor-content {
             cursor: pointer;
@@ -88,18 +101,6 @@ const InlineEditor = (props) => {
             .editor-content {
               padding: 4px;
             }
-          }
-          .editor :global(textarea) {
-            padding: 2px 6px;
-            position: relative;
-            top: 0px;
-            left: -4px;
-          }
-          .editor :global(input) {
-            position: relative;
-            top: -2px;
-            left: -2px;
-            padding: 6px 12px;
           }
         `}
       </style>

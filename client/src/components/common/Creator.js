@@ -43,6 +43,7 @@ const Creator = ({
         >
           <input
             ref={inputRef}
+            maxLength={255}
             autoFocus
             placeholder={placeholder}
             value={content}
@@ -112,14 +113,12 @@ const Creator = ({
           .creator-form-actions {
             display: flex;
             margin-top: 4px;
-          }
-
-          .creator-form-actions button {
-            margin-right: 8px;
-          }
-
-          .creator-form-actions .close-action {
-            padding-top: 4px;
+            button {
+              margin-right: 8px;
+            }
+            .close-action {
+              padding-top: 4px;
+            }
           }
         `}
       </style>

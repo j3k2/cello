@@ -9,7 +9,10 @@ import { useCardContext } from "../../contexts/Card";
 import { MdClose } from "react-icons/md";
 
 function CardDetails({ closeAction }) {
-  const { editCard: editListCard, deleteCard: deleteListCard} = useBoardContext();
+  const {
+    editCard: editListCard,
+    deleteCard: deleteListCard,
+  } = useBoardContext();
 
   const { editCard: editModalCard, card } = useCardContext();
 
@@ -31,7 +34,9 @@ function CardDetails({ closeAction }) {
               content={card.title}
               updateContent={async (updatedTitle) => {
                 const oldCard = { ...card };
-                updateCardObjects(card.id, card.laneId, { title: updatedTitle });
+                updateCardObjects(card.id, card.laneId, {
+                  title: updatedTitle,
+                });
                 try {
                   const updatedFields = await cardsService.editCard(card.id, {
                     title: updatedTitle,
@@ -82,6 +87,9 @@ function CardDetails({ closeAction }) {
                 line-height: 24px;
                 display: flex;
                 width: 600px;
+                :global(.editor-content) {
+                  word-break: break-word;
+                }
               }
               .close-action {
                 position: absolute;

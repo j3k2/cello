@@ -78,7 +78,7 @@ const BoardView = () => {
                 className="overlay"
               />
             </div>
-            <LanesList lanes={board.lanes}/>
+            <LanesList lanes={board.lanes} />
           </React.Fragment>
         )}
 
@@ -113,14 +113,13 @@ const BoardView = () => {
               font-weight: 700;
               white-space: nowrap;
               overflow: hidden;
-            }
-
-            .board-title :global(.editor-content) {
-              border-radius: 3px;
-              padding: 6px 12px;
-              margin-right: 6px;
-              &:hover {
-                background-color: hsla(0, 0%, 100%, 0.32);
+              :global(.editor-content) {
+                border-radius: 3px;
+                padding: 6px 12px;
+                margin-right: 6px;
+                &:hover {
+                  background-color: hsla(0, 0%, 100%, 0.32);
+                }
               }
             }
           `}

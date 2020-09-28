@@ -27,17 +27,19 @@ export default function CardCreator(props) {
       />
       <style jsx>
         {`
-          .card-creator :global(.creator-form) {
-            padding: 0px 8px;
-            margin-top: 8px;
-          }
-          .card-creator :global(.creator-button) {
-            height: 28px;
-            color: #5e6c84;
-            margin: 2px 8px 8px 8px;
-            padding: 4px 6px;
-            &:hover {
-              color: #172b4d;
+          .card-creator {
+            :global(.creator-form) {
+              padding: 0px 8px;
+              margin-top: 8px;
+            }
+            :global(.creator-button) {
+              height: 28px;
+              color: #5e6c84;
+              margin: 2px 8px 8px 8px;
+              padding: 4px 6px;
+              &:hover {
+                color: #172b4d;
+              }
             }
           }
         `}

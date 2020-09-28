@@ -13,7 +13,11 @@ const Lane = (props) => {
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
       {(provided, snapshot) => (
-        <div className={props.className} ref={provided.innerRef} {...provided.draggableProps}>
+        <div
+          className={props.className}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+        >
           <div className="lane-content" {...provided.dragHandleProps}>
             <div className="lane-header">
               <InlineEditor
@@ -75,14 +79,12 @@ const Lane = (props) => {
                 max-width: 272px;
                 flex: none;
                 position: relative;
-              }
-
-              .lane-header :global(.editor-content) {
-                width: 224px;
-              }
-
-              .lane-header :global(.editor-form) {
-                width: 228px;
+                :global(.editor-content) {
+                  width: 224px;
+                }
+                :global(.editor-form) {
+                  width: 228px;
+                }
               }
 
               .deleter-wrapper {
