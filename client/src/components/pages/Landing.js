@@ -17,7 +17,7 @@ export default function Landing() {
 
   async function login() {
     try {
-      await authService.login({ username: "test", password: "test" });
+      await authService.login({ username: "demo", password: "demo" });
 
       const user = await authService.getAuthUser();
 
