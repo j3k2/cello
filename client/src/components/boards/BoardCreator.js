@@ -1,14 +1,10 @@
 import React from "react";
 import ReactModal from "react-modal";
 import Creator from "../common/Creator";
-import boardsService from "../../services/boards";
-import { useHistory } from "react-router-dom";
 import css from "styled-jsx/css";
 
 const BoardCreator = (props) => {
   ReactModal.setAppElement("#root");
-
-  const history = useHistory();
 
   const [showModal, setShowModal] = React.useState(false);
 
@@ -37,14 +33,7 @@ const BoardCreator = (props) => {
         shouldCloseOnOverlayClick
       >
         <Creator
-          create={async (boardTitle) => {
-            try {
-              const createdBoard = await boardsService.createBoard({
-                title: boardTitle,
-              });
-              history.push(`/b/${createdBoard.id}`);
-            } catch {}
-          }}
+          create={props.create}
           closeAction={() => {
             setShowModal(false);
           }}

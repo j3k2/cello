@@ -6,25 +6,22 @@ import InlineEditor from "../common/InlineEditor";
 import Deleter from "../common/Deleter";
 import CardView from "../cards/CardView";
 
-import boardsService from "../../services/boards";
-
 import { useBoardContext } from "../../contexts/Board";
 import { useCardContext } from "../../contexts/Card";
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Spinner from "react-spinkit";
 
 const BoardView = () => {
   const params = useParams();
   const location = useLocation();
   const pathType = location.pathname.split("/")[1];
-  const history = useHistory();
 
   const {
     board,
     boardLoading,
-    boardId,
     setBoardId,
     editBoard,
+    deleteBoard
   } = useBoardContext();
 
   const { setCardId } = useCardContext();
@@ -49,29 +46,14 @@ const BoardView = () => {
                 <InlineEditor
                   hover
                   content={board.title}
-                  updateContent={async (updatedTitle) => {
-                    const oldBoard = { ...board };
+                  updateContent={(updatedTitle) => {
                     editBoard({ title: updatedTitle });
-                    try {
-                      const updatedFields = await boardsService.editBoard(
-                        boardId,
-                        {
-                          title: updatedTitle,
-                        }
-                      );
-                      editBoard(updatedFields);
-                    } catch {
-                      editBoard(oldBoard);
-                    }
                   }}
                 />
               </div>
               <Deleter
-                delete={async () => {
-                  try {
-                    await boardsService.deleteBoard(boardId);
-                    history.push("/");
-                  } catch {}
+                delete={() => {
+                  deleteBoard();
                 }}
                 message="Are you sure you want to delete this board and its lists and cards? There is no undo."
                 dialogTitle="Delete Board?"

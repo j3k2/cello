@@ -3,11 +3,13 @@ import boardsService from "../../services/boards";
 import BoardCreator from "./BoardCreator";
 import { Link } from "react-router-dom";
 import Spinner from "react-spinkit";
+import { useHistory } from "react-router-dom";
 
 const BoardsGroup = () => {
   const [boards, setBoards] = React.useState([]);
-
   const [loading, setLoading] = React.useState(true);
+
+  const history = useHistory();
 
   const fetchBoards = async () => {
     setLoading(true);
@@ -16,6 +18,15 @@ const BoardsGroup = () => {
       setBoards(boards);
     } catch {}
     setLoading(false);
+  };
+
+  const createBoard = async (boardTitle) => {
+    try {
+      const createdBoard = await boardsService.createBoard({
+        title: boardTitle,
+      });
+      history.push(`/b/${createdBoard.id}`);
+    } catch {}
   };
 
   React.useEffect(() => {
@@ -40,9 +51,7 @@ const BoardsGroup = () => {
                 </Link>
               );
             })}
-            <BoardCreator
-              className="board-item creator"
-            >
+            <BoardCreator create={createBoard} className="board-item creator">
               <span>Create new board</span>
             </BoardCreator>
           </div>

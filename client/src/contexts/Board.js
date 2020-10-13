@@ -2,6 +2,7 @@ import React from "react";
 import cardsService from "../services/cards";
 import boardsService from "../services/boards";
 import listsService from "../services/lists";
+import { useHistory } from "react-router-dom";
 
 const BoardContext = React.createContext();
 
@@ -9,20 +10,29 @@ function BoardProvider(props) {
   const [board, setBoard] = React.useState();
   const [boardId, setBoardId] = React.useState();
   const [boardLoading, setBoardLoading] = React.useState(true);
+  
+  const history = useHistory();
 
-  const addList = (list) => {
-    list.cards = [];
+  const addList = async (list) => {
+    try {
+      const res = await listsService.createList(list);
 
-    setBoard({ ...board, lists: [...board.lists, list] });
+      res.cards = [];
+
+      setBoard({ ...board, lists: [...board.lists, res] });
+    } catch {}
   };
 
-  const addCard = (listId, card) => {
-    const lists = [...board.lists];
-    const list = lists.find((list) => list.id === listId);
+  const addCard = async (card) => {
+    try {
+      const res = await cardsService.createCard(card);
+      const lists = [...board.lists];
+      const list = lists.find((list) => list.id === card.listId);
 
-    list.cards = [...list.cards, card];
+      list.cards = [...list.cards, res];
 
-    setBoard({ ...board, lists });
+      setBoard({ ...board, lists });
+    } catch {}
   };
 
   const reorderListCards = async (listId, cardId, prevIdx, nextIdx) => {
@@ -95,16 +105,20 @@ function BoardProvider(props) {
     } catch {}
   };
 
-  const deleteCard = (id, listId) => {
-    const lists = [...board.lists];
-    const list = lists.find((list) => list.id === listId);
-    const cards = [...list.cards];
-    const cardIdx = cards.findIndex((card) => card.id === id);
+  const deleteCard = async (cardId, listId) => {
+    try {
+      await cardsService.deleteCard(cardId);
 
-    cards.splice(cardIdx, 1);
-    list.cards = cards;
+      const lists = [...board.lists];
+      const list = lists.find((list) => list.id === listId);
+      const cards = [...list.cards];
+      const cardIdx = cards.findIndex((card) => card.id === cardId);
 
-    setBoard({ ...board, lists });
+      cards.splice(cardIdx, 1);
+      list.cards = cards;
+
+      setBoard({ ...board, lists });
+    } catch {}
   };
 
   const editCard = (cardId, listId, edits) => {
@@ -120,31 +134,63 @@ function BoardProvider(props) {
     setBoard({ ...board, lists });
   };
 
-  const deleteList = (id) => {
-    const lists = [...board.lists];
-    const listIdx = lists.findIndex((list) => list.id === id);
+  const deleteList = async (id) => {
+    try {
+      await listsService.deleteList(id);
+      const lists = [...board.lists];
+      const listIdx = lists.findIndex((list) => list.id === id);
 
-    lists.splice(listIdx, 1);
+      lists.splice(listIdx, 1);
 
-    setBoard({ ...board, lists });
+      setBoard({ ...board, lists });
+    } catch {}
   };
 
-  const editList = (id, edits) => {
+  const editList = async (id, edits) => {
     const lists = [...board.lists];
     const listIdx = lists.findIndex((list) => list.id === id);
-    const list = { ...lists[listIdx], ...edits };
+    const oldList = { ...lists[listIdx] };
 
-    lists.splice(listIdx, 1, list);
-
+    //initial state update:
+    lists.splice(listIdx, 1, { ...lists[listIdx], ...edits });
     setBoard({ ...board, lists });
+    try {
+      const updatedFields = await listsService.editList(id, edits);
+      //confirm state update:
+      lists.splice(listIdx, 1, { ...lists[listIdx], ...updatedFields });
+      setBoard({ ...board, lists });
+    } catch {
+      //rollback state update:
+      lists.splice(listIdx, 1, oldList);
+      setBoard({ ...board, lists });
+    }
   };
 
-  const editBoard = (updates) => {
-    const updatedBoard = { ...board, ...updates };
-
+  const editBoard = async (updates) => {
+    const oldBoard = { ...board };
+    //initial state update:
+    const updatedBoard = {...board, ...updates};
     setBoard(updatedBoard);
     document.title = `${updatedBoard.title} | Cello`;
+    try {
+      const updatedFields = await boardsService.editBoard(boardId, updates);
+       //confirm state update:
+       const confirmedBoard = {...board, ...updatedFields};
+      setBoard(confirmedBoard);
+      document.title = `${confirmedBoard.title} | Cello`;
+    } catch {
+      //rollback state update:
+      setBoard(oldBoard);
+      document.title = `${oldBoard.title} | Cello`;
+    }
   };
+
+  const deleteBoard = async () => {
+    try {
+      await boardsService.deleteBoard(boardId);
+      history.push("/");
+    } catch {}
+  }
 
   function usePrevious(value) {
     const ref = React.useRef();
@@ -186,7 +232,8 @@ function BoardProvider(props) {
         editList,
         reorderListCards,
         moveCardToList,
-        moveList,
+        moveList,        
+        deleteBoard,
         deleteCard,
         deleteList,
       }}

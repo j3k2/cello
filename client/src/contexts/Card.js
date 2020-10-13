@@ -9,7 +9,12 @@ function CardProvider(props) {
   const [cardId, setCardId] = React.useState();
   const [cardLoading, setCardLoading] = React.useState(true);
 
-  const { boardId, setBoardId, setBoardLoading} = useBoardContext();
+  const {
+    boardId,
+    editCard: editListCard,
+    setBoardId,
+    setBoardLoading,
+  } = useBoardContext();
 
   React.useEffect(() => {
     const fetchCard = async () => {
@@ -32,10 +37,21 @@ function CardProvider(props) {
     }
   }, [cardId, boardId, setBoardId, setBoardLoading]);
 
-  const editCard = (updates) => {
-    const updatedCard = { ...card, ...updates };
-
-    setCard(updatedCard);
+  const editCard = async (cardId, listId, updates) => {
+    const oldCard = { ...card };
+    //initial state updates:
+    editListCard(cardId, listId, updates);
+    setCard({ ...card, ...updates });
+    try {
+      const updatedFields = await cardsService.editCard(card.id, updates);
+      //confirm state updates:
+      editListCard(cardId, listId, updatedFields);
+      setCard({ ...card, ...updatedFields });
+    } catch {
+      //rollback state updates:
+      editListCard(cardId, listId, oldCard);
+      setCard(oldCard);
+    }
   };
 
   return (
@@ -43,9 +59,9 @@ function CardProvider(props) {
       value={{
         card,
         cardId,
-        editCard,
         cardLoading,
         setCardId,
+        editCard,
       }}
     >
       {props.children}
