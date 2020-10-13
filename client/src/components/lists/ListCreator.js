@@ -1,6 +1,5 @@
 import React from "react";
 import Creator from "../common/Creator";
-import listsService from "../../services/lists";
 import { useBoardContext } from "../../contexts/Board";
 
 function ListCreator(props) {
@@ -11,14 +10,11 @@ function ListCreator(props) {
       <Creator
         hasButton
         buttonClassName="overlay"
-        create={async (listTitle) => {
-          try {
-            const list = await listsService.createList({
-              boardId,
-              title: listTitle,
-            });
-            addList(list);
-          } catch {}
+        create={(listTitle) => {
+          addList({
+            boardId,
+            title: listTitle,
+          });
         }}
         toggleText={props.numLists ? "Add another list" : "Add a list"}
         placeholder={"Enter list title..."}

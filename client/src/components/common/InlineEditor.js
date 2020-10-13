@@ -70,6 +70,7 @@ const InlineEditor = (props) => {
           className="editor-content"
           onClick={(e) => {
             setEditing(true);
+            setContent(props.content);
           }}
         >
           <span>{props.content}</span>

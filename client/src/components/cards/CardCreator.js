@@ -1,6 +1,5 @@
 import React from "react";
 import Creator from "../common/Creator";
-import cardsService from "../../services/cards";
 import { useBoardContext } from "../../contexts/Board";
 
 export default function CardCreator(props) {
@@ -11,15 +10,12 @@ export default function CardCreator(props) {
       <Creator
         hasButton
         buttonClassName="action"
-        create={async (cardTitle) => {
-          try {
-            const card = await cardsService.createCard({
-              listId: props.listId,
-              boardId,
-              title: cardTitle,
-            });
-            addCard(props.listId, card);
-          } catch {}
+        create={(cardTitle) => {
+          addCard({
+            listId: props.listId,
+            boardId,
+            title: cardTitle,
+          });
         }}
         toggleText={props.numCards ? "Add another card" : "Add a card"}
         placeholder={"Enter a title for this card..."}

@@ -4,11 +4,10 @@ import CardsGroup from "../cards/CardsGroup";
 import InlineEditor from "../common/InlineEditor";
 import CardCreator from "../cards/CardCreator";
 import Deleter from "../common/Deleter";
-import listsService from "../../services/lists";
 import { useBoardContext } from "../../contexts/Board";
 
 const List = (props) => {
-  const { editList, deleteList, board } = useBoardContext();
+  const { editList, deleteList } = useBoardContext();
 
   return (
     <Draggable draggableId={`draggable.${props.id}`} index={props.idx}>
@@ -23,30 +22,15 @@ const List = (props) => {
               <InlineEditor
                 multiline
                 content={props.title}
-                updateContent={async (updatedTitle) => {
-                  const oldList = { ...board.lists[props.idx] };
+                updateContent={(updatedTitle) => {
                   editList(props.id, { title: updatedTitle });
-                  try {
-                    const updatedFields = await listsService.editList(
-                      props.id,
-                      {
-                        title: updatedTitle,
-                      }
-                    );
-                    editList(props.id, updatedFields);
-                  } catch {
-                    editList(props.id, oldList);
-                  }
                 }}
               />
               <div className="deleter-wrapper">
                 <Deleter
                   className="action"
-                  delete={async () => {
-                    try {
-                      await listsService.deleteList(props.id);
-                      deleteList(props.id);
-                    } catch {}
+                  delete={() => {
+                    deleteList(props.id);
                   }}
                   message="Are you sure you want to delete this list and its cards? There is no undo."
                   dialogTitle="Delete List?"
